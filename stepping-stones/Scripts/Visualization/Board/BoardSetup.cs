@@ -22,7 +22,7 @@ public partial class BoardSetup : Resource
     [Export]
     public Godot.Collections.Array<PieceInitialLocation> startPieces = new Godot.Collections.Array<PieceInitialLocation>();
 
-	private List<Node>[,] boardData { get; set; }
+	private List<Node2D>[,] boardData { get; set; }
     private Dictionary<string, PackedScene> pieceTypes = new Dictionary<string, PackedScene>();
 	/*
 	 * Constructors
@@ -30,11 +30,11 @@ public partial class BoardSetup : Resource
 	
 	public BoardSetup() : this(5, 7) {}
 	
-	public BoardSetup(int _width, int _height) => _initializeBoard(new List<Node>[width, height]); 
+	public BoardSetup(int _width, int _height) => _initializeBoard(new List<Node2D>[width, height]); 
 	
-	public BoardSetup(List<Node>[, ] _boardData) => _initializeBoard(_boardData);
+	public BoardSetup(List<Node2D>[, ] _boardData) => _initializeBoard(_boardData);
 
-	public void _initializeBoard(List<Node>[, ] _boardData) {
+	public void _initializeBoard(List<Node2D>[, ] _boardData) {
 		width = _boardData.GetLength(0); 
 		height = _boardData.GetLength(1);
 		boardData = _boardData;
@@ -54,14 +54,14 @@ public partial class BoardSetup : Resource
         foreach (PieceInitialLocation piece in startPieces) {
             if (!pieceTypes.ContainsKey(piece.pieceType) || piece.column < 0 || piece.column >= width || piece.row < 0 || piece.column >= height)
                 continue; 
-            boardData[piece.column, piece.row].Add(pieceTypes[piece.pieceType].Instantiate());
+            boardData[piece.column, piece.row].Add((Node2D)pieceTypes[piece.pieceType].Instantiate());
         }
     }
-    public List<Node>[, ] board() {
+    public List<Node2D>[, ] board() {
         return boardData;
     }
 
-    public void setBoard(List<Node>[, ] _board) {
+    public void setBoard(List<Node2D>[, ] _board) {
         boardData = _board;
     }
 }

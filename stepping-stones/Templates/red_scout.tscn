@@ -4,5 +4,5 @@
 
 [node name="RedScout" type="Node2D"]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_yr26n")

@@ -5,5 +5,5 @@ load_path = "res://.godot/imported/Blue Tile.PNG-879a59caa24f0e40f0633801aad1bcd
 
 [node name="BluePiece" type="Node2D"]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 texture = SubResource("CompressedTexture2D_htugy")
