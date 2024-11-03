@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://tnhj0aidaejj"]
+
+[ext_resource type="Texture2D" uid="uid://ci17wdqovb18q" path="res://Sprites/Blue Player.PNG" id="1_708nm"]
+
+[node name="BlueScout" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_708nm")

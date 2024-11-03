@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PieceInitialLocation" load_steps=2 format=3 uid="uid://denhhpj7ljsfj"]
+
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/PieceInitialLocation.cs" id="1_etjwg"]
+
+[resource]
+script = ExtResource("1_etjwg")
+pieceType = ""
+column = 0
+row = 0

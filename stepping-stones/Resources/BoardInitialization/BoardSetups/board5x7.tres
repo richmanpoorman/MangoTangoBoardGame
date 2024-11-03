@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BoardSetup" load_steps=10 format=3 uid="uid://ci7xt6rksvie6"]
+
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/BoardSetup.cs" id="1_fs7m6"]
+[ext_resource type="Resource" uid="uid://c80cnalfq2hxj" path="res://Resources/BoardInitialization/PieceTypes/blue_piece.tres" id="1_xicmq"]
+[ext_resource type="Resource" uid="uid://c4n5swb7vlt1j" path="res://Resources/BoardInitialization/PieceTypes/blue_scout.tres" id="2_82pu6"]
+[ext_resource type="Resource" uid="uid://d0j7ij2x0iq57" path="res://Resources/BoardInitialization/PieceTypes/red_piece.tres" id="3_qjn5s"]
+[ext_resource type="Resource" uid="uid://ccagfbfuuvykf" path="res://Resources/BoardInitialization/PieceTypes/red_scout.tres" id="4_vg3s0"]
+[ext_resource type="Resource" uid="uid://drafpob6o1x37" path="res://Resources/BoardInitialization/InitialLocations/board5x7/blue_piece5x7.tres" id="6_8rsei"]
+[ext_resource type="Resource" uid="uid://bpibqsmx6824q" path="res://Resources/BoardInitialization/InitialLocations/board5x7/blue_scout5x7.tres" id="7_xdirg"]
+[ext_resource type="Resource" uid="uid://cb3efvtfg681k" path="res://Resources/BoardInitialization/InitialLocations/board5x7/red_piece5x7.tres" id="8_o0n73"]
+[ext_resource type="Resource" uid="uid://denhhpj7ljsfj" path="res://Resources/BoardInitialization/InitialLocations/board5x7/red_scout5x7.tres" id="9_h6u4v"]
+
+[resource]
+script = ExtResource("1_fs7m6")
+width = 5
+height = 7
+pieceTemplates = [ExtResource("1_xicmq"), ExtResource("2_82pu6"), ExtResource("3_qjn5s"), ExtResource("4_vg3s0")]
+startPieces = [ExtResource("6_8rsei"), ExtResource("7_xdirg"), ExtResource("8_o0n73"), ExtResource("9_h6u4v")]

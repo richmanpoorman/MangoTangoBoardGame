@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx6y2f4lq2s6"]
+
+[ext_resource type="Texture2D" uid="uid://c12e6fuinc1ah" path="res://Sprites/Red Player.PNG" id="1_yr26n"]
+
+[node name="RedScout" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_yr26n")

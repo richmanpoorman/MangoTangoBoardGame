@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PieceType" load_steps=3 format=3 uid="uid://c4n5swb7vlt1j"]
+
+[ext_resource type="PackedScene" uid="uid://tnhj0aidaejj" path="res://Templates/blue_scout.tscn" id="1_jtcv2"]
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/PieceType.cs" id="1_k7w2n"]
+
+[resource]
+script = ExtResource("1_k7w2n")
+pieceName = "blue_scout"
+pieceTemplate = ExtResource("1_jtcv2")

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bou8ddb31q716"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_htugy"]
+load_path = "res://.godot/imported/Blue Tile.PNG-879a59caa24f0e40f0633801aad1bcd6.ctex"
+
+[node name="BluePiece" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("CompressedTexture2D_htugy")
