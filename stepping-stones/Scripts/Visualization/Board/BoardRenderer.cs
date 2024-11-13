@@ -12,6 +12,8 @@ public partial class BoardRenderer : TileMapLayer
 	private int width, height; 
 	private List<Node2D>[, ] board = {};
 
+	[Export]
+	public Node2D parentNode;
 	[Export] // TEST 
 	public PackedScene redTile;
 	[Export] // TEST 
@@ -60,6 +62,11 @@ public partial class BoardRenderer : TileMapLayer
 		       bTile = (Node2D)blueTile.Instantiate(),
 			   rScout = (Node2D)redScout.Instantiate(),
 			   bScout = (Node2D)blueScout.Instantiate();
+	
+		parentNode.AddChild(rTile);
+		parentNode.AddChild(bTile);
+		parentNode.AddChild(rScout);
+		parentNode.AddChild(bScout);
 
 		rTile.Position = new Vector2(-1, 0); 
 		rScout.Position = new Vector2(-1, 0); 

@@ -8,8 +8,9 @@
 
 [node name="Main" type="Node2D"]
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
+[node name="TileMapLayer" type="TileMapLayer" parent="." node_paths=PackedStringArray("parentNode")]
 script = ExtResource("1_v7mxg")
+parentNode = NodePath("../Pieces")
 redTile = ExtResource("2_2a06u")
 blueTile = ExtResource("3_ujw2b")
 redScout = ExtResource("4_5p2yc")
@@ -28,3 +29,5 @@ position = Vector2(53, 1)
 
 [node name="RedScout" parent="." instance=ExtResource("2_2a06u")]
 position = Vector2(53, -4)
+
+[node name="Pieces" type="Node2D" parent="."]
