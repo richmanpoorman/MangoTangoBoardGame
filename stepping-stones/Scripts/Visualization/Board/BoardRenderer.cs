@@ -51,9 +51,12 @@ public partial class BoardRenderer : TileMapLayer
 		int width  = board.GetLength(0);  
 		int height = board.GetLength(1); 
 
-		for (int c = 0; c < width; c++) for (int r = 0; r < height; r++) 
-			foreach (Node2D node in board[c, r]) 
+		for (int c = 0; c < width; c++) for (int r = 0; r < height; r++) {
+			foreach (Node2D node in board[c, r]) {
+				parentNode.AddChild(node);
 				node.Position = MapToLocal(new Godot.Vector2I(c, r));
+			}
+		}
 	}
 
 
@@ -68,11 +71,11 @@ public partial class BoardRenderer : TileMapLayer
 		parentNode.AddChild(rScout);
 		parentNode.AddChild(bScout);
 
-		rTile.Position = new Vector2(-1, 0); 
-		rScout.Position = new Vector2(-1, 0); 
+		rTile.Position = MapToLocal(new Godot.Vector2I(-1, 0)); 
+		rScout.Position = MapToLocal(new Vector2I(-1, 0)); 
 
-		bTile.Position = new Vector2(1, 0); 
-		bScout.Position = new Vector2(1, 0);
+		bTile.Position = MapToLocal(new Vector2I(1, 0)); 
+		bScout.Position = MapToLocal(new Vector2I(1, 0));
 
 		GD.Print("Defined Pieces");
 	}
