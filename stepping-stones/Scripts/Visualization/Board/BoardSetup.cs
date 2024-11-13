@@ -58,6 +58,7 @@ public partial class BoardSetup : Resource
         }
     }
     public List<Node2D>[, ] board() {
+        
         return boardData;
     }
 

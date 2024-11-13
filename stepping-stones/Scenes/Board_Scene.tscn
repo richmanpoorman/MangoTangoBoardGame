@@ -1,7 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://84b00vn14xp4"]
+[gd_scene load_steps=6 format=3 uid="uid://84b00vn14xp4"]
 
-[ext_resource type="PackedScene" uid="uid://dfo351ed7g156" path="res://Templates/board.tscn" id="1_0ddwj"]
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/BoardRenderer.cs" id="1_v7mxg"]
+[ext_resource type="PackedScene" uid="uid://dx6y2f4lq2s6" path="res://Templates/red_scout.tscn" id="2_2a06u"]
+[ext_resource type="PackedScene" uid="uid://bou8ddb31q716" path="res://Templates/blue_piece.tscn" id="3_ujw2b"]
+[ext_resource type="PackedScene" uid="uid://jmrcsplkbvk5" path="res://Templates/red_piece.tscn" id="4_5p2yc"]
+[ext_resource type="PackedScene" uid="uid://tnhj0aidaejj" path="res://Templates/blue_scout.tscn" id="5_m4qcy"]
 
 [node name="Main" type="Node2D"]
 
-[node name="Board" parent="." instance=ExtResource("1_0ddwj")]
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+script = ExtResource("1_v7mxg")
+redTile = ExtResource("2_2a06u")
+blueTile = ExtResource("3_ujw2b")
+redScout = ExtResource("4_5p2yc")
+blueScout = ExtResource("5_m4qcy")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="BluePiece" parent="." instance=ExtResource("3_ujw2b")]
+position = Vector2(-54, 0)
+
+[node name="BlueScout" parent="." instance=ExtResource("5_m4qcy")]
+position = Vector2(-54, -5)
+
+[node name="RedPiece" parent="." instance=ExtResource("4_5p2yc")]
+position = Vector2(53, 1)
+
+[node name="RedScout" parent="." instance=ExtResource("2_2a06u")]
+position = Vector2(53, -4)

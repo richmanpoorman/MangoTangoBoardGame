@@ -9,13 +9,27 @@ public partial class BoardRenderer : TileMapLayer
 	[Export]
 	public BoardSetup initialBoard { get; set; } = new BoardSetup(5, 7); 
 
-	private List<Node2D>[, ] board;
+	private int width, height; 
+	private List<Node2D>[, ] board = {};
+
+	[Export] // TEST 
+	public PackedScene redTile;
+	[Export] // TEST 
+	public PackedScene blueTile;
+	[Export] // TEST 
+	public PackedScene redScout;
+	[Export] // TEST 
+	public PackedScene blueScout; 
+
+	private List<Node2D> pieces; 
 
 	/*
 	 *  Constructors
 	 */
 
 	public BoardRenderer() {}
+
+	
 
 	/*
 	 * Functions
@@ -24,6 +38,9 @@ public partial class BoardRenderer : TileMapLayer
 	private void setUpBoard() {
 		initialBoard.setPieces();
 		board = initialBoard.board();
+		width = board.GetLength(0);
+		height = board.GetLength(1);
+
 		foreach (List<Node2D> cell in board)
 			foreach (Node2D node in cell)
 				AddChild(node);
@@ -38,14 +55,30 @@ public partial class BoardRenderer : TileMapLayer
 	}
 
 
+	private void placeDefinedPieces() { // TEST
+		Node2D rTile = (Node2D)redTile.Instantiate(),
+		       bTile = (Node2D)blueTile.Instantiate(),
+			   rScout = (Node2D)redScout.Instantiate(),
+			   bScout = (Node2D)blueScout.Instantiate();
+
+		rTile.Position = new Vector2(-1, 0); 
+		rScout.Position = new Vector2(-1, 0); 
+
+		bTile.Position = new Vector2(1, 0); 
+		bScout.Position = new Vector2(1, 0);
+
+		GD.Print("Defined Pieces");
+	}
+
 	/* 
 	 * Runtime Runners
 	 */
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		setUpBoard();
-		placePiecesOnBoard();
+		// setUpBoard();
+		// placePiecesOnBoard();
+		placeDefinedPieces();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
