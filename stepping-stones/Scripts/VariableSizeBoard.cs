@@ -19,6 +19,7 @@ public partial class VariableSizeBoard : Board
 		board[location.getX(), location.getY()] = piece;
 	}
 	public void movePiece(Location from, Location to){
+		///Check if valid move
 		Piece piece = board[from.getX(), from.getY()];
 		board[to.getX(), to.getY()] = piece;
 		board[from.getX(), from.getY()] = null;
