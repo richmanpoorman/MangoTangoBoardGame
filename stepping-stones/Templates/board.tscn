@@ -4,5 +4,7 @@
 [ext_resource type="Resource" uid="uid://ci7xt6rksvie6" path="res://Resources/BoardInitialization/BoardSetups/board5x7.tres" id="2_u52i4"]
 
 [node name="Board" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
 script = ExtResource("1_kfi23")
 initialBoard = ExtResource("2_u52i4")
