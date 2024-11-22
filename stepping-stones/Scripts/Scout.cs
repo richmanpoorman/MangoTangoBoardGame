@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public partial class Scout : Piece
 {
 	enum team{};
-	private scoutTeam;
-	private currentLocation;
+	private Team scoutTeam;
+	private Location currentLocation;
 	public Scout (Team team, Location startingLocation) {
 		scoutTeam = team;
 		currentLocation = startingLocation;
@@ -22,8 +22,8 @@ public partial class Scout : Piece
 			return false;
 		}
 		
-		deltaX = Math.Abs(startingLocation.getX() - destination.getX());
-		deltaY = Math.Abs(startingLocation.getY() - destination.getY());
+		int deltaX = Math.Abs(startingLocation.getX() - destination.getX());
+		int deltaY = Math.Abs(startingLocation.getY() - destination.getY());
 		
 		return (deltaX == 1 || deltaY == 1);
 	}
