@@ -21,7 +21,7 @@ public partial class VariableSizeBoard : Board
 	public void movePiece(Location from, Location to){
 		///Check if valid move
 		//todo: to is empty; from is 1 space away from to
-		int dist = Math.abs(to.getX()-from.getX()) + Math.abs(to.getY()-from.getY());
+		int dist = Math.Abs(to.getX()-from.getX()) + Math.Abs(to.getY()-from.getY());
 		if(board[to.getX(), to.getY()] == null && dist == 1){
 			Piece piece = board[from.getX(), from.getY()];
 			board[to.getX(), to.getY()] = piece;
