@@ -4,35 +4,56 @@ using System.Collections.Generic;
 //To Do: implement toString, and movement; improve checkLegalMove logic
 public partial class Scout : Piece
 {
-	enum team{};
-	private Team scoutTeam;
+	private Piece.team scoutTeam;
 	private Location currentLocation;
-	public Scout (Team team, Location startingLocation) {
+
+	public Scout(Piece.team team, Location startingLocation) {
 		scoutTeam = team;
 		currentLocation = startingLocation;
 	}
-	
-	abstract String toString();
- 	abstract List<Location> move(Board b, Location location); 
-	
-	abstract bool moveIsLegal(Board b, Location startingLocation, Location destination){
-		//check if destination is within bounds. Note: add "check board dimensions to board class"
-		
-		if (b.getPiece(destination) != null) {
+    public Location getLocation()
+    {
+        return currentLocation;
+    }
+
+    public List<Location> move(Board b, Location location)
+    {
+        List<Location> legalMoves = new List<Location>();
+
+		return legalMoves;
+    }
+
+    public bool moveIsLegal(Board b, Location from, Location to)
+    {
+		//check if destination is within bounds
+        //make sure that destination is one space away from source
+		int deltaX = Math.Abs(to.getX() - from.getX());
+		int deltaY = Math.Abs(to.getY() - from.getY());
+		if (deltaX > 1 || deltaY > 1) {
 			return false;
 		}
-		
-		int deltaX = Math.Abs(startingLocation.getX() - destination.getX());
-		int deltaY = Math.Abs(startingLocation.getY() - destination.getY());
-		
-		return (deltaX == 1 || deltaY == 1);
-	}
-	
-	Location getLocation() {
-		return currentLocation;
-	}
-	
-	Location setLocation(Location location) {
-		currentLocation = location;
-	}
+
+		//check if space is already occupied
+		if (b.getPiece(to) != null) {
+			return false;
+		}
+
+		return true;
+    }
+
+    public Location setLocation(Location location)
+    {
+        if (location != null) {
+			currentLocation = location;
+			return currentLocation;
+		}
+		else {
+			throw new ArgumentException("Invalid location");
+		}
+    }
+
+    public string toString()
+    {
+        return $"{scoutTeam} Scout at {currentLocation}";
+    }
 }
