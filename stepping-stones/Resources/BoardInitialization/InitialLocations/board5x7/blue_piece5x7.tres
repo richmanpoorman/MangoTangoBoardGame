@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="PieceInitialLocation" load_steps=2 format=3 uid="uid://drafpob6o1x37"]
 
-[ext_resource type="Script" path="res://Scripts/Visualization/Board/PieceInitialLocation.cs" id="1_hvc02"]
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/DEPRECIATED/PieceInitialLocation.cs" id="1_hvc02"]
 
 [resource]
 script = ExtResource("1_hvc02")

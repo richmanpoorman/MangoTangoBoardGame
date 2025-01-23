@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dfo351ed7g156"]
 
-[ext_resource type="Script" path="res://Scripts/Visualization/Board/BoardRenderer.cs" id="1_kfi23"]
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/DEPRECIATED/BoardRenderer.cs" id="1_kfi23"]
 [ext_resource type="Resource" uid="uid://ci7xt6rksvie6" path="res://Resources/BoardInitialization/BoardSetups/board5x7.tres" id="2_u52i4"]
 
 [node name="Board" type="Node2D"]

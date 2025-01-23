@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="PieceType" load_steps=3 format=3 uid="uid://c80cnalfq2hxj"]
 
-[ext_resource type="Script" path="res://Scripts/Visualization/Board/PieceType.cs" id="1_5vwal"]
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/DEPRECIATED/PieceType.cs" id="1_5vwal"]
 [ext_resource type="PackedScene" uid="uid://bou8ddb31q716" path="res://Templates/blue_piece.tscn" id="1_qo02f"]
 
 [resource]
