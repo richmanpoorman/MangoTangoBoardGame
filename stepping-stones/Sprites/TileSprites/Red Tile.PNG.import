@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c12e6fuinc1ah"
-path="res://.godot/imported/Red Player.PNG-0c440eff9f94d20b24d9cd831c9291a6.ctex"
+uid="uid://bpbsqrtamrh17"
+path="res://.godot/imported/Red Tile.PNG-aac6c7256f0706076ffccbeac19b5752.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Red Player.PNG"
-dest_files=["res://.godot/imported/Red Player.PNG-0c440eff9f94d20b24d9cd831c9291a6.ctex"]
+source_file="res://Sprites/TileSprites/Red Tile.PNG"
+dest_files=["res://.godot/imported/Red Tile.PNG-aac6c7256f0706076ffccbeac19b5752.ctex"]
 
 [params]
 

@@ -1,13 +1,13 @@
 [gd_scene load_steps=15 format=3 uid="uid://b0l7rpib6tsof"]
 
-[ext_resource type="Script" path="res://Scripts/Visualization/Board/BoardManager.cs" id="1_ps4u1"]
-[ext_resource type="PackedScene" uid="uid://bkgd4htwt4ar5" path="res://Templates/board2.tscn" id="2_7sf8v"]
-[ext_resource type="Script" path="res://Scripts/Visualization/Board/SelectSquare.cs" id="3_5ni0r"]
-[ext_resource type="Texture2D" uid="uid://bww8qxj1scs07" path="res://Sprites/Basic-Square.PNG" id="3_c3ljb"]
-[ext_resource type="Texture2D" uid="uid://ci17wdqovb18q" path="res://Sprites/Blue Player.PNG" id="4_476e1"]
-[ext_resource type="Texture2D" uid="uid://ba3lrmbmgo6b" path="res://Sprites/Blue Tile.PNG" id="5_5atuy"]
-[ext_resource type="Texture2D" uid="uid://c12e6fuinc1ah" path="res://Sprites/Red Player.PNG" id="6_0fitv"]
-[ext_resource type="Texture2D" uid="uid://bpbsqrtamrh17" path="res://Sprites/Red Tile.PNG" id="7_0isej"]
+[ext_resource type="Script" path="res://Scripts/Board/BoardManager.cs" id="1_ps4u1"]
+[ext_resource type="PackedScene" uid="uid://bkgd4htwt4ar5" path="res://Templates/board.tscn" id="2_7sf8v"]
+[ext_resource type="Script" path="res://Scripts/PieceSelection/SelectSquare.cs" id="3_5ni0r"]
+[ext_resource type="Texture2D" uid="uid://bww8qxj1scs07" path="res://Sprites/TileSprites/Basic-Square.PNG" id="3_c3ljb"]
+[ext_resource type="Texture2D" uid="uid://ci17wdqovb18q" path="res://Sprites/TileSprites/Blue Player.PNG" id="4_476e1"]
+[ext_resource type="Texture2D" uid="uid://ba3lrmbmgo6b" path="res://Sprites/TileSprites/Blue Tile.PNG" id="5_5atuy"]
+[ext_resource type="Texture2D" uid="uid://c12e6fuinc1ah" path="res://Sprites/TileSprites/Red Player.PNG" id="6_0fitv"]
+[ext_resource type="Texture2D" uid="uid://bpbsqrtamrh17" path="res://Sprites/TileSprites/Red Tile.PNG" id="7_0isej"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d1h51"]
 resource_name = "Empty"
