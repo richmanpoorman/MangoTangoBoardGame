@@ -1,10 +1,11 @@
 using Godot;
 using System;
+using System.Reflection.Metadata.Ecma335;
 
 // Manages the state of the board, and holds the actual board itself
 public partial class BoardManager : Node
 { 
-	private Board _board = new GridBoard(7, 5); 
+	private SteppingStonesBoard _board = new GridSteppingStonesBoard(7, 5); // new GridBoard(7, 5); 
 	
 	private Piece.Color currentPlayer = Piece.Color.PLAYER_1; 
 	private Board.Position? previousPosition = null; 
@@ -17,44 +18,46 @@ public partial class BoardManager : Node
 
 	public Board board() { return _board; }
 
-	
-	
     public void onUpdate() {
 		display.updateDisplay();
 	}
 
 	#nullable enable
 	public void onSelection() {
-		Board.Position? selection = selector.selection(); 
-		if (selection == null) {
-			previousPosition = null;
-			return; 
-		}
+		Board.Position selection = selector.selection(); 
 
-		Board.Position square = selection.Value;
-		GD.Print("Selected: ", square.row, ", ", square.column); 
+		GD.Print("Selection: (", selection.row, ", ", selection.column, ")");
 
-
+		if (previousPosition is Board.Position prev) 
+			GD.Print("Previous: (", prev.row, ", ", prev.column, ")");
+		else 	
+			GD.Print("Previous: null");	
 		
 		bool finishTurn = false;
 		switch(selector.mouseButton()) {
 			case MouseButton.Left:
-				finishTurn = moveTile(selection.Value);
+				finishTurn =  moveTile(selection);
 			break; 
 			case MouseButton.Right:
-				finishTurn = addTile(selection.Value, currentPlayer);
+				finishTurn = addTile(selection, currentPlayer);
 			break;
+			case MouseButton.Middle:
+				finishTurn = pushPieces(selection);
+			break; 
 		}
 		
 
 		onUpdate();
 
 		if (finishTurn) {
+			
 			switch(currentPlayer) {
 				case Piece.Color.PLAYER_1:
+				GD.Print("Switched to Player 2 from Player 1");
 				currentPlayer = Piece.Color.PLAYER_2; 
 				break; 
 				case Piece.Color.PLAYER_2: 
+				GD.Print("Switched to Player 1 from Player 2");
 				currentPlayer = Piece.Color.PLAYER_1;
 				break; 
 			}
@@ -62,15 +65,40 @@ public partial class BoardManager : Node
 	}
 	#nullable disable
 
-
+	private bool pushPieces(Board.Position selection) {
+		if (previousPosition == null) {
+			previousPosition = giveValidPreviousSelection(selection);
+			return false;
+		}
+		GD.Print("Attempt Push");
+		bool isSuccess = _board.pushMove(previousPosition.Value, selection);
+		previousPosition = null; 
+		return isSuccess; 
+	}	
 	private bool addTile(Board.Position selection, Piece.Color color) {
+		int[] size = _board.size();
+		if (selection.row < 0 || selection.row >= size[0] || selection.column < 0 || selection.column >= size[1])
+			return false;
 		if (_board.tileAt(selection) != null) return false;
-		_board.addTile(new Tile(color), selection);
-		return true;
+		GD.Print("Attempt Add");
+		bool isSuccess = _board.placeTile(new Tile(color), selection);
+		previousPosition = null;
+		return isSuccess;
+		// _board.addTile(new Tile(color), selection);
+		// return true;
 	}
 
 	#nullable enable
 	private bool moveTile(Board.Position selection) {
+		if (previousPosition == null) {
+			previousPosition = giveValidPreviousSelection(selection);
+			return false;
+		}
+		GD.Print("Attempt Move");
+		bool isSuccess = _board.movePiece(previousPosition.Value, selection);
+		previousPosition = null; 
+		return isSuccess;
+		/*
 		if (previousPosition == null) {
 			previousPosition = selection;
 			return false;
@@ -104,6 +132,16 @@ public partial class BoardManager : Node
 		
 		previousPosition = null;
 		return true;
+		*/
+	}
+
+	private Board.Position? giveValidPreviousSelection(Board.Position selection) {
+		int[] size = _board.size(); 
+		if (selection.row < 0 || selection.row >= size[0] || selection.column < 0 || selection.column >= size[1])
+			return null; 
+		if (_board.tileAt(selection) == null) 
+			return null;
+		return selection;
 	}
 	#nullable disable
 }
