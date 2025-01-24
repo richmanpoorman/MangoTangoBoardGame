@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ci17wdqovb18q"
-path="res://.godot/imported/Blue Player.PNG-295a3cfbef6087ab1ac4452ebcab7e96.ctex"
+uid="uid://bww8qxj1scs07"
+path="res://.godot/imported/Basic-Square.PNG-04704803f9dbee467d8351c0a5d2abb2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Blue Player.PNG"
-dest_files=["res://.godot/imported/Blue Player.PNG-295a3cfbef6087ab1ac4452ebcab7e96.ctex"]
+source_file="res://Sprites/TileSprites/Basic-Square.PNG"
+dest_files=["res://.godot/imported/Basic-Square.PNG-04704803f9dbee467d8351c0a5d2abb2.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

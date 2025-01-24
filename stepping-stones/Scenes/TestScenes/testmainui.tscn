@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://bqvio2kqeugpa"]
 
-[ext_resource type="PackedScene" uid="uid://dfo351ed7g156" path="res://Templates/board.tscn" id="1_htnei"]
+[ext_resource type="PackedScene" path="res://Templates/board.tscn" id="1_htnei"]
 [ext_resource type="Script" path="res://Scripts/Visualization/Board/BoardRenderer.cs" id="1_vdmir"]
-[ext_resource type="Resource" uid="uid://ci7xt6rksvie6" path="res://Resources/BoardInitialization/BoardSetups/board5x7.tres" id="2_vkpx8"]
-[ext_resource type="PackedScene" uid="uid://blw73vqu1bt56" path="res://game_ui.tscn" id="3_mqe2w"]
-[ext_resource type="PackedScene" uid="uid://bou8ddb31q716" path="res://Templates/blue_piece.tscn" id="4_eyyxw"]
+[ext_resource type="Resource" path="res://Resources/BoardInitialization/BoardSetups/board5x7.tres" id="2_vkpx8"]
+[ext_resource type="PackedScene" uid="uid://blw73vqu1bt56" path="res://Templates/game_ui.tscn" id="3_mqe2w"]
+[ext_resource type="PackedScene" path="res://Templates/blue_piece.tscn" id="4_eyyxw"]
 
 [node name="TestMainUI" type="Node2D"]
 
