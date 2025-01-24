@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class VariableSizeBoard : Board
+public partial class VariableSizeBoard : Board2
 {
 	private Piece[,] board;
 	private int width;
@@ -12,7 +12,7 @@ public partial class VariableSizeBoard : Board
 		board = new Piece[width,height];
 	}
 	public Piece getPiece(Location location){
-		return board[location.getX(), location.getY()];
+		return board[location.row(), location.column()];
 	}
 
 	public Piece getPiece(int x, int y){
@@ -20,11 +20,11 @@ public partial class VariableSizeBoard : Board
 	}
 
 	public void addPiece(Piece piece, Location location){ //More of a "set piece" function
-		board[location.getX(), location.getY()] = piece;
+		board[location.row(), location.column()] = piece;
 	}
 
 	public void emptySpace(Location location){
-		board[location.getX(), location.getY()] = null;
+		board[location.row(), location.column()] = null;
 	}
 
 	public void movePiece(Location from, Location to){

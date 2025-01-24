@@ -8,11 +8,11 @@ public interface SteppingStonesBoard : Board {
 
     public Board board(); 
 
-    public bool placeTile(Tile tile, Board.Position position);
-    public bool movePiece(Board.Position from, Board.Position to); 
+    public bool placeTile(Tile tile, Location position);
+    public bool movePiece(Location from, Location to); 
 
-    public bool pushMove(Board.Position start, Board.Position to); 
+    public bool pushMove(Location start, Location to); 
 
-    public bool pushDirection(Board.Position start, PushDirection direction); 
+    public bool pushDirection(Location start, PushDirection direction); 
 
 }

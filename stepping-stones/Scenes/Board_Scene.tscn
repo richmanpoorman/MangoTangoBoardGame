@@ -12,7 +12,7 @@ tile_size = Vector2i(16, 14)
 
 [node name="Main" type="Node2D"]
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." node_paths=PackedStringArray("parentNode")]
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
 visible = false
 tile_set = SubResource("TileSet_6oa3v")
 script = ExtResource("1_v7mxg")

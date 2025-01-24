@@ -2,12 +2,12 @@ using Godot;
 using System;
 using System.Collections.Generic;
 //To Do: implement toString, and movement; improve checkLegalMove logic
-public partial class Scout : Piece
+public partial class Scout2 : Piece2
 {
-	private Piece.team scoutTeam;
+	private Piece2.team scoutTeam;
 	private Location currentLocation;
 
-	public Scout(Piece.team team, Location startingLocation) {
+	public Scout2(Piece2.team team, Location startingLocation) {
 		scoutTeam = team;
 		currentLocation = startingLocation;
 	}
@@ -16,19 +16,19 @@ public partial class Scout : Piece
         return currentLocation;
     }
 
-    public List<Location> move(Board b, Location location)
+    public List<Location> move(Board2 b, Location location)
     {
         List<Location> legalMoves = new List<Location>();
 
 		return legalMoves;
     }
 
-    public bool moveIsLegal(Board b, Location from, Location to)
+    public bool moveIsLegal(Board2 b, Location from, Location to)
     {
 		//check if destination is within bounds
         //make sure that destination is one space away from source
-		int deltaX = Math.Abs(to.getX() - from.getX());
-		int deltaY = Math.Abs(to.getY() - from.getY());
+		int deltaX = Math.Abs(to.row() - from.row());
+		int deltaY = Math.Abs(to.column() - from.column());
 		if (deltaX > 1 || deltaY > 1) {
 			return false;
 		}
