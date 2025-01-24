@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bou8ddb31q716" path="res://Templates/blue_piece.tscn" id="3_ujw2b"]
 [ext_resource type="PackedScene" uid="uid://jmrcsplkbvk5" path="res://Templates/red_piece.tscn" id="4_5p2yc"]
 [ext_resource type="PackedScene" uid="uid://tnhj0aidaejj" path="res://Templates/blue_scout.tscn" id="5_m4qcy"]
-[ext_resource type="PackedScene" uid="uid://b0l7rpib6tsof" path="res://Templates/BoardManager.tscn" id="6_yf7y7"]
+[ext_resource type="PackedScene" uid="uid://crhkjaauvfopq" path="res://Templates/BoardManager.tscn" id="6_yf7y7"]
 
 [sub_resource type="TileSet" id="TileSet_6oa3v"]
 tile_size = Vector2i(16, 14)
