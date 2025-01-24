@@ -16,7 +16,7 @@ public partial class SelectSquare : Node2D
 
 	private Board board;
 
-	private Board.Position? _position = null;
+	private Board.Position _position;
 	private MouseButton _mouseButton = MouseButton.None;
 
     public override void _Ready() { board = boardManager.board(); }
@@ -30,13 +30,9 @@ public partial class SelectSquare : Node2D
 		
 		if (!mouseEvent.Pressed) return; 
 		// GD.Print("Mouse Down");
-
-        int[] size = board.size(); 
+		
 		Vector2I square = selectionGrid.LocalToMap(GetLocalMousePosition());
-		if (square.X < 0 || square.Y < 0 || square.X >= size[1] || square.Y >= size[0])
-			_position = null; 
-		else 
-			_position = new Board.Position(square.Y, square.X);
+		_position = new Board.Position(square.Y, square.X);
 
 		_mouseButton = mouseEvent.ButtonIndex;
 
@@ -47,6 +43,6 @@ public partial class SelectSquare : Node2D
 		boardManager.onSelection();
     }
 
-	public Board.Position? selection() { return _position; }
+	public Board.Position selection() { return _position; }
 	public MouseButton mouseButton() { return _mouseButton; }
 }
