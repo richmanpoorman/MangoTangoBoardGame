@@ -17,11 +17,35 @@ public partial class GameLogic : Node
 	}
 
 	
-	private bool isValidPush(Location pusher, Location firstPushee){
+	public bool isValidPush(Location pusher, Location firstEmpty){
+
 		return true; //TODO: IMPLEMENT
 	}
 
+	public bool isValidPlacement(){
+		//true
+		return true;//TODO: IMPLEMENT
+	}
+
+	public bool isValidTileMove(){
+		return true;//TODO: IMPLEMENT
+	}
+
+	public bool isValidScout(){
+		return true;//TODO: IMPLEMENT
+	}
+
+	public bool isLoseGamestate(){
+		return false; //TODO: IMPLEMENT
+	}
+
+	public void getValidMoves(){//need to make a struct to have position, move type
+		//TODO: IMPLEMENT
+	}
+
+
 	public void pushPiece(Location pusher, Location firstPushee){
+		//instead of first pushee, first empty space
 		///TODO
 		if(isValidPush(pusher, firstPushee)){
 			int ydir = (firstPushee.getY() - pusher.getY())/Math.Abs(firstPushee.getY() - pusher.getY());
