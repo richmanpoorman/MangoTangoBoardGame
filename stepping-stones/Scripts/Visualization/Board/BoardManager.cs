@@ -17,7 +17,9 @@ public partial class BoardManager : Node
 
 	public Board board() { return _board; }
 
-	public void onUpdate() {
+	
+	
+    public void onUpdate() {
 		display.updateDisplay();
 	}
 

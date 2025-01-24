@@ -60,6 +60,7 @@ display = NodePath("Board")
 boardManager = NodePath("..")
 
 [node name="Selection" type="Node2D" parent="." node_paths=PackedStringArray("boardManager", "selectionGrid")]
+position = Vector2(0, -2)
 script = ExtResource("3_5ni0r")
 boardManager = NodePath("..")
 selectionGrid = NodePath("SelectionGrid")
