@@ -16,4 +16,9 @@ public partial class Location : Node
 	public int getY(){
 		return y;
 	}
+
+	public void changeLoc(int newX, int newY){
+		x = newX;
+		y = newY;
+	}
 }

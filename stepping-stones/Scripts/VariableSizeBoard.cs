@@ -14,10 +14,19 @@ public partial class VariableSizeBoard : Board
 	public Piece getPiece(Location location){
 		return board[location.getX(), location.getY()];
 	}
-	public void addPiece(Piece piece, Location location){
-		///Need to add check to make sure space is empty
+
+	public Piece getPiece(int x, int y){
+		return board[x, y];
+	}
+
+	public void addPiece(Piece piece, Location location){ //More of a "set piece" function
 		board[location.getX(), location.getY()] = piece;
 	}
+
+	public void emptySpace(Location location){
+		board[location.getX(), location.getY()] = null;
+	}
+
 	public void movePiece(Location from, Location to){
 
 	}
