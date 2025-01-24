@@ -16,6 +16,11 @@ tile_size = Vector2i(16, 14)
 visible = false
 tile_set = SubResource("TileSet_6oa3v")
 script = ExtResource("1_v7mxg")
+parentNode = NodePath("../Pieces")
+redTile = ExtResource("2_2a06u")
+blueTile = ExtResource("3_ujw2b")
+redScout = ExtResource("4_5p2yc")
+blueScout = ExtResource("5_m4qcy")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 visible = false

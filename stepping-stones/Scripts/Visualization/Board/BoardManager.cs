@@ -21,7 +21,8 @@ public partial class BoardManager : Node
     public void onUpdate() {
 		display.updateDisplay();
 	}
-
+	public void setBoard(SteppingStonesBoard board){ _board = board; }
+	
 	#nullable enable
 	public void onSelection() {
 		Board.Position selection = selector.selection(); 

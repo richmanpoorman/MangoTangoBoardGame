@@ -36,13 +36,13 @@ public class GameSaver : FileSaver
 		}
 		#nullable disable
 	}
-    public Board LoadGame(String fileName) {
+    public SteppingStonesBoard LoadGame(String fileName) {
 		if (!FileAccess.FileExists(fileName)) {
 			throw new System.IO.FileNotFoundException();
 		}
 		FileAccess gameFile = FileAccess.Open(fileName, FileAccess.ModeFlags.Read);
 		int[] size = Array.ConvertAll(gameFile.GetLine().Split(' '), int.Parse);
-		Board board = new GridBoard(size[0], size[1]);
+		SteppingStonesBoard board = new GridSteppingStonesBoard(size[0], size[1]);
 		board.removeTile(new Board.Position(size[1] / 2, 1));
 		board.removeTile(new Board.Position(size[1] / 2, size[0] - 2));
 		board.removeScout(new Board.Position(size[1] / 2, 1));
