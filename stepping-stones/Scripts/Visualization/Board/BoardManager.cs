@@ -8,7 +8,9 @@ public partial class BoardManager : Node
 	private SteppingStonesBoard _board = new GridSteppingStonesBoard(7, 5); // new GridBoard(7, 5); 
 	
 	private Piece.Color currentPlayer = Piece.Color.PLAYER_1; 
-	private Board.Position? previousPosition = null; 
+	#nullable enable
+	private Location? previousPosition = null; 
+	#nullable disable
 
 	[Export]
 	private SelectSquare selector; 
@@ -24,12 +26,12 @@ public partial class BoardManager : Node
 
 	#nullable enable
 	public void onSelection() {
-		Board.Position selection = selector.selection(); 
+		Location selection = selector.selection(); 
 
-		GD.Print("Selection: (", selection.row, ", ", selection.column, ")");
+		GD.Print("Selection: (", selection.row(), ", ", selection.column(), ")");
 
-		if (previousPosition is Board.Position prev) 
-			GD.Print("Previous: (", prev.row, ", ", prev.column, ")");
+		if (previousPosition is Location prev) 
+			GD.Print("Previous: (", prev.row(), ", ", prev.column(), ")");
 		else 	
 			GD.Print("Previous: null");	
 		
@@ -65,19 +67,19 @@ public partial class BoardManager : Node
 	}
 	#nullable disable
 
-	private bool pushPieces(Board.Position selection) {
+	private bool pushPieces(Location selection) {
 		if (previousPosition == null) {
 			previousPosition = giveValidPreviousSelection(selection);
 			return false;
 		}
 		GD.Print("Attempt Push");
-		bool isSuccess = _board.pushMove(previousPosition.Value, selection);
+		bool isSuccess = _board.pushMove(previousPosition, selection);
 		previousPosition = null; 
 		return isSuccess; 
 	}	
-	private bool addTile(Board.Position selection, Piece.Color color) {
+	private bool addTile(Location selection, Piece.Color color) {
 		int[] size = _board.size();
-		if (selection.row < 0 || selection.row >= size[0] || selection.column < 0 || selection.column >= size[1])
+		if (selection.row() < 0 || selection.row() >= size[0] || selection.column() < 0 || selection.column() >= size[1])
 			return false;
 		if (_board.tileAt(selection) != null) return false;
 		GD.Print("Attempt Add");
@@ -89,13 +91,13 @@ public partial class BoardManager : Node
 	}
 
 	#nullable enable
-	private bool moveTile(Board.Position selection) {
+	private bool moveTile(Location selection) {
 		if (previousPosition == null) {
 			previousPosition = giveValidPreviousSelection(selection);
 			return false;
 		}
 		GD.Print("Attempt Move");
-		bool isSuccess = _board.movePiece(previousPosition.Value, selection);
+		bool isSuccess = _board.movePiece(previousPosition, selection);
 		previousPosition = null; 
 		return isSuccess;
 		/*
@@ -103,15 +105,15 @@ public partial class BoardManager : Node
 			previousPosition = selection;
 			return false;
 		}
-		Board.Position prev = previousPosition.Value;
+		Location prev = previousPosition.Value;
 		
 		// If the selection is the same exact square, ignore
-		if (prev.row == selection.row && prev.column == selection.column) {
+		if (prev.row() == selection.row() && prev.column() == selection.column()) {
 			previousPosition = null;
 			return false;
 		}
 
-		GD.Print("Previous: ", prev.row, ", ", prev.column);
+		GD.Print("Previous: ", prev.row(), ", ", prev.column());
 
 		Tile? tile = _board.tileAt(prev); 
 		if (tile == null) {
@@ -135,9 +137,9 @@ public partial class BoardManager : Node
 		*/
 	}
 
-	private Board.Position? giveValidPreviousSelection(Board.Position selection) {
+	private Location? giveValidPreviousSelection(Location selection) {
 		int[] size = _board.size(); 
-		if (selection.row < 0 || selection.row >= size[0] || selection.column < 0 || selection.column >= size[1])
+		if (selection.row() < 0 || selection.row() >= size[0] || selection.column() < 0 || selection.column() >= size[1])
 			return null; 
 		if (_board.tileAt(selection) == null) 
 			return null;

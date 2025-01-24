@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public interface Board
+public interface Board2
 {
 	Piece getPiece(Location location);
 	void addPiece(Piece piece, Location location);

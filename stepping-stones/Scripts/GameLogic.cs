@@ -17,7 +17,7 @@ public partial class GameLogic : Node
 	}
 
 	public bool isValidTileMove(Location from, Location to){
-		int dist = Math.Abs(to.getX()-from.getX()) + Math.Abs(to.getY()-from.getY());
+		int dist = Math.Abs(to.row()-from.row()) + Math.Abs(to.column()-from.column());
 		return board.getPiece(to) == null && dist == 1;
 	}
 
@@ -36,7 +36,7 @@ public partial class GameLogic : Node
 	public void movePiece(Location from, Location to){
 		///Check if valid move
 		//todo: to is empty; from is 1 space away from to
-		int dist = Math.Abs(to.getX()-from.getX()) + Math.Abs(to.getY()-from.getY());
+		int dist = Math.Abs(to.row()-from.row()) + Math.Abs(to.column()-from.column());
 		if(isValidTileMove(from, to)){
 			Piece piece = board.getPiece(from);
 			board.addPiece(piece, to);
@@ -48,15 +48,15 @@ public partial class GameLogic : Node
 		//instead of first pushee, first empty space
 		///TODO
 		if(isValidPush(pusher, firstPushee)){
-			int ydir = (firstPushee.getY() - pusher.getY())/Math.Abs(firstPushee.getY() - pusher.getY());
-			int xdir = (firstPushee.getX() - pusher.getX())/Math.Abs((firstPushee.getX() - pusher.getX()));
-			int x = firstPushee.getX();
-			int y = firstPushee.getY();
+			int ydir = (firstPushee.column() - pusher.column())/Math.Abs(firstPushee.column() - pusher.column());
+			int xdir = (firstPushee.row() - pusher.row())/Math.Abs((firstPushee.row() - pusher.row()));
+			int x = firstPushee.row();
+			int y = firstPushee.column();
 			while(board.getPiece(x, y) != null){//MOVE TO space after last thing in row
 				x += xdir;
 				y += ydir;
 			}
-			while(x != pusher.getX() || y != pusher.getY()){
+			while(x != pusher.row() || y != pusher.column()){
 				Location from = new Location(x-xdir, y-ydir);
 				Location to = new Location (x, y);
 				movePiece(from, to);

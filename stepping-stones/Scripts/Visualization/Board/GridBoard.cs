@@ -28,32 +28,32 @@ class GridBoard : Board {
     public Scout[,] scoutLayer() { return scouts; }
 
     #nullable enable
-    public Tile? tileAt(Board.Position position) { return tiles[position.row, position.column]; }
+    public Tile? tileAt(Location position) { return tiles[position.row(), position.column()]; }
     #nullable disable
 
     #nullable enable
-    public Scout? scoutAt(Board.Position position) { return scouts[position.row, position.column]; }
+    public Scout? scoutAt(Location position) { return scouts[position.row(), position.column()]; }
     #nullable disable
 
-    public void addTile(Tile tile, Board.Position position) { tiles[position.row, position.column] = tile; }
-    public Tile removeTile(Board.Position position) {
-        Tile tile = tiles[position.row, position.column]; 
-        tiles[position.row, position.column] = null; 
+    public void addTile(Tile tile, Location position) { tiles[position.row(), position.column()] = tile; }
+    public Tile removeTile(Location position) {
+        Tile tile = tiles[position.row(), position.column()]; 
+        tiles[position.row(), position.column()] = null; 
         return tile; 
     }
-    public void moveTile(Board.Position from, Board.Position to) {
-        tiles[to.row, to.column] = tiles[from.row, from.column]; 
-        tiles[from.row, from.column] = null; 
+    public void moveTile(Location from, Location to) {
+        tiles[to.row(), to.column()] = tiles[from.row(), from.column()]; 
+        tiles[from.row(), from.column()] = null; 
     }
     
-    public void addScout(Scout scout, Board.Position position) { scouts[position.row, position.column] = scout; }
-    public Scout removeScout(Board.Position position) {
-        Scout scout = scouts[position.row, position.column]; 
-        scouts[position.row, position.column] = null; 
+    public void addScout(Scout scout, Location position) { scouts[position.row(), position.column()] = scout; }
+    public Scout removeScout(Location position) {
+        Scout scout = scouts[position.row(), position.column()]; 
+        scouts[position.row(), position.column()] = null; 
         return scout; 
     }
-    public void moveScout(Board.Position from, Board.Position to) {
-        scouts[to.row, to.column] = scouts[from.row, from.column]; 
-        scouts[from.row, from.column] = null; 
+    public void moveScout(Location from, Location to) {
+        scouts[to.row(), to.column()] = scouts[from.row(), from.column()]; 
+        scouts[from.row(), from.column()] = null; 
     }
 }

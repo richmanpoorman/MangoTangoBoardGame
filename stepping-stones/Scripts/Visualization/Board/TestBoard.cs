@@ -25,15 +25,15 @@ class TestBoard : Board {
     public Scout[,] scoutLayer() { return testScouts; }
     
     #nullable enable
-    public Tile? tileAt(Board.Position position) { return testTiles[position.row, position.column]; }
-    public Scout? scoutAt(Board.Position position) { return testScouts[position.row, position.column]; }
+    public Tile? tileAt(Location position) { return testTiles[position.row(), position.column()]; }
+    public Scout? scoutAt(Location position) { return testScouts[position.row(), position.column()]; }
     #nullable disable
 
-    public void addTile(Tile tile, Board.Position position) { GD.Print("Add ", tile.color(), " tile at: (", position.row, ", ", position.column, ")"); }
-    public Tile removeTile(Board.Position position) { return null; }
-    public void moveTile(Board.Position from, Board.Position to) { GD.Print("Tile From: (", from.row, ", ", from.column, ") to (", to.row, ", ", to.column,")"); }
+    public void addTile(Tile tile, Location position) { GD.Print("Add ", tile.color(), " tile at: (", position.row(), ", ", position.column(), ")"); }
+    public Tile removeTile(Location position) { return null; }
+    public void moveTile(Location from, Location to) { GD.Print("Tile From: (", from.row(), ", ", from.column(), ") to (", to.row(), ", ", to.column(),")"); }
     
-    public void addScout(Scout scout, Board.Position position) { GD.Print("Add ", scout.color(), " tile at: (", position.row, ", ", position.column, ")"); }
-    public Scout removeScout(Board.Position position) { return null; }
-    public void moveScout(Board.Position from, Board.Position to) { GD.Print("Scout From: (", from.row, ", ", from.column, ") to (", to.row, ", ", to.column,")"); }
+    public void addScout(Scout scout, Location position) { GD.Print("Add ", scout.color(), " tile at: (", position.row(), ", ", position.column(), ")"); }
+    public Scout removeScout(Location position) { return null; }
+    public void moveScout(Location from, Location to) { GD.Print("Scout From: (", from.row(), ", ", from.column(), ") to (", to.row(), ", ", to.column(),")"); }
 }

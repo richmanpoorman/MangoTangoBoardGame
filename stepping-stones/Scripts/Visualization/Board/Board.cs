@@ -1,30 +1,30 @@
 
 public interface Board
 {
-    public struct Position {
-		public Position(int _row, int _column) {
-			row    = _row; 
-			column = _column; 
-		}
-		public int row { get; }
-		public int column { get; }
-	}
+    // public struct Location {
+	// 	public Location(int _row, int _column) {
+	// 		row    = _row; 
+	// 		column = _column; 
+	// 	}
+	// 	public int row { get; }
+	// 	public int column { get; }
+	// }
 
     public int[] size(); 
 	public Tile[,] tileLayer(); 
     public Scout[,] scoutLayer();
 
     #nullable enable
-    public Tile? tileAt(Position position); 
-    public Scout? scoutAt(Position position); 
+    public Tile? tileAt(Location position); 
+    public Scout? scoutAt(Location position); 
     #nullable disable
 
-    public void addTile(Tile tile, Position position); 
-    public Tile removeTile(Position position); 
-    public void moveTile(Position from, Position to); 
+    public void addTile(Tile tile, Location position); 
+    public Tile removeTile(Location position); 
+    public void moveTile(Location from, Location to); 
     
-    public void addScout(Scout scout, Position position); 
-    public Scout removeScout(Position position); 
-    public void moveScout(Position from, Position to); 
+    public void addScout(Scout scout, Location position); 
+    public Scout removeScout(Location position); 
+    public void moveScout(Location from, Location to); 
     
 }
