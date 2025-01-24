@@ -3,22 +3,26 @@ using System;
 
 public partial class Location : Node
 {
-	private int x;
-	private int y;
-	public Location(int X, int Y){
-		x = X;
-		y = Y;
+	private int row;
+	private int col;
+	public Location(int _row, int _col){
+		row = _row;
+		col = _col;
 	}
 	
-	public int getX(){
-		return x;
+	public int get_row(){
+		return row;
 	}
-	public int getY(){
-		return y;
+	public int get_col(){
+		return col;
 	}
 
-	public void changeLoc(int newX, int newY){
-		x = newX;
-		y = newY;
+	public void changeLoc(int new_row, int new_col){
+		row = new_row;
+		col = new_col;
+	}
+
+	public string toString(){
+		return "("+ row.ToString() + ", " + col.ToString() + ")";
 	}
 }

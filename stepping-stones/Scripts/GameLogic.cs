@@ -8,6 +8,10 @@ public partial class GameLogic : Node
 
 	
 	public bool isValidPush(Location pusher, Location firstEmpty){
+		if(pusher.getX()-firstEmpty.getX() != 0 && pusher.getY()-firstEmpty.getY() != 0)
+			return false;// if both aren't 0, then it's not in one direction-- bad!
+		
+
 
 		return true; //TODO: IMPLEMENT
 	}
