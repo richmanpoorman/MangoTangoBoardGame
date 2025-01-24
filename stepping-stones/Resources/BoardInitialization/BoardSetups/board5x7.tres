@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BoardSetup" load_steps=10 format=3 uid="uid://ci7xt6rksvie6"]
 
-[ext_resource type="Script" path="res://Scripts/Visualization/Board/BoardSetup.cs" id="1_fs7m6"]
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/DEPRECIATED/BoardSetup.cs" id="1_fs7m6"]
 [ext_resource type="Resource" uid="uid://c80cnalfq2hxj" path="res://Resources/BoardInitialization/PieceTypes/blue_piece.tres" id="1_xicmq"]
 [ext_resource type="Resource" uid="uid://c4n5swb7vlt1j" path="res://Resources/BoardInitialization/PieceTypes/blue_scout.tres" id="2_82pu6"]
 [ext_resource type="Resource" uid="uid://d0j7ij2x0iq57" path="res://Resources/BoardInitialization/PieceTypes/red_piece.tres" id="3_qjn5s"]

@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://84b00vn14xp4"]
+[gd_scene load_steps=8 format=3 uid="uid://84b00vn14xp4"]
 
-[ext_resource type="Script" path="res://Scripts/Visualization/Board/BoardRenderer.cs" id="1_v7mxg"]
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/DEPRECIATED/BoardRenderer.cs" id="1_v7mxg"]
 [ext_resource type="PackedScene" uid="uid://dx6y2f4lq2s6" path="res://Templates/red_scout.tscn" id="2_2a06u"]
 [ext_resource type="PackedScene" uid="uid://bou8ddb31q716" path="res://Templates/blue_piece.tscn" id="3_ujw2b"]
 [ext_resource type="PackedScene" uid="uid://jmrcsplkbvk5" path="res://Templates/red_piece.tscn" id="4_5p2yc"]
 [ext_resource type="PackedScene" uid="uid://tnhj0aidaejj" path="res://Templates/blue_scout.tscn" id="5_m4qcy"]
+[ext_resource type="PackedScene" uid="uid://b0l7rpib6tsof" path="res://Templates/BoardManager.tscn" id="6_yf7y7"]
 
 [sub_resource type="TileSet" id="TileSet_6oa3v"]
 tile_size = Vector2i(16, 14)
@@ -12,6 +13,7 @@ tile_size = Vector2i(16, 14)
 [node name="Main" type="Node2D"]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." node_paths=PackedStringArray("parentNode")]
+visible = false
 tile_set = SubResource("TileSet_6oa3v")
 script = ExtResource("1_v7mxg")
 parentNode = NodePath("../Pieces")
@@ -21,17 +23,26 @@ redScout = ExtResource("4_5p2yc")
 blueScout = ExtResource("5_m4qcy")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visible = false
 
 [node name="BluePiece" parent="." instance=ExtResource("3_ujw2b")]
+visible = false
 position = Vector2(-54, 0)
 
 [node name="BlueScout" parent="." instance=ExtResource("5_m4qcy")]
+visible = false
 position = Vector2(-54, 0)
 
 [node name="RedPiece" parent="." instance=ExtResource("4_5p2yc")]
+visible = false
 position = Vector2(53, 0)
 
 [node name="RedScout" parent="." instance=ExtResource("2_2a06u")]
+visible = false
 position = Vector2(53, 0)
 
 [node name="Pieces" type="Node2D" parent="."]
+visible = false
+
+[node name="BoardManager" parent="." instance=ExtResource("6_yf7y7")]
+scale = Vector2(4, 4)
