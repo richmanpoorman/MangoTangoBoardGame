@@ -5,16 +5,6 @@ public partial class GameLogic : Node
 {
 	private VariableSizeBoard board;
 	
-	public void movePiece(Location from, Location to){
-		///Check if valid move
-		//todo: to is empty; from is 1 space away from to
-		int dist = Math.Abs(to.getX()-from.getX()) + Math.Abs(to.getY()-from.getY());
-		if(board.getPiece(to) == null && dist == 1){
-			Piece piece = board.getPiece(from);
-			board.addPiece(piece, to);
-			board.emptySpace(from);
-		}
-	}
 
 	
 	public bool isValidPush(Location pusher, Location firstEmpty){
@@ -22,13 +12,13 @@ public partial class GameLogic : Node
 		return true; //TODO: IMPLEMENT
 	}
 
-	public bool isValidPlacement(){
-		//true
-		return true;//TODO: IMPLEMENT
+	public bool isValidPlacement(Location location){
+		return board.getPiece(location)==null;
 	}
 
-	public bool isValidTileMove(){
-		return true;//TODO: IMPLEMENT
+	public bool isValidTileMove(Location from, Location to){
+		int dist = Math.Abs(to.getX()-from.getX()) + Math.Abs(to.getY()-from.getY());
+		return board.getPiece(to) == null && dist == 1;
 	}
 
 	public bool isValidScout(){
@@ -43,6 +33,16 @@ public partial class GameLogic : Node
 		//TODO: IMPLEMENT
 	}
 
+	public void movePiece(Location from, Location to){
+		///Check if valid move
+		//todo: to is empty; from is 1 space away from to
+		int dist = Math.Abs(to.getX()-from.getX()) + Math.Abs(to.getY()-from.getY());
+		if(isValidTileMove(from, to)){
+			Piece piece = board.getPiece(from);
+			board.addPiece(piece, to);
+			board.emptySpace(from);
+		}
+	}
 
 	public void pushPiece(Location pusher, Location firstPushee){
 		//instead of first pushee, first empty space
