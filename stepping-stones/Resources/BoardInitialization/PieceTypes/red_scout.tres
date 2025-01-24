@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="PieceType" load_steps=3 format=3 uid="uid://ccagfbfuuvykf"]
 
 [ext_resource type="PackedScene" uid="uid://dx6y2f4lq2s6" path="res://Templates/red_scout.tscn" id="1_q7gn4"]
-[ext_resource type="Script" path="res://Scripts/Visualization/Board/PieceType.cs" id="2_qb06b"]
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/DEPRECIATED/PieceType.cs" id="2_qb06b"]
 
 [resource]
 script = ExtResource("2_qb06b")
