@@ -11,4 +11,5 @@ script = ExtResource("1_i1pwg")
 
 [node name="GameUI" parent="." instance=ExtResource("2_0kd1q")]
 
+[connection signal="LoadGame" from="GameUI" to="." method="OnUILoadGame"]
 [connection signal="SaveGame" from="GameUI" to="." method="OnUISaveGame"]
