@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://d3xieqfpl8gmb"]
+[gd_scene load_steps=4 format=3 uid="uid://bbrt6w7db5d1b"]
 
 [ext_resource type="Script" path="res://Scripts/UILogic/MainGame.cs" id="1_i1pwg"]
 [ext_resource type="PackedScene" uid="uid://84b00vn14xp4" path="res://Scenes/Board_Scene.tscn" id="1_j5h5t"]

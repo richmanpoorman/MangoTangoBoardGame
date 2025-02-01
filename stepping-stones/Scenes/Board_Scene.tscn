@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://84b00vn14xp4"]
+[gd_scene load_steps=3 format=3 uid="uid://84b00vn14xp4"]
 
-[ext_resource type="PackedScene" uid="uid://b0l7rpib6tsof" path="res://Templates/BoardManager.tscn" id="6_yf7y7"]
+[ext_resource type="Script" path="res://Scripts/Visualization/Board/BoardManager.cs" id="2_fwerv"]
+[ext_resource type="PackedScene" uid="uid://crhkjaauvfopq" path="res://Templates/BoardManager.tscn" id="6_yf7y7"]
 
 [node name="Main" type="Node2D"]
 
@@ -8,3 +9,4 @@
 
 [node name="BoardManager" parent="." instance=ExtResource("6_yf7y7")]
 scale = Vector2(4, 4)
+script = ExtResource("2_fwerv")
