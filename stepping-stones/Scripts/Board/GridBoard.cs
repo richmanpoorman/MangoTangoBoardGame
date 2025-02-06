@@ -24,8 +24,8 @@ class GridBoard : Board {
     }
 
     public int[] size() { return dimensions; }
-	public Tile[,] tileLayer() { return tiles; }
-    public Scout[,] scoutLayer() { return scouts; }
+	public Tile?[,] tileLayer() { return tiles; }
+    public Scout?[,] scoutLayer() { return scouts; }
 
     #nullable enable
     public Tile? tileAt(Location position) { return tiles[position.row(), position.column()]; }
@@ -56,4 +56,10 @@ class GridBoard : Board {
         scouts[to.row(), to.column()] = scouts[from.row(), from.column()]; 
         scouts[from.row(), from.column()] = null; 
     }
+
+    public bool isOnBoard(Location location)
+    {
+        return 0 <= location.row() && location.row() < size()[0] && 0 <= location.column() && location.column() < size()[1]; 
+    }
+
 }

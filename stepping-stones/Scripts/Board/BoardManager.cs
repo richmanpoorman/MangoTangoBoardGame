@@ -1,11 +1,13 @@
 using Godot;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata.Ecma335;
 
 // Manages the state of the board, and holds the actual board itself
 public partial class BoardManager : Node
 { 
 	private SteppingStonesBoard _board = new GridSteppingStonesBoard(7, 5); // new GridBoard(7, 5); 
+	private Rules _ruleset = new BasicRules(); 
 	
 	private Piece.Color currentPlayer = Piece.Color.PLAYER_1; 
 	#nullable enable
@@ -38,7 +40,7 @@ public partial class BoardManager : Node
 		bool finishTurn = false;
 		switch(selector.mouseButton()) {
 			case MouseButton.Left:
-				finishTurn =  moveTile(selection);
+				finishTurn =  movePiece(selection);
 			break; 
 			case MouseButton.Right:
 				finishTurn = addTile(selection, currentPlayer);
@@ -73,13 +75,16 @@ public partial class BoardManager : Node
 			return false;
 		}
 		GD.Print("Attempt Push");
+		if (!_ruleset.isValidPush(_board, previousPosition, selection, currentPlayer)) {
+			previousPosition = null;
+			return false; 
+		}
 		bool isSuccess = _board.pushMove(previousPosition, selection);
 		previousPosition = null; 
 		return isSuccess; 
 	}	
 	private bool addTile(Location selection, Piece.Color color) {
-		int[] size = _board.size();
-		if (selection.row() < 0 || selection.row() >= size[0] || selection.column() < 0 || selection.column() >= size[1])
+		if (!_board.isOnBoard(selection))
 			return false;
 		if (_board.tileAt(selection) != null) return false;
 		GD.Print("Attempt Add");
@@ -91,50 +96,36 @@ public partial class BoardManager : Node
 	}
 
 	#nullable enable
-	private bool moveTile(Location selection) {
+	private bool movePiece(Location selection) {
 		if (previousPosition == null) {
 			previousPosition = giveValidPreviousSelection(selection);
 			return false;
 		}
 		GD.Print("Attempt Move");
-		bool isSuccess = _board.movePiece(previousPosition, selection);
-		previousPosition = null; 
-		return isSuccess;
-		/*
-		if (previousPosition == null) {
-			previousPosition = selection;
-			return false;
-		}
-		Location prev = previousPosition.Value;
-		
-		// If the selection is the same exact square, ignore
-		if (prev.row() == selection.row() && prev.column() == selection.column()) {
-			previousPosition = null;
-			return false;
-		}
-
-		GD.Print("Previous: ", prev.row(), ", ", prev.column());
-
-		Tile? tile = _board.tileAt(prev); 
-		if (tile == null) {
+		if (!isValidPieceMove(selection)) { 
 			previousPosition = null;
 			return false; 
 		}
-		
-		GD.Print("Tile was not null");
+		bool isSuccess = _board.movePiece(previousPosition, selection);
+		previousPosition = null; 
+		return isSuccess;
+	}
 
+	private bool isValidPieceMove(Location selection) {
+		if (!_board.isOnBoard(selection)) return false; 
+		
 		if (_board.tileAt(selection) == null) {
-			_board.moveTile(prev, selection);
-			GD.Print("Moved Tile");
+			GD.Print("Checking Tile Move");
+			if (!_ruleset.isValidTileMove(_board, previousPosition, selection, currentPlayer)) return false; 
+			GD.Print("Good Tile Move");
 		}
-		if (_board.scoutAt(previousPosition.Value) is Scout) {
-			_board.moveScout(previousPosition.Value, selection);
-			GD.Print("Moved Scout");
+		else {
+			GD.Print("Checking Scout Move");
+			if (!_ruleset.isValidScoutMove(_board, previousPosition, selection, currentPlayer)) return false; 
+			GD.Print("Good Scout Move");
 		}
 		
-		previousPosition = null;
 		return true;
-		*/
 	}
 
 	private Location? giveValidPreviousSelection(Location selection) {

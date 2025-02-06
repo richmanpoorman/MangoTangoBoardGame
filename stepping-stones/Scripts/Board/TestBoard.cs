@@ -36,4 +36,10 @@ class TestBoard : Board {
     public void addScout(Scout scout, Location position) { GD.Print("Add ", scout.color(), " tile at: (", position.row(), ", ", position.column(), ")"); }
     public Scout removeScout(Location position) { return null; }
     public void moveScout(Location from, Location to) { GD.Print("Scout From: (", from.row(), ", ", from.column(), ") to (", to.row(), ", ", to.column(),")"); }
+
+    public bool isOnBoard(Location location)
+    {
+        return 0 <= location.row() && location.row() < size()[0] && 0 <= location.column() && location.column() < size()[1]; 
+    }
+
 }

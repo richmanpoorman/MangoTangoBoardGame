@@ -11,8 +11,8 @@ public interface Board
 	// }
 
     public int[] size(); 
-	public Tile[,] tileLayer(); 
-    public Scout[,] scoutLayer();
+	public Tile?[,] tileLayer(); 
+    public Scout?[,] scoutLayer();
 
     #nullable enable
     public Tile? tileAt(Location position); 
@@ -26,5 +26,5 @@ public interface Board
     public void addScout(Scout scout, Location position); 
     public Scout removeScout(Location position); 
     public void moveScout(Location from, Location to); 
-    
+    public bool isOnBoard(Location location); 
 }
