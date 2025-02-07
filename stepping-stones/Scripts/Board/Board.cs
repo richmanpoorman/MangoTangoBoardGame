@@ -1,15 +1,6 @@
 
 public interface Board
 {
-    // public struct Location {
-	// 	public Location(int _row, int _column) {
-	// 		row    = _row; 
-	// 		column = _column; 
-	// 	}
-	// 	public int row { get; }
-	// 	public int column { get; }
-	// }
-
     /*size
     Inputs: None
     Returns: Integer array

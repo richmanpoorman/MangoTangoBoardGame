@@ -40,12 +40,18 @@ public partial class BoardManager : Node
 		onUpdate();
 	}
 	
+	#nullable enable
+
+	public void onWin() {
+		
+	}
+
 	/*onSelection
 	Inputs: None
 	Returns: None
 	Description: attempts selected action based on click; updates board; if action sucessful, switches player turn
 	*/
-	#nullable enable
+	
 	public void onSelection() {
 		Location selection = selector.selection(); 
 

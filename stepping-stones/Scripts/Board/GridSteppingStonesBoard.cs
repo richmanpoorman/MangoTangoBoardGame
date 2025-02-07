@@ -9,7 +9,7 @@ public class GridSteppingStonesBoard : SteppingStonesBoard
     #nullable enable
     private Board _board; 
 
-    public GridSteppingStonesBoard(int width, int height) { _board = new GridBoard(width, height); }
+    public GridSteppingStonesBoard(int rowCount, int columnCount) { _board = new GridBoard(rowCount, columnCount); }
     public GridSteppingStonesBoard(Board board) { _board = board; }
     public bool placeTile(Tile tile, Location position)
     {

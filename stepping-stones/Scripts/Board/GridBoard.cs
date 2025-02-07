@@ -10,17 +10,17 @@ class GridBoard : Board {
     private Scout?[,] scouts = {}; 
     #nullable disable 
     
-    public GridBoard(int width, int height) {
-        dimensions[0] = height; 
-        dimensions[1] = width; 
-        tiles = new Tile[height, width]; 
-        scouts = new Scout[height, width];
+    public GridBoard(int rowCount, int columnCount) {
+        dimensions[0] = rowCount; 
+        dimensions[1] = columnCount; 
+        tiles = new Tile[rowCount, columnCount]; 
+        scouts = new Scout[rowCount, columnCount];
 
         // Set up with the two pieces
-        tiles[height / 2, 1]          = new Tile(Piece.Color.PLAYER_1);
-        tiles[height / 2, width - 2]  = new Tile(Piece.Color.PLAYER_2);
-        scouts[height / 2, 1]         = new Scout(Piece.Color.PLAYER_1);
-        scouts[height / 2, width - 2] = new Scout(Piece.Color.PLAYER_2);
+        tiles[rowCount / 2, 1]          = new Tile(Piece.Color.PLAYER_1);
+        tiles[rowCount / 2, columnCount - 2]  = new Tile(Piece.Color.PLAYER_2);
+        scouts[rowCount / 2, 1]         = new Scout(Piece.Color.PLAYER_1);
+        scouts[rowCount / 2, columnCount - 2] = new Scout(Piece.Color.PLAYER_2);
     }
 
     public int[] size() { return dimensions; }
