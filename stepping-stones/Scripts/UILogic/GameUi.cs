@@ -8,9 +8,15 @@ public partial class GameUi : Control
 	[Signal]
 	public delegate void ResetGameEventHandler();
 	[Signal]
-	public delegate void SaveGameEventHandler();
+	public delegate void SaveGameEventHandler(String path);
 	[Signal]
-	public delegate void LoadGameEventHandler();
+	public delegate void LoadGameEventHandler(String path);
+
+	[Export]
+	public FileDialog saveBox;
+	
+	[Export]
+	public FileDialog loadBox;
 	
 
 	private void OnResetButtonPressed() 
@@ -19,12 +25,20 @@ public partial class GameUi : Control
 	}
 	private void OnSaveButtonPressed() 
 	{
-		EmitSignal(SignalName.SaveGame);
+		saveBox.Popup();
 	}
 
 	private void OnLoadButtonPressed()
 	{
-		EmitSignal(SignalName.LoadGame);
+		loadBox.Popup();
+	}
+	private void OnSaveDialogFileSelected(String path) 
+	{
+		EmitSignal(SignalName.SaveGame, path);
+	}
+	private void OnLoadDialogFileSelected(String path) 
+	{
+		EmitSignal(SignalName.LoadGame, path);
 	}
 	public override void _Ready()
 	{

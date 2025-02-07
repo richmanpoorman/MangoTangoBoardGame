@@ -47,12 +47,10 @@ public partial class BoardManager : Node
     public void onUpdate() {
 		display.updateDisplay();
 	}
-
-    /*setBoard
-    Inputs: SteppingStonesBoard board
-    Returns: None
-    Description: Sets internal board to given board*/
-	public void setBoard(SteppingStonesBoard board){ _board = board; }
+	public void setBoard(SteppingStonesBoard board){ 
+		_board = board; 
+		onUpdate();
+	}
 	
 	#nullable enable
 

@@ -4,31 +4,9 @@ public class GameSaver : FileSaver
 {
 	// Called when the node enters;
     public GameSaver(){}
-	public void SaveGame(Board board) {
+	public void SaveGame(Board board, String path) {
 		
-		String gameNumber;
-		if (!FileAccess.FileExists("user://SaveMetaData.step")) {
-			FileAccess metaFile = FileAccess.Open("user://SaveMetaData.step", FileAccess.ModeFlags.Write);
-			gameNumber = "0";
-			metaFile.StoreLine(gameNumber);
-			metaFile.Close();
-		} else {
-			FileAccess metaFile = FileAccess.Open("user://SaveMetaData.step", FileAccess.ModeFlags.ReadWrite);
-			String temp = metaFile.GetLine();
-			if (temp == "") {
-				GD.Print("temp is empty");
-				temp = "0"; 
-			} else {
-				GD.Print("temp is: " + temp);
-			}
-			
-			gameNumber = (int.Parse(temp) + 1).ToString();
-			GD.Print("game num is: " + gameNumber);
-			metaFile.StoreLine(gameNumber);
-			metaFile.Close();
-		}
-		
-		FileAccess gameFile = FileAccess.Open("user://Game" + gameNumber + ".step", FileAccess.ModeFlags.Write);
+		FileAccess gameFile = FileAccess.Open(path, FileAccess.ModeFlags.Write);
 		int[] size = board.size();
 		gameFile.StoreLine(size[0] + " " + size[1]);
 		#nullable enable
@@ -56,12 +34,15 @@ public class GameSaver : FileSaver
 		}
 		FileAccess gameFile = FileAccess.Open(fileName, FileAccess.ModeFlags.Read);
 		int[] size = Array.ConvertAll(gameFile.GetLine().Split(' '), int.Parse);
-		SteppingStonesBoard board = new GridSteppingStonesBoard(size[1], size[0]);
-		GD.Print("board size is: " + board.size()[0] + board.size()[1]);
-		board.removeTile(Location.at(size[1] / 2, 1));
-		board.removeTile(Location.at(size[1] / 2, size[0] - 2));
-		board.removeScout(Location.at(size[1] / 2, 1));
-		board.removeScout(Location.at(size[1] / 2, size[0] - 2));
+		int rowCount = size[0]; 
+		int columnCount = size[1]; 
+		GD.Print("file size is: " + rowCount + " x " + columnCount);
+		SteppingStonesBoard board = new GridSteppingStonesBoard(size[0], size[1]);
+		GD.Print("board size is: " + board.size()[0] + " x " + board.size()[1]);
+		board.removeTile(Location.at(rowCount / 2, 1));
+		board.removeTile(Location.at(rowCount / 2, columnCount - 2));
+		board.removeScout(Location.at(rowCount / 2, 1));
+		board.removeScout(Location.at(rowCount / 2, columnCount - 2));
 		while (gameFile.GetPosition() < gameFile.GetLength()) {
 			String line = gameFile.GetLine();
 			int row = line[0] - 'a';
@@ -70,7 +51,7 @@ public class GameSaver : FileSaver
 			Piece.Color color = (line[3] == 'r') ? Piece.Color.PLAYER_1 : Piece.Color.PLAYER_2;
 			Tile currTile = new Tile(color);
 			board.addTile(currTile, Location.at(row, col));
-			if (line.Length == 5) {
+			if (line.EndsWith("s")) {
 				board.addScout(new Scout(color), Location.at(row, col));
 			}
 		}	
