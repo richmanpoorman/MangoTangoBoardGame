@@ -34,11 +34,11 @@ public class GameSaver : FileSaver
 		#nullable enable
 		for (int i = 0; i < size[0]; i++) for (int j = 0; j < size[1]; j++) {
 			String entry = "";
-			Tile? currTile = board.tileAt(new Location(i ,j)); 
+			Tile? currTile = board.tileAt(Location.at(i ,j)); 
 			if (currTile != null) {
 				char color = (currTile.color() == Piece.Color.PLAYER_1) ? 'r' : 'b';
 				entry = "" + (char)('a' + i) + (j + 1) + '=' + color + 't';
-				Scout? currScout = board.scoutAt(new Location(i,j));
+				Scout? currScout = board.scoutAt(Location.at(i,j));
 				if (currScout != null) {
 					entry += 's';
 				}
@@ -58,10 +58,10 @@ public class GameSaver : FileSaver
 		int[] size = Array.ConvertAll(gameFile.GetLine().Split(' '), int.Parse);
 		SteppingStonesBoard board = new GridSteppingStonesBoard(size[1], size[0]);
 		GD.Print("board size is: " + board.size()[0] + board.size()[1]);
-		board.removeTile(new Location(size[1] / 2, 1));
-		board.removeTile(new Location(size[1] / 2, size[0] - 2));
-		board.removeScout(new Location(size[1] / 2, 1));
-		board.removeScout(new Location(size[1] / 2, size[0] - 2));
+		board.removeTile(Location.at(size[1] / 2, 1));
+		board.removeTile(Location.at(size[1] / 2, size[0] - 2));
+		board.removeScout(Location.at(size[1] / 2, 1));
+		board.removeScout(Location.at(size[1] / 2, size[0] - 2));
 		while (gameFile.GetPosition() < gameFile.GetLength()) {
 			String line = gameFile.GetLine();
 			int row = line[0] - 'a';
@@ -69,9 +69,9 @@ public class GameSaver : FileSaver
 			GD.Print("row is: " + row + ", col is: " + col);
 			Piece.Color color = (line[3] == 'r') ? Piece.Color.PLAYER_1 : Piece.Color.PLAYER_2;
 			Tile currTile = new Tile(color);
-			board.addTile(currTile, new Location(row, col));
+			board.addTile(currTile, Location.at(row, col));
 			if (line.Length == 5) {
-				board.addScout(new Scout(color), new Location(row, col));
+				board.addScout(new Scout(color), Location.at(row, col));
 			}
 		}	
 		return board;
