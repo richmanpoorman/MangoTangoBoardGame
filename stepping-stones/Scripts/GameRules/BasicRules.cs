@@ -107,22 +107,22 @@ public class BasicRules : Rules
 
         // left push
         Location current = start; 
-        while (board.isOnBoard(current) && board.tileAt(start) != null) current = current.left(); 
+        while (board.isOnBoard(current) && board.tileAt(current) != null) current = current.left(); 
         if (isValidPush(board, start, current, playerTurn)) moves.Add(new Rules.ValidMove(current, Rules.MoveType.TILE_PUSH_LEFT)); 
 
         // right push
         current = start; 
-        while (board.isOnBoard(current) && board.tileAt(start) != null) current = current.right(); 
+        while (board.isOnBoard(current) && board.tileAt(current) != null) current = current.right(); 
         if (isValidPush(board, start, current, playerTurn)) moves.Add(new Rules.ValidMove(current, Rules.MoveType.TILE_PUSH_RIGHT)); 
 
         // up push
         current = start; 
-        while (board.isOnBoard(current) && board.tileAt(start) != null) current = current.up(); 
+        while (board.isOnBoard(current) && board.tileAt(current) != null) current = current.up(); 
         if (isValidPush(board, start, current, playerTurn)) moves.Add(new Rules.ValidMove(current, Rules.MoveType.TILE_PUSH_UP)); 
 
         // down push
         current = start; 
-        while (board.isOnBoard(current) && board.tileAt(start) != null) current = current.down(); 
+        while (board.isOnBoard(current) && board.tileAt(current) != null) current = current.down(); 
         if (isValidPush(board, start, current, playerTurn)) moves.Add(new Rules.ValidMove(current, Rules.MoveType.TILE_PUSH_DOWN)); 
 
         return moves; 
