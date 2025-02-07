@@ -33,11 +33,11 @@ public partial class MainGame : Node2D
 		#nullable enable
 		for (int i = 0; i < size[0]; i++) for (int j = 0; j < size[1]; j++) {
 			String entry = "";
-			Tile? currTile = board.tileAt(new Location(i ,j)); 
+			Tile? currTile = board.tileAt(Location.at(i ,j)); 
 			if (currTile != null) {
 				char color = (currTile.color() == Piece.Color.PLAYER_1) ? 'r' : 'b';
 				entry = "" + (char)('a' + i) + (j + 1) + '=' + color + 't';
-				Scout? currScout = board.scoutAt(new Location(i,j));
+				Scout? currScout = board.scoutAt(Location.at(i,j));
 				if (currScout != null) {
 					entry += 's';
 				}
