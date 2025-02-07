@@ -88,7 +88,44 @@ public class BasicRules : Rules
 
     public IList<Rules.ValidMove> legalOptions(Board board, Location start, Piece.Color playerTurn)
     {
-        throw new System.NotImplementedException();
+        List<Rules.ValidMove> moves = new List<Rules.ValidMove>(); 
+
+        // The adjacent cells piece movement
+        Location[] moveToList = {start.left(), start.right(), start.up(), start.down()}; 
+        foreach (Location moveTo in moveToList) {
+            if (board.isOnBoard(moveTo)) {
+                if (board.tileAt(moveTo) == null) {
+                    if (isValidTileMove(board, start, moveTo, playerTurn))
+                        moves.Add(new Rules.ValidMove(moveTo, Rules.MoveType.TILE_MOVE)); 
+                }
+                else {
+                    if (isValidScoutMove(board, start, moveTo, playerTurn))
+                        moves.Add(new Rules.ValidMove(moveTo, Rules.MoveType.SCOUT_MOVE)); 
+                }
+            }
+        }
+
+        // left push
+        Location current = start; 
+        while (board.isOnBoard(current) && board.tileAt(start) != null) current = current.left(); 
+        if (isValidPush(board, start, current, playerTurn)) moves.Add(new Rules.ValidMove(current, Rules.MoveType.TILE_PUSH_LEFT)); 
+
+        // right push
+        current = start; 
+        while (board.isOnBoard(current) && board.tileAt(start) != null) current = current.right(); 
+        if (isValidPush(board, start, current, playerTurn)) moves.Add(new Rules.ValidMove(current, Rules.MoveType.TILE_PUSH_RIGHT)); 
+
+        // up push
+        current = start; 
+        while (board.isOnBoard(current) && board.tileAt(start) != null) current = current.up(); 
+        if (isValidPush(board, start, current, playerTurn)) moves.Add(new Rules.ValidMove(current, Rules.MoveType.TILE_PUSH_UP)); 
+
+        // down push
+        current = start; 
+        while (board.isOnBoard(current) && board.tileAt(start) != null) current = current.down(); 
+        if (isValidPush(board, start, current, playerTurn)) moves.Add(new Rules.ValidMove(current, Rules.MoveType.TILE_PUSH_DOWN)); 
+
+        return moves; 
     }
 
     private Piece.Color otherPlayer(Piece.Color playerTurn) {
