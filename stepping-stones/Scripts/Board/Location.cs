@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Numerics;
 
 public class Location
 {
@@ -45,4 +46,16 @@ public class Location
 	public Location right() { return new Location(x, y + 1); }
 	public Location up() { return new Location(x - 1, y); }
 	public Location down() { return new Location(x + 1, y); }
+
+	public string toString() {
+		return (char)(row() + 'a') + "" + column().ToString(); 
+	}
+
+	public static Location fromString(string representation) {
+		int row = representation[0] - 'a'; 
+		int column = -1; 
+		if (Int32.TryParse(representation.Substring(1), out column)) 
+			return Location.at(row, column); 
+		return Location.at(-1, -1);
+	}
 }

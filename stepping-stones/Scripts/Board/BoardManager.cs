@@ -42,12 +42,18 @@ public partial class BoardManager : Node
     Description: Sets internal board to given board*/
 	public void setBoard(SteppingStonesBoard board){ _board = board; }
 	
+	#nullable enable
+
+	public void onWin() {
+		
+	}
+
 	/*onSelection
 	Inputs: None
 	Returns: None
 	Description: attempts selected action based on click; updates board; if action sucessful, switches player turn
 	*/
-	#nullable enable
+	
 	public void onSelection() {
 		Location selection = selector.selection(); 
 
