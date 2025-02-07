@@ -20,7 +20,7 @@ public class Location
 	Inputs: int row, int column
 	Returns: Location
 	Description: Constructor of Location*/
-	public Location(int row, int column){
+	private Location(int row, int column){
 		x = row;
 		y = column;
 	}
