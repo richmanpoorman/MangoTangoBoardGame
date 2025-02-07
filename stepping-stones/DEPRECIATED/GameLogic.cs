@@ -61,8 +61,8 @@ public partial class GameLogic : Node
 				y += ydir;
 			}
 			while(x != pusher.row() || y != pusher.column()){
-				Location from = new Location(x-xdir, y-ydir);
-				Location to = new Location (x, y);
+				Location from = Location.at(x-xdir, y-ydir);
+				Location to = Location.at(x, y);
 				movePiece(from, to);
 				x-=xdir;
 				y-=ydir;

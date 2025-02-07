@@ -15,6 +15,7 @@ public partial class BoardDisplay : Node2D
 	private int spaceTileID, player1ScoutID, player2ScoutID, player1TileID, player2TileID; 
 	
 	
+	
 	private Board board; 
 	
 	public override void _Ready()

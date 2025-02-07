@@ -32,7 +32,7 @@ public partial class SelectSquare : Node2D
 		// GD.Print("Mouse Down");
 		
 		Vector2I square = selectionGrid.LocalToMap(GetLocalMousePosition());
-		_position = new Location(square.Y, square.X);
+		_position = Location.at(square.Y, square.X);
 
 		_mouseButton = mouseEvent.ButtonIndex;
 

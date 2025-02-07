@@ -54,8 +54,8 @@ public class GridSteppingStonesBoard : SteppingStonesBoard
                  last      = new Vector2I(to.row(), to.column());
         for (Vector2I moveTo = last, moveFrom = last - direction; moveTo != first; moveTo = moveFrom, moveFrom -= direction) {
             GD.Print("Move ", moveFrom, " to ", moveTo);
-            Location fromPosition = new Location(moveFrom.X, moveFrom.Y),
-                           toPosition   = new Location(moveTo.X, moveTo.Y);
+            Location fromPosition = Location.at(moveFrom.X, moveFrom.Y),
+                     toPosition   = Location.at(moveTo.X, moveTo.Y);
 
             // If the start position is not valid, then don't do anything
             if (!validPositionOnBoard(fromPosition)) continue; 
@@ -102,12 +102,12 @@ public class GridSteppingStonesBoard : SteppingStonesBoard
         int[] size = _board.size();
         Vector2I position = new Vector2I(start.row(), start.column()); 
         while (position.X < 0 || position.X >= size[0] || position.Y < 0 || position.Y >= size[1]) {
-            Location boardPosition = new Location(position.X, position.Y);
+            Location boardPosition = Location.at(position.X, position.Y);
             if (_board.tileAt(boardPosition) == null) return pushMove(start, boardPosition); 
             position += pushTo;
         }
 
-        return pushMove(start, new Location(position.X, position.Y));
+        return pushMove(start, Location.at(position.X, position.Y));
     }
 
     private bool validPositionOnBoard(Location position) {
@@ -117,9 +117,9 @@ public class GridSteppingStonesBoard : SteppingStonesBoard
 
     public int[] size() { return _board.size(); }
 
-    public Tile[,] tileLayer() { return _board.tileLayer(); }
+    public Tile?[,] tileLayer() { return _board.tileLayer(); }
 
-    public Scout[,] scoutLayer() { return _board.scoutLayer(); }
+    public Scout?[,] scoutLayer() { return _board.scoutLayer(); }
 
     public Tile? tileAt(Location position) { return _board.tileAt(position);  }
 
@@ -136,5 +136,9 @@ public class GridSteppingStonesBoard : SteppingStonesBoard
     public Scout? removeScout(Location position) { return _board.removeScout(position); }
 
     public void moveScout(Location from, Location to) { _board.moveScout(from, to); }
-    #nullable disable
+
+    public bool isOnBoard(Location location) { return _board.isOnBoard(location); }
+
+
+#nullable disable
 }
