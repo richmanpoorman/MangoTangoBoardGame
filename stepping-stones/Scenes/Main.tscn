@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://bbrt6w7db5d1b"]
+
+[ext_resource type="Script" path="res://Scripts/UILogic/MainGame.cs" id="1_i1pwg"]
+[ext_resource type="PackedScene" uid="uid://84b00vn14xp4" path="res://Scenes/Board_Scene.tscn" id="1_j5h5t"]
+[ext_resource type="PackedScene" uid="uid://blw73vqu1bt56" path="res://Templates/game_ui.tscn" id="2_0kd1q"]
+
+[node name="MainGame" type="Node2D"]
+script = ExtResource("1_i1pwg")
+
+[node name="Main" parent="." instance=ExtResource("1_j5h5t")]
+
+[node name="GameUI" parent="." instance=ExtResource("2_0kd1q")]
+
+[connection signal="LoadGame" from="GameUI" to="." method="OnUILoadGame"]
+[connection signal="SaveGame" from="GameUI" to="." method="OnUISaveGame"]

@@ -16,14 +16,26 @@ public class Location
 		return locations[position]; 
 	}
 
-	private Location(int row, int column){
+	/*Location (constructor)
+	Inputs: int row, int column
+	Returns: Location
+	Description: Constructor of Location*/
+	public Location(int row, int column){
 		x = row;
 		y = column;
 	}
 	
+	/*row
+	Inputs: None
+	Returns: Int
+	Description: Returns row of Location instance*/
 	public int row(){
 		return x;
 	}
+	/*column
+	Inputs: None
+	Returns: Int
+	Description: Returns column of Location instance*/
 	public int column(){
 		return y;
 	}
