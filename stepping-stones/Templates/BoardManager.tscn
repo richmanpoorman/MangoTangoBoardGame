@@ -56,10 +56,11 @@ sources/3 = SubResource("TileSetAtlasSource_i8sen")
 sources/4 = SubResource("TileSetAtlasSource_w8jkv")
 sources/5 = SubResource("TileSetAtlasSource_l7nfl")
 
-[node name="BoardManager" type="Node2D" node_paths=PackedStringArray("selector", "display")]
+[node name="BoardManager" type="Node2D" node_paths=PackedStringArray("selector", "display", "moveOptionsDisplay")]
 script = ExtResource("1_ps4u1")
 selector = NodePath("Selection")
 display = NodePath("Board")
+moveOptionsDisplay = NodePath("Selection/OptionDisplay")
 
 [node name="Board" parent="." node_paths=PackedStringArray("boardManager") instance=ExtResource("2_7sf8v")]
 boardManager = NodePath("..")
