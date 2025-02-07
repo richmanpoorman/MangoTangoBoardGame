@@ -20,38 +20,32 @@ public partial class MainGame : Node2D
 	{
 	}
 
-	public void OnUISaveGame() {
-		// GD.Print("Game Saved");
-		// Board board = manager.board();
-		// int[] size = board.size();
-		// GD.Print("size 0: " + size[0]);
-		// GD.Print("size 1: " + size[1]);
-		// #nullable enable
-		// for (int i = 0; i < size[0]; i++) {
-		// 	for (int j = 0; j < size[1]; j++) {
-		// 		String entry = "";
-		// 		Tile? currTile = board.tileAt(new Location(i ,j)); 
-		// 		if (currTile != null) {
-		// 			char color = (currTile.color() == Piece.Color.PLAYER_1) ? 'r' : 'b';
-		// 			entry = "" + (char)('a' + i) + (j + 1)+ '=' + color + 't';
-		// 			Scout? currScout = board.scoutAt(new Location(i,j));
-		// 			if (currScout != null) {
-		// 				entry += 's';
-		// 			}
-		// 		}
-		// 		if(entry != "") {	
-		// 			GD.Print(entry);
-		// 		}
-		// 	} 
-		// GD.Print("###");
-		// }
-		// #nullable disable
-		saver.SaveGame(manager.board());
-
+	public void OnUISaveGame(String path) {
+		saver.SaveGame(manager.board(), path);
 	}
-		public void OnUILoadGame() {
-			GD.Print("Game Loaded");
-			manager.setBoard(saver.LoadGame("user://Game1.step"));
-			display.updateDisplay();
+
+	public void OnUILoadGame(String path) {
+		GD.Print("Game Loaded");
+		manager.setBoard(saver.LoadGame(path));
+		Board board = manager.board();
+		int[] size = manager.board().size();
+		
+		#nullable enable
+		for (int i = 0; i < size[0]; i++) for (int j = 0; j < size[1]; j++) {
+			String entry = "";
+			Tile? currTile = board.tileAt(new Location(i ,j)); 
+			if (currTile != null) {
+				char color = (currTile.color() == Piece.Color.PLAYER_1) ? 'r' : 'b';
+				entry = "" + (char)('a' + i) + (j + 1) + '=' + color + 't';
+				Scout? currScout = board.scoutAt(new Location(i,j));
+				if (currScout != null) {
+					entry += 's';
+				}
+				if(entry != null) {
+					GD.Print(entry);
+				}
+			}
+		}
+		#nullable disable
 	}
 }

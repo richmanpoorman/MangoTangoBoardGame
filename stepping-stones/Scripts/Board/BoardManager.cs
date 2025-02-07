@@ -23,7 +23,10 @@ public partial class BoardManager : Node
     public void onUpdate() {
 		display.updateDisplay();
 	}
-	public void setBoard(SteppingStonesBoard board){ _board = board; }
+	public void setBoard(SteppingStonesBoard board){ 
+		_board = board; 
+		onUpdate();
+	}
 	
 	#nullable enable
 	public void onSelection() {

@@ -4,31 +4,9 @@ public class GameSaver : FileSaver
 {
 	// Called when the node enters;
     public GameSaver(){}
-	public void SaveGame(Board board) {
+	public void SaveGame(Board board, String path) {
 		
-		String gameNumber;
-		if (!FileAccess.FileExists("user://SaveMetaData.step")) {
-			FileAccess metaFile = FileAccess.Open("user://SaveMetaData.step", FileAccess.ModeFlags.Write);
-			gameNumber = "0";
-			metaFile.StoreLine(gameNumber);
-			metaFile.Close();
-		} else {
-			FileAccess metaFile = FileAccess.Open("user://SaveMetaData.step", FileAccess.ModeFlags.ReadWrite);
-			String temp = metaFile.GetLine();
-			if (temp == "") {
-				GD.Print("temp is empty");
-				temp = "0"; 
-			} else {
-				GD.Print("temp is: " + temp);
-			}
-			
-			gameNumber = (int.Parse(temp) + 1).ToString();
-			GD.Print("game num is: " + gameNumber);
-			metaFile.StoreLine(gameNumber);
-			metaFile.Close();
-		}
-		
-		FileAccess gameFile = FileAccess.Open("user://Game" + gameNumber + ".step", FileAccess.ModeFlags.Write);
+		FileAccess gameFile = FileAccess.Open(path, FileAccess.ModeFlags.Write);
 		int[] size = board.size();
 		gameFile.StoreLine(size[0] + " " + size[1]);
 		#nullable enable
@@ -70,7 +48,7 @@ public class GameSaver : FileSaver
 			Piece.Color color = (line[3] == 'r') ? Piece.Color.PLAYER_1 : Piece.Color.PLAYER_2;
 			Tile currTile = new Tile(color);
 			board.addTile(currTile, new Location(row, col));
-			if (line.Length == 5) {
+			if (line.Length == 6) {
 				board.addScout(new Scout(color), new Location(row, col));
 			}
 		}	

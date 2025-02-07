@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/UILogic/GameUi.cs" id="1_n15e5"]
 
-[node name="GameUI" type="Control"]
+[node name="GameUI" type="Control" node_paths=PackedStringArray("saveBox", "loadBox")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,6 +10,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n15e5")
+saveBox = NodePath("CanvasLayer/SaveDialog")
+loadBox = NodePath("CanvasLayer/LoadDialog")
 metadata/_edit_use_anchors_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -68,6 +70,27 @@ text = "Current Turn is: [color=red] Red [/color]"
 fit_content = true
 autowrap_mode = 2
 
+[node name="SaveDialog" type="FileDialog" parent="CanvasLayer"]
+initial_position = 1
+size = Vector2i(303, 300)
+dialog_hide_on_ok = true
+access = 1
+root_subfolder = "user://"
+filters = PackedStringArray("*.step")
+
+[node name="LoadDialog" type="FileDialog" parent="CanvasLayer"]
+title = "Open a File"
+initial_position = 1
+size = Vector2i(275, 300)
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 1
+root_subfolder = "user://"
+filters = PackedStringArray("*.step")
+
 [connection signal="pressed" from="CanvasLayer/SaveButton" to="." method="OnSaveButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/LoadButton" to="." method="OnLoadButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/ResetButton" to="." method="OnResetButtonPressed"]
+[connection signal="file_selected" from="CanvasLayer/SaveDialog" to="." method="OnSaveDialogFileSelected"]
+[connection signal="file_selected" from="CanvasLayer/LoadDialog" to="." method="OnLoadDialogFileSelected"]
