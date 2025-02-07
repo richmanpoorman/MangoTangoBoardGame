@@ -18,13 +18,31 @@ public partial class BoardManager : Node
 	[Export]
 	private BoardDisplay display; 
 
+    /*board
+    Inputs: None
+    Returns: Board
+    Description: returns the board BoardManager uses*/
 	public Board board() { return _board; }
 
+	/*onUpdate
+    Inputs: None
+    Returns: None
+    Description: Updates display*/
     public void onUpdate() {
 		display.updateDisplay();
 	}
+
+    /*setBoard
+    Inputs: SteppingStonesBoard board
+    Returns: None
+    Description: Sets internal board to given board*/
 	public void setBoard(SteppingStonesBoard board){ _board = board; }
 	
+	/*onSelection
+	Inputs: None
+	Returns: None
+	Description: attempts selected action based on click; updates board; if action sucessful, switches player turn
+	*/
 	#nullable enable
 	public void onSelection() {
 		Location selection = selector.selection(); 
@@ -68,6 +86,12 @@ public partial class BoardManager : Node
 	}
 	#nullable disable
 
+	/*pushPieces
+	Inputs: Location
+	Returns: bool
+	Description: Attempts to push pieces from previous selection to Location;
+	returns sucess of attempt;
+	*/
 	private bool pushPieces(Location selection) {
 		if (previousPosition == null) {
 			previousPosition = giveValidPreviousSelection(selection);
@@ -78,6 +102,10 @@ public partial class BoardManager : Node
 		previousPosition = null; 
 		return isSuccess; 
 	}	
+	/*addTile
+	Inputs: Location, Piece.Color
+	Returns: bool
+	Description: Attempts to add tile of given color at location; returns sucess of attempt*/
 	private bool addTile(Location selection, Piece.Color color) {
 		int[] size = _board.size();
 		if (selection.row() < 0 || selection.row() >= size[0] || selection.column() < 0 || selection.column() >= size[1])
@@ -92,6 +120,11 @@ public partial class BoardManager : Node
 	}
 
 	#nullable enable
+	/*moveTile
+	Inputs: Location
+	Returns: bool
+	Description: attempts to move tile from previous selected position to current selected position;
+	returns sucess of attempt*/
 	private bool moveTile(Location selection) {
 		if (previousPosition == null) {
 			previousPosition = giveValidPreviousSelection(selection);
@@ -138,6 +171,10 @@ public partial class BoardManager : Node
 		*/
 	}
 
+ 	/*giveValidPreviousSelection
+	Inputs: Location selection
+	Returns: Location or null
+	Description: If selection is on the board and there is a tile at that location, returns selection; else null*/
 	private Location? giveValidPreviousSelection(Location selection) {
 		int[] size = _board.size(); 
 		if (selection.row() < 0 || selection.row() >= size[0] || selection.column() < 0 || selection.column() >= size[1])
