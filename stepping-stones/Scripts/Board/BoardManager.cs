@@ -5,7 +5,7 @@ using System.Collections.Generic;
 // Manages the state of the board, and holds the actual board itself
 public partial class BoardManager : Node
 { 
-	private SteppingStonesBoard _board = new GridSteppingStonesBoard(7, 5); // new GridBoard(7, 5); 
+	private SteppingStonesBoard _board = new GridSteppingStonesBoard(5, 7); // new GridBoard(7, 5); 
 	private Rules _ruleset = new BasicRules(); 
 	
 	private Piece.Color currentPlayer = Piece.Color.PLAYER_1; 
@@ -45,7 +45,7 @@ public partial class BoardManager : Node
 	#nullable enable
 
 	public void onWin() {
-		
+		GD.Print("Winner!");
 	}
 
 	/*onSelection
@@ -81,7 +81,7 @@ public partial class BoardManager : Node
 		onUpdate();
 
 		if (finishTurn) {
-			
+			if (_ruleset.hasWon(_board, currentPlayer)) onWin(); 
 			switch(currentPlayer) {
 				case Piece.Color.PLAYER_1:
 				GD.Print("Switched to Player 2 from Player 1");
