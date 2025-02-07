@@ -34,12 +34,15 @@ public class GameSaver : FileSaver
 		}
 		FileAccess gameFile = FileAccess.Open(fileName, FileAccess.ModeFlags.Read);
 		int[] size = Array.ConvertAll(gameFile.GetLine().Split(' '), int.Parse);
-		SteppingStonesBoard board = new GridSteppingStonesBoard(size[1], size[0]);
+		int rowCount = size[0]; 
+		int columnCount = size[1]; 
+		GD.Print("file size is: " + rowCount + " x " + columnCount);
+		SteppingStonesBoard board = new GridSteppingStonesBoard(size[0], size[1]);
 		GD.Print("board size is: " + board.size()[0] + " x " + board.size()[1]);
-		board.removeTile(Location.at(1, size[1] / 2));
-		board.removeTile(Location.at(size[0] - 2, size[1] / 2));
-		board.removeScout(Location.at(1, size[1] / 2));
-		board.removeScout(Location.at(size[0] -2, size[1] / 2));
+		board.removeTile(Location.at(rowCount / 2, 1));
+		board.removeTile(Location.at(rowCount / 2, columnCount - 2));
+		board.removeScout(Location.at(rowCount / 2, 1));
+		board.removeScout(Location.at(rowCount / 2, columnCount - 2));
 		while (gameFile.GetPosition() < gameFile.GetLength()) {
 			String line = gameFile.GetLine();
 			int row = line[0] - 'a';
