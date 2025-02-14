@@ -17,7 +17,9 @@ public partial class MainGame : Node2D
 	}
 
 	public void DeferredSetupCleanup() {
+		GD.Print("I was deffered :)");
 		manager.setBoard(sceneManager.board);
+		
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

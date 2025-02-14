@@ -50,6 +50,7 @@ public partial class BoardManager : Node
 	}
 	public void setBoard(SteppingStonesBoard board){ 
 		_board = board; 
+		display.initializeBoard();
 		onUpdate();
 	}
 	
