@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://84b00vn14xp4"]
+[gd_scene load_steps=2 format=3 uid="uid://84b00vn14xp4"]
 
-[ext_resource type="Script" path="res://Scenes/Camera.cs" id="2_bvvq4"]
 [ext_resource type="PackedScene" uid="uid://b0l7rpib6tsof" path="res://Templates/BoardManager.tscn" id="6_yf7y7"]
 
 [node name="Main" type="Node2D"]
@@ -13,7 +12,6 @@ offset_bottom = 40.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(171, 45)
-script = ExtResource("2_bvvq4")
 
 [node name="BoardManager" parent="." instance=ExtResource("6_yf7y7")]
 position = Vector2(-30, -7)
