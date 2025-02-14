@@ -1,54 +1,21 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Godot;
 
-public class BasicRules : Rules
+public class WeightedScout : Rules 
 {
-
-    public BasicRules() {}
+    Rules baseRules = new BasicRules();
+    private int SCOUT_WEIGHT = 1; 
+    public WeightedScout() {}
 
     public bool hasWon(Board board, Piece.Color playerTurn)
     {
-        if (_onlyOneScout(board, playerTurn)) return true; 
-        if (_atOppositeSide(board, playerTurn)) return true;
-        return false;    
+        return baseRules.hasWon(board, playerTurn);
     }
 
-    private bool _atOppositeSide(Board board, Piece.Color playerTurn) {
-        int[] size = board.size(); 
-        Scout?[,] scouts = board.scoutLayer(); 
-        
-        int checkColumn = -1;
-        switch(playerTurn) {
-            case Piece.Color.PLAYER_1: 
-                checkColumn = size[1] - 1;
-            break; 
-            case Piece.Color.PLAYER_2: 
-                checkColumn = 0; 
-            break; 
-        }
-
-        for (int r = 0; r < size[0]; r++) 
-            if (scouts[r, checkColumn] != null && scouts[r, checkColumn].color() == playerTurn) 
-                return true; 
-        
-        return false;
-
-    }
-
-    private bool _onlyOneScout(Board board, Piece.Color playerTurn) {
-        Piece.Color otherColor = otherPlayer(playerTurn); 
-
-        Scout?[,] scouts = board.scoutLayer(); 
-        int[] size = board.size(); 
-        for (int r = 0; r < size[0]; r++) {
-            for (int c = 0; c < size[1]; c++) {
-                if (scouts[r, c] == null) continue; 
-                if (scouts[r, c].color() == otherColor) return false;
-            }
-        }
-        return true; 
+    public bool isValidPlace(Board board, Location place, Piece.Color playerTurn)
+    {
+        return baseRules.isValidPlace(board, place, playerTurn);
     }
 
     public bool isValidPush(Board board, Location from, Location to, Piece.Color playerTurn) {
@@ -75,8 +42,11 @@ public class BasicRules : Rules
                 else return false; // See our tile when counting opponent tile; NOT ALLOWED
             }
 
-            if (addingCurrentPlayer) tileSum += 1; 
-            else tileSum -= 1; 
+            bool currentTileHasScout = board.scoutAt(pos) != null;
+
+
+            if (addingCurrentPlayer) tileSum += currentTileHasScout ?  1 + SCOUT_WEIGHT : 1; 
+            else tileSum -= currentTileHasScout ? 1 + SCOUT_WEIGHT : 1; 
         }
 
         if (addingCurrentPlayer) return false; // Need to push at least one opponent tile 
@@ -84,35 +54,15 @@ public class BasicRules : Rules
         
         return true;
     }
-    public bool isValidTileMove(Board board, Location from, Location to, Piece.Color playerTurn) {
-        if (!board.isOnBoard(from) || !board.isOnBoard(to)) return false;
-        bool isOrthogonallyConnected = Math.Abs(from.row() - to.row()) + Math.Abs(from.column() - to.column()) == 1; 
-        if (!isOrthogonallyConnected) return false; 
-        Tile? tile = board.tileAt(from); 
-        if (tile == null) return false; 
-        if (tile.color() != playerTurn) return false; 
-        if (board.tileAt(to) != null) return false;
-        
-        return true;
-    }
-    public bool isValidScoutMove(Board board, Location from, Location to, Piece.Color playerTurn) {
-        if (!board.isOnBoard(from) || !board.isOnBoard(to)) return false;
-        bool isOrthogonallyConnected = Math.Abs(from.row() - to.row()) + Math.Abs(from.column() - to.column()) == 1; 
-        if (!isOrthogonallyConnected) return false; 
-        Scout? scout = board.scoutAt(from); 
-        if (scout == null) return false; 
-        if (scout.color() != playerTurn) return false; 
-        Tile? tile = board.tileAt(to);
-        if (tile == null) return false; 
-        if (tile.color() != playerTurn) return false; 
-        if (board.scoutAt(to) != null) return false;
-        return true; 
-        
+
+    public bool isValidScoutMove(Board board, Location from, Location to, Piece.Color playerTurn)
+    {
+        return baseRules.isValidScoutMove(board, from, to, playerTurn); 
     }
 
-    public bool isValidPlace(Board board, Location place, Piece.Color playerTurn)
+    public bool isValidTileMove(Board board, Location from, Location to, Piece.Color playerTurn)
     {
-        return board.tileAt(place) == null;
+        return baseRules.isValidPieceMove(board, from, to, playerTurn);
     }
 
     public IList<Rules.ValidMove> legalOptions(Board board, Location start, Piece.Color playerTurn)
@@ -155,9 +105,5 @@ public class BasicRules : Rules
         if (isValidPush(board, start, current, playerTurn)) moves.Add(new Rules.ValidMove(current, Rules.MoveType.TILE_PUSH_DOWN)); 
 
         return moves; 
-    }
-
-    private Piece.Color otherPlayer(Piece.Color playerTurn) {
-        return playerTurn == Piece.Color.PLAYER_1 ? Piece.Color.PLAYER_2 : Piece.Color.PLAYER_1;
     }
 }

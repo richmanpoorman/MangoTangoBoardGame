@@ -13,7 +13,8 @@ public partial class BoardManager : Node
 
 	// Set up
 	private SteppingStonesBoard _board = new GridSteppingStonesBoard(5, 7); // new GridBoard(7, 5); 
-	private Rules _ruleset = new BasicRules(); 
+	private Rules _ruleset = new WeightedScout(); 
+
 	private static int _totalTiles = 2;
 	
 	
@@ -120,7 +121,10 @@ public partial class BoardManager : Node
 		onUpdate();
 
 		if (finishTurn) {
-			if (_ruleset.hasWon(_board, currentPlayer)) onWin(); 
+			if (_ruleset.hasWon(_board, currentPlayer)) {
+				onWin(); 
+				return; 
+			}
 			switch(currentPlayer) {
 				case Piece.Color.PLAYER_1:
 				GD.Print("Switched to Player 2 from Player 1");
@@ -130,6 +134,10 @@ public partial class BoardManager : Node
 				GD.Print("Switched to Player 1 from Player 2");
 				currentPlayer = Piece.Color.PLAYER_1;
 				break; 
+			}
+			if (_ruleset.hasWon(_board, currentPlayer)) { // Just in case opponent makes you win
+				onWin(); 
+				return; 
 			}
 		}
 	}
@@ -153,9 +161,16 @@ public partial class BoardManager : Node
 		Location selection = selector.selection(); 
 		switch(selector.mouseButton()) {
 			case MouseButton.Left:
-				return movePiece(selection);
-			case MouseButton.Right:
-				return pushPieces(selection);
+				if (previousPosition == null) {
+					markSelection(selection); 
+					return false; 
+				}
+				bool isAdjacentCell = (Math.Abs(selection.row() - previousPosition.row()) + Math.Abs(selection.column() - previousPosition.column())) == 1;
+				if (isAdjacentCell) return movePiece(selection);
+				else return pushPieces(selection);
+			case MouseButton.Right: 
+				unmarkSelection();
+				return false;
 			default:
 				return false;
 		}

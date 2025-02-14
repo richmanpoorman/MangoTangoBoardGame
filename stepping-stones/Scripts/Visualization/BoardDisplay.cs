@@ -22,10 +22,11 @@ public partial class BoardDisplay : Node2D
 	{
 		initializeBoard(); 
 		updateDisplay(); 
-		Position = new Vector2(Position.X - 60, Position.Y - 20);
 	}
 
 	public void initializeBoard() {
+		
+		// Position = new Vector2(Position.X - 60, Position.Y - 20);
 		board = boardManager.board(); 
 
 		int[] size = board.size(); 
