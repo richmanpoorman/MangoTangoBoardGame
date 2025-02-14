@@ -3,7 +3,7 @@ using System.Data.Common;
 
 class GridBoard : Board {
 
-    private int[] dimensions = {5, 7};
+    private int[] dimensions = {4, 6};
 
     #nullable enable
     private Tile?[,] tiles = {}; 
