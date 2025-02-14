@@ -1,13 +1,26 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 // Manages the state of the board, and holds the actual board itself
 public partial class BoardManager : Node
 { 
+
+	public enum GamePhase {
+		PLACE, MOVE 
+	}
+
+	// Set up
 	private SteppingStonesBoard _board = new GridSteppingStonesBoard(5, 7); // new GridBoard(7, 5); 
-	private Rules _ruleset = new BasicRules(); 
+	private Rules _ruleset = new WeightedScout(); 
+
+	private static int _totalTiles = 2;
 	
+	
+	// Current board state
+	private GamePhase gamePhase = GamePhase.PLACE;
+	private int tileCount = _totalTiles * 2;
 	private Piece.Color currentPlayer = Piece.Color.PLAYER_1; 
 	#nullable enable
 	private Location? previousPosition = null; 
@@ -46,6 +59,26 @@ public partial class BoardManager : Node
 		GD.Print("Winner!");
 	}
 
+	public void onRestart() {
+		gamePhase = GamePhase.PLACE; 
+		currentPlayer = Piece.Color.PLAYER_1; 
+		unmarkSelection(); 
+		tileCount = _totalTiles * 2;
+		onUpdate();
+	}
+
+	private void switchPhases() {
+		GD.Print("SWITCHING PHASE");
+		switch(gamePhase) {
+			case GamePhase.PLACE:
+				gamePhase = GamePhase.MOVE; 
+			break; 
+			case GamePhase.MOVE:
+				gamePhase = GamePhase.MOVE;
+			break;
+		}
+	}
+
 	/*onSelection
 	Inputs: None
 	Returns: None
@@ -53,33 +86,46 @@ public partial class BoardManager : Node
 	*/
 	
 	public void onSelection() {
-		Location selection = selector.selection(); 
+		// Location selection = selector.selection(); 
 
-		GD.Print("Selection: (", selection.row(), ", ", selection.column(), ")");
+		// GD.Print("Selection: (", selection.row(), ", ", selection.column(), ")");
 
-		if (previousPosition is Location prev) 
-			GD.Print("Previous: (", prev.row(), ", ", prev.column(), ")");
-		else 	
-			GD.Print("Previous: null");	
+		// if (previousPosition is Location prev) 
+		// 	GD.Print("Previous: (", prev.row(), ", ", prev.column(), ")");
+		// else 	
+		// 	GD.Print("Previous: null");	
 		
 		bool finishTurn = false;
-		switch(selector.mouseButton()) {
-			case MouseButton.Left:
-				finishTurn =  movePiece(selection);
+		switch(gamePhase) {
+			case GamePhase.PLACE: 
+				finishTurn = duringPlacingPhase(); 
 			break; 
-			case MouseButton.Right:
-				finishTurn = addTile(selection, currentPlayer);
-			break;
-			case MouseButton.Middle:
-				finishTurn = pushPieces(selection);
+			case GamePhase.MOVE:
+				finishTurn = duringMovingPhase();
 			break; 
 		}
+
+
+		// switch(selector.mouseButton()) {
+		// 	case MouseButton.Left:
+		// 		finishTurn =  movePiece(selection);
+		// 	break; 
+		// 	case MouseButton.Right:
+		// 		finishTurn = addTile(selection, currentPlayer);
+		// 	break;
+		// 	case MouseButton.Middle:
+		// 		finishTurn = pushPieces(selection);
+		// 	break; 
+		// }
 		
 
 		onUpdate();
 
 		if (finishTurn) {
-			if (_ruleset.hasWon(_board, currentPlayer)) onWin(); 
+			if (_ruleset.hasWon(_board, currentPlayer)) {
+				onWin(); 
+				return; 
+			}
 			switch(currentPlayer) {
 				case Piece.Color.PLAYER_1:
 				GD.Print("Switched to Player 2 from Player 1");
@@ -90,8 +136,47 @@ public partial class BoardManager : Node
 				currentPlayer = Piece.Color.PLAYER_1;
 				break; 
 			}
+			if (_ruleset.hasWon(_board, currentPlayer)) { // Just in case opponent makes you win
+				onWin(); 
+				return; 
+			}
 		}
 	}
+
+	private bool duringPlacingPhase() {
+		
+		Location selection = selector.selection(); 
+		switch(selector.mouseButton()) {
+			case MouseButton.Left:
+				bool didPlace = addTile(selection, currentPlayer);
+				if (didPlace) tileCount -= 1; 
+				if (tileCount == 0) switchPhases(); 
+				return didPlace;
+			default:
+				return false;
+		}
+	}
+
+	private bool duringMovingPhase() {
+		
+		Location selection = selector.selection(); 
+		switch(selector.mouseButton()) {
+			case MouseButton.Left:
+				if (previousPosition == null) {
+					markSelection(selection); 
+					return false; 
+				}
+				bool isAdjacentCell = (Math.Abs(selection.row() - previousPosition.row()) + Math.Abs(selection.column() - previousPosition.column())) == 1;
+				if (isAdjacentCell) return movePiece(selection);
+				else return pushPieces(selection);
+			case MouseButton.Right: 
+				unmarkSelection();
+				return false;
+			default:
+				return false;
+		}
+	}
+
 	#nullable disable
 
 	/*pushPieces
