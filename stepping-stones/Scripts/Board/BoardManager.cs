@@ -50,7 +50,7 @@ public partial class BoardManager : Node
 	}
 	public void setBoard(SteppingStonesBoard board){ 
 		_board = board; 
-		onUpdate();
+		onRestart();
 	}
 	
 	#nullable enable
@@ -64,6 +64,10 @@ public partial class BoardManager : Node
 		currentPlayer = Piece.Color.PLAYER_1; 
 		unmarkSelection(); 
 		tileCount = _totalTiles * 2;
+
+
+		display.initializeBoard(); 
+		
 		onUpdate();
 	}
 
