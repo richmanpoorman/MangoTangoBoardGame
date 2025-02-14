@@ -22,7 +22,6 @@ public partial class BoardDisplay : Node2D
 	{
 		initializeBoard(); 
 		updateDisplay(); 
-		Position = new Vector2(Position.X - 60, Position.Y - 20);
 	}
 
 	public void initializeBoard() {
