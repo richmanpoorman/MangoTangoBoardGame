@@ -64,6 +64,7 @@ public partial class BoardManager : Node
 		currentPlayer = Piece.Color.PLAYER_1; 
 		unmarkSelection(); 
 		tileCount = _totalTiles * 2;
+		onUpdate();
 	}
 
 	private void switchPhases() {
