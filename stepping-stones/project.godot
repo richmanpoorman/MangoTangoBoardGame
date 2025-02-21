@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="Stepping Stones"
-run/main_scene="res://Scenes/Main.tscn"
+run/main_scene="res://Scenes/titlescreen.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://Sprites/TileSprites/icon.svg"
 
 [autoload]
 
-SceneManager="*res://SceneManager.cs"
+SceneManager="*res://Scripts/UILogic/SceneManager.cs"
 
 [dotnet]
 
