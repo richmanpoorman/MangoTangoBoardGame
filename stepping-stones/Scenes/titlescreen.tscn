@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://bn3qfc6uno04h"]
+[gd_scene load_steps=3 format=3 uid="uid://bn3qfc6uno04h"]
 
 [ext_resource type="Script" path="res://Scripts/UILogic/Titlescreen.cs" id="1_cra0u"]
+[ext_resource type="PackedScene" uid="uid://cgelfsecvh8rq" path="res://Templates/NeworLoad.tscn" id="2_ng8rn"]
 
-[node name="TitleScreen" type="Control" node_paths=PackedStringArray("loadBox")]
+[node name="TitleScreen" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,7 +11,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cra0u")
-loadBox = NodePath("HBoxContainer/LoadGameButton/MainLoad")
 
 [node name="StartButton" type="Button" parent="."]
 visible = false
@@ -43,43 +43,7 @@ text = "Stepping Stones"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="NeworLoad" parent="." instance=ExtResource("2_ng8rn")]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.499
-anchor_top = 0.525
-anchor_right = 0.499
-anchor_bottom = 0.525
-offset_left = -269.848
-offset_top = 46.8
-offset_right = 269.152
-offset_bottom = 152.8
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="NewGameButton" type="Button" parent="HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "New Game"
-
-[node name="LoadGameButton" type="Button" parent="HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "Load Game"
-
-[node name="MainLoad" type="FileDialog" parent="HBoxContainer/LoadGameButton"]
-auto_translate_mode = 1
-title = "Open a File"
-initial_position = 1
-size = Vector2i(275, 300)
-ok_button_text = "Open"
-dialog_hide_on_ok = true
-file_mode = 0
-access = 1
-root_subfolder = "user://"
-filters = PackedStringArray("*.step")
 
 [connection signal="pressed" from="StartButton" to="." method="OnStartButtonPressed"]
-[connection signal="pressed" from="HBoxContainer/NewGameButton" to="." method="OnNewGameButtonPressed"]
-[connection signal="pressed" from="HBoxContainer/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
-[connection signal="file_selected" from="HBoxContainer/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]

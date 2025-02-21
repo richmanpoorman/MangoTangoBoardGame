@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgelfsecvh8rq"]
+
+[ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
+
+[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_14iu0")
+loadBox = NodePath("HBoxContainer/LoadGameButton/MainLoad")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.499
+anchor_top = 0.525
+anchor_right = 0.499
+anchor_bottom = 0.525
+offset_left = -269.848
+offset_top = 46.8
+offset_right = 269.152
+offset_bottom = 152.8
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NewGameButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "New Game"
+
+[node name="WidthBox" type="SpinBox" parent="HBoxContainer/NewGameButton"]
+visible = false
+layout_mode = 0
+offset_right = 83.0625
+offset_bottom = 31.0
+min_value = 1.0
+max_value = 26.0
+value = 5.0
+prefix = "Width"
+
+[node name="LengthBox" type="SpinBox" parent="HBoxContainer/NewGameButton"]
+visible = false
+layout_mode = 0
+offset_right = 83.0625
+offset_bottom = 31.0
+min_value = 1.0
+max_value = 26.0
+value = 5.0
+prefix = "Width"
+
+[node name="LoadGameButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Load Game"
+
+[node name="MainLoad" type="FileDialog" parent="HBoxContainer/LoadGameButton"]
+auto_translate_mode = 1
+title = "Open a File"
+initial_position = 1
+size = Vector2i(275, 300)
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 1
+root_subfolder = "user://"
+filters = PackedStringArray("*.step")
+
+[connection signal="pressed" from="HBoxContainer/NewGameButton" to="." method="OnNewGameButtonPressed"]
+[connection signal="pressed" from="HBoxContainer/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
+[connection signal="file_selected" from="HBoxContainer/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]
