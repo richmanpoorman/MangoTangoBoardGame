@@ -18,6 +18,12 @@ public partial class GameUi : Control
 	[Export]
 	public FileDialog loadBox;
 	
+	[Export]
+	public RichTextLabel turnLabel;
+
+	private Piece.Color currentPlayer;
+
+	private BoardManager manager;
 
 	private void OnResetButtonPressed() 
 	{
@@ -42,11 +48,31 @@ public partial class GameUi : Control
 	}
 	public override void _Ready()
 	{
+		manager = GetParent().GetNode<BoardManager>("Main/BoardManager");
+		currentPlayer = manager.playerTurn();
+		switchColor();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		Piece.Color tempTurn = manager.playerTurn();
+		if (currentPlayer != tempTurn ){
+			currentPlayer = tempTurn;
+			switchColor();
+		}
+	}
+	private void switchColor () {
+		switch(currentPlayer) {
+			case Piece.Color.PLAYER_1:
+				turnLabel.Text = "Current Turn is: [color=firebrick] Player 1 [/color]";
+				break;
+			case Piece.Color.PLAYER_2:
+				turnLabel.Text = "Current Turn is: [color=dodger_blue] Player 2 [/color]";
+				break;
+			default:
+					break;
+			}
 	}
 	///Some code for how reset maybe works
 	///initialBoard = new setup

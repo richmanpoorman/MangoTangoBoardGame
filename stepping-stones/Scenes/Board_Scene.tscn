@@ -11,7 +11,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(171, 45)
+position = Vector2(220, 45)
 
 [node name="BoardManager" parent="." instance=ExtResource("6_yf7y7")]
 position = Vector2(-30, -7)

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/UILogic/GameUi.cs" id="1_n15e5"]
 
-[node name="GameUI" type="Control" node_paths=PackedStringArray("saveBox", "loadBox")]
+[node name="GameUI" type="Control" node_paths=PackedStringArray("saveBox", "loadBox", "turnLabel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,6 +12,7 @@ grow_vertical = 2
 script = ExtResource("1_n15e5")
 saveBox = NodePath("CanvasLayer/SaveDialog")
 loadBox = NodePath("CanvasLayer/LoadDialog")
+turnLabel = NodePath("CanvasLayer/TurnLabel")
 metadata/_edit_use_anchors_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

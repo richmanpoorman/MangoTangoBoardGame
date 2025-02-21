@@ -11,6 +11,14 @@ public partial class BoardManager : Node
 		PLACE, MOVE 
 	}
 
+	// [Signal]
+	// public delegate void SwitchPhaseEventHandler();
+	// /* 
+	// Input: Player color (current turn)
+	// Input: Player color (current turn)
+	// */
+	// [Signal]
+	// public delegate void SwitchPlayerEventHandler();
 	// Set up
 	private SteppingStonesBoard _board = new GridSteppingStonesBoard(5, 7); // new GridBoard(7, 5); 
 	private Rules _ruleset = new WeightedScout(); 
@@ -48,6 +56,8 @@ public partial class BoardManager : Node
     public void onUpdate() {
 		display.updateDisplay();
 	}
+	public Piece.Color playerTurn() { return currentPlayer;}
+	public void setTurn(Piece.Color turn) { currentPlayer = turn;}
 	public void setBoard(SteppingStonesBoard board){ 
 		_board = board; 
 		onRestart();
