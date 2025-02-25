@@ -11,6 +11,7 @@ public partial class SceneManager : Node
 	public override void _Ready()
 	{
 		Instance = this;
+		board = new GridSteppingStonesBoard(5, 7);
 	}
 
 	public void goToMainBoard(SteppingStonesBoard board) {

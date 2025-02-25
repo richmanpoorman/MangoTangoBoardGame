@@ -43,6 +43,40 @@ public partial class BoardManager : Node
 	[Export]
 	private DisplayOptions moveOptionsDisplay; 
 
+	[Signal]
+	public delegate void onPlayerWinEventHandler(); 
+
+	// Signals to listen for 
+
+	[Signal]
+	public delegate void onBoardResetEventHandler(); 
+
+	[Signal]
+	public delegate void onTurnChangeEventHandler(Piece.Color turn); 
+
+	[Signal]
+	public delegate void onMovementPhaseStartEventHandler(); 
+
+	[Signal]
+	public delegate void onPhaseStartEventHandler(GamePhase phase); 
+
+	[Signal]
+	public delegate void onBoardUpdateEventHandler();
+
+	[Signal]
+	public delegate void onTilePlaceEventHandler(); 
+
+	[Signal]
+	public delegate void onScoutMoveEventHandler(); 
+
+	[Signal]
+	public delegate void onTileMoveEventHandler(); 
+
+	[Signal]
+	public delegate void onTilePushEventHandler(); 
+
+
+
     /*board
     Inputs: None
     Returns: Board
@@ -55,6 +89,7 @@ public partial class BoardManager : Node
     Description: Updates display*/
     public void onUpdate() {
 		display.updateDisplay();
+		EmitSignal(SignalName.onBoardUpdate);
 	}
 	public Piece.Color playerTurn() { return currentPlayer;}
 	public void setTurn(Piece.Color turn) { currentPlayer = turn;}
@@ -67,17 +102,19 @@ public partial class BoardManager : Node
 
 	public void onWin() {
 		GD.Print("Winner!");
+		EmitSignal(SignalName.onPlayerWin);
 	}
 
 	public void onRestart() {
 		gamePhase = GamePhase.PLACE; 
+		EmitSignal(SignalName.onPhaseStart, (int)GamePhase.PLACE);
 		currentPlayer = Piece.Color.PLAYER_1; 
 		unmarkSelection(); 
 		tileCount = _totalTiles * 2;
 
 
 		display.initializeBoard(); 
-		
+		EmitSignal(SignalName.onBoardReset);
 		onUpdate();
 	}
 
@@ -86,6 +123,7 @@ public partial class BoardManager : Node
 		switch(gamePhase) {
 			case GamePhase.PLACE:
 				gamePhase = GamePhase.MOVE; 
+				EmitSignal(SignalName.onPhaseStart, (int)GamePhase.MOVE);
 			break; 
 			case GamePhase.MOVE:
 				gamePhase = GamePhase.MOVE;
@@ -98,8 +136,8 @@ public partial class BoardManager : Node
 	Returns: None
 	Description: attempts selected action based on click; updates board; if action sucessful, switches player turn
 	*/
-	
-	public void onSelection() {
+	public void onSelection(int row, int column) {
+		Location selection = Location.at(row, column);
 		// Location selection = selector.selection(); 
 
 		// GD.Print("Selection: (", selection.row(), ", ", selection.column(), ")");
@@ -112,10 +150,10 @@ public partial class BoardManager : Node
 		bool finishTurn = false;
 		switch(gamePhase) {
 			case GamePhase.PLACE: 
-				finishTurn = duringPlacingPhase(); 
+				finishTurn = duringPlacingPhase(selection); 
 			break; 
 			case GamePhase.MOVE:
-				finishTurn = duringMovingPhase();
+				finishTurn = duringMovingPhase(selection);
 			break; 
 		}
 
@@ -144,10 +182,12 @@ public partial class BoardManager : Node
 				case Piece.Color.PLAYER_1:
 				GD.Print("Switched to Player 2 from Player 1");
 				currentPlayer = Piece.Color.PLAYER_2; 
+				EmitSignal(SignalName.onTurnChange, (int)Piece.Color.PLAYER_2);
 				break; 
 				case Piece.Color.PLAYER_2: 
 				GD.Print("Switched to Player 1 from Player 2");
 				currentPlayer = Piece.Color.PLAYER_1;
+				EmitSignal(SignalName.onTurnChange, (int)Piece.Color.PLAYER_1);
 				break; 
 			}
 			if (_ruleset.hasWon(_board, currentPlayer)) { // Just in case opponent makes you win
@@ -157,38 +197,23 @@ public partial class BoardManager : Node
 		}
 	}
 
-	private bool duringPlacingPhase() {
+	private bool duringPlacingPhase(Location selection) {
 		
-		Location selection = selector.selection(); 
-		switch(selector.mouseButton()) {
-			case MouseButton.Left:
-				bool didPlace = addTile(selection, currentPlayer);
-				if (didPlace) tileCount -= 1; 
-				if (tileCount == 0) switchPhases(); 
-				return didPlace;
-			default:
-				return false;
-		}
+		bool didPlace = addTile(selection, currentPlayer);
+		if (didPlace) tileCount -= 1; 
+		if (tileCount == 0) switchPhases(); 
+		return didPlace;
 	}
 
-	private bool duringMovingPhase() {
-		
-		Location selection = selector.selection(); 
-		switch(selector.mouseButton()) {
-			case MouseButton.Left:
-				if (previousPosition == null) {
-					markSelection(selection); 
-					return false; 
-				}
-				bool isAdjacentCell = (Math.Abs(selection.row() - previousPosition.row()) + Math.Abs(selection.column() - previousPosition.column())) == 1;
-				if (isAdjacentCell) return movePiece(selection);
-				else return pushPieces(selection);
-			case MouseButton.Right: 
-				unmarkSelection();
-				return false;
-			default:
-				return false;
+	private bool duringMovingPhase(Location selection) {
+	
+		if (previousPosition == null) {
+			markSelection(selection); 
+			return false; 
 		}
+		bool isAdjacentCell = (Math.Abs(selection.row() - previousPosition.row()) + Math.Abs(selection.column() - previousPosition.column())) == 1;
+		if (isAdjacentCell) return movePiece(selection);
+		else return pushPieces(selection);
 	}
 
 	#nullable disable
@@ -211,6 +236,7 @@ public partial class BoardManager : Node
 		}
 		bool isSuccess = _board.pushMove(previousPosition, selection);
 		unmarkSelection(); 
+		if (isSuccess) EmitSignal(SignalName.onTilePush); 
 		return isSuccess; 
 	}	
 	/*addTile
@@ -224,6 +250,7 @@ public partial class BoardManager : Node
 		GD.Print("Attempt Add");
 		bool isSuccess = _board.placeTile(new Tile(color), selection);
 		unmarkSelection(); 
+		if (isSuccess) EmitSignal(SignalName.onTilePlace); 
 		return isSuccess;
 		// _board.addTile(new Tile(color), selection);
 		// return true;
@@ -248,6 +275,7 @@ public partial class BoardManager : Node
 		}
 		bool isSuccess = _board.movePiece(previousPosition, selection);
 		unmarkSelection();
+		if (isSuccess) EmitSignal(SignalName.onTileMove);
 		return isSuccess;
 	}
 
