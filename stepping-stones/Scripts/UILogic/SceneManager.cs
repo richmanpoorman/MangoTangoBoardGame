@@ -7,6 +7,8 @@ public partial class SceneManager : Node
 	[Export]
 	private String _mainSceneFile = "res://Scenes/Main.tscn";
 	public static SceneManager Instance {get; private set;}
+	// public int width {set; get;}
+	// public int length {set; get;}
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{

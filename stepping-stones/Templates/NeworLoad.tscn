@@ -2,17 +2,84 @@
 
 [ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
 
-[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox")]
+[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "hBox", "newButton", "loadButton", "tabs")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -37.0
+offset_top = -4.0
+offset_right = -37.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_14iu0")
-loadBox = NodePath("HBoxContainer/LoadGameButton/MainLoad")
+loadBox = NodePath("Primary/LoadGameButton/MainLoad")
+hBox = NodePath("Secondary")
+newButton = NodePath("Primary/NewGameButton")
+loadButton = NodePath("Primary/LoadGameButton")
+tabs = NodePath("Tabs")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="Tabs" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -109.0
+offset_right = 50.0
+offset_bottom = 61.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Tabs"]
+custom_minimum_size = Vector2(100, 45)
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="WidthBox" type="SpinBox" parent="Tabs/HBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+max_value = 26.0
+value = 5.0
+prefix = "Width"
+
+[node name="LengthBox" type="SpinBox" parent="Tabs/HBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+max_value = 26.0
+value = 7.0
+prefix = "Length"
+
+[node name="Secondary" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+anchor_left = 0.5
+anchor_top = 0.681
+anchor_right = 0.5
+anchor_bottom = 0.681
+offset_left = -257.0
+offset_top = -48.288
+offset_right = 225.0
+offset_bottom = 48.712
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartGame" type="Button" parent="Secondary"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Start Game"
+
+[node name="BackButton" type="Button" parent="Secondary"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Return
+"
+
+[node name="Primary" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.499
@@ -26,37 +93,17 @@ offset_bottom = 152.8
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="NewGameButton" type="Button" parent="HBoxContainer"]
+[node name="NewGameButton" type="Button" parent="Primary"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "New Game"
 
-[node name="WidthBox" type="SpinBox" parent="HBoxContainer/NewGameButton"]
-visible = false
-layout_mode = 0
-offset_right = 83.0625
-offset_bottom = 31.0
-min_value = 1.0
-max_value = 26.0
-value = 5.0
-prefix = "Width"
-
-[node name="LengthBox" type="SpinBox" parent="HBoxContainer/NewGameButton"]
-visible = false
-layout_mode = 0
-offset_right = 83.0625
-offset_bottom = 31.0
-min_value = 1.0
-max_value = 26.0
-value = 5.0
-prefix = "Width"
-
-[node name="LoadGameButton" type="Button" parent="HBoxContainer"]
+[node name="LoadGameButton" type="Button" parent="Primary"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Load Game"
 
-[node name="MainLoad" type="FileDialog" parent="HBoxContainer/LoadGameButton"]
+[node name="MainLoad" type="FileDialog" parent="Primary/LoadGameButton"]
 auto_translate_mode = 1
 title = "Open a File"
 initial_position = 1
@@ -68,6 +115,10 @@ access = 1
 root_subfolder = "user://"
 filters = PackedStringArray("*.step")
 
-[connection signal="pressed" from="HBoxContainer/NewGameButton" to="." method="OnNewGameButtonPressed"]
-[connection signal="pressed" from="HBoxContainer/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
-[connection signal="file_selected" from="HBoxContainer/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]
+[connection signal="value_changed" from="Tabs/HBoxContainer/WidthBox" to="." method="OnWidthBoxValueChanged"]
+[connection signal="value_changed" from="Tabs/HBoxContainer/LengthBox" to="." method="OnLengthBoxValueChanged"]
+[connection signal="pressed" from="Secondary/StartGame" to="." method="OnStartGameButtonPressed"]
+[connection signal="pressed" from="Secondary/BackButton" to="." method="OnBackButtonPressed"]
+[connection signal="pressed" from="Primary/NewGameButton" to="." method="OnNewGameButtonPressed"]
+[connection signal="pressed" from="Primary/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
+[connection signal="file_selected" from="Primary/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]

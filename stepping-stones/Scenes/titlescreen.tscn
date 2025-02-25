@@ -12,23 +12,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_cra0u")
 
-[node name="StartButton" type="Button" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -178.0
-offset_top = -195.0
-offset_right = 179.0
-offset_bottom = -99.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 64
-text = "Start Game"
-
 [node name="TitleLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 5
@@ -45,5 +28,3 @@ vertical_alignment = 1
 
 [node name="NeworLoad" parent="." instance=ExtResource("2_ng8rn")]
 layout_mode = 1
-
-[connection signal="pressed" from="StartButton" to="." method="OnStartButtonPressed"]
