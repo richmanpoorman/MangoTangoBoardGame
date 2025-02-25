@@ -54,18 +54,20 @@ public partial class GameUi : Control
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	private void onTurnChange(Piece.Color turn)
 	{
-		Piece.Color tempTurn = manager.playerTurn();
-		if (currentPlayer != tempTurn ){
-			currentPlayer = tempTurn;
+		if (turn != currentPlayer) {
 			switchColor();
 		}
+	}
+	
+	public override void _Process(double delta)
+	{
 	}
 	private void switchColor () {
 		switch(currentPlayer) {
 			case Piece.Color.PLAYER_1:
-				turnLabel.Text = "Current Turn is: [color=firebrick] Player 1 [/color]";
+				turnLabel.Text = "Current Turn is: [color=#FA003F] Player 1 [/color]";
 				break;
 			case Piece.Color.PLAYER_2:
 				turnLabel.Text = "Current Turn is: [color=dodger_blue] Player 2 [/color]";

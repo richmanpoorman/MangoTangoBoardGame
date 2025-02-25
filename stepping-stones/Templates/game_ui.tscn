@@ -65,6 +65,7 @@ offset_left = -199.5
 offset_right = 199.5
 offset_bottom = 99.0
 grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 36
 bbcode_enabled = true
 text = "Current Turn is: [color=red] Red [/color]"

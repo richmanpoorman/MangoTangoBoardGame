@@ -8,7 +8,9 @@ public partial class NeworLoad : Control
 	private FileDialog loadBox;
 
 	[Export]
-	private HBoxContainer hBox;
+	private Button startButton;
+	[Export]
+	private Button backButton;
 	[Export]
 	private Button newButton;
 	[Export]
@@ -25,7 +27,8 @@ public partial class NeworLoad : Control
 	private void OnNewGameButtonPressed() 
 	{
 		tabs.Visible = true;
-		hBox.Visible = true;
+		startButton.Visible = true;
+		backButton.Visible = true;
 		newButton.Visible = false;
 		loadButton.Visible = false;
 	}
@@ -47,6 +50,11 @@ public partial class NeworLoad : Control
 		width = (int)value;
 
 	}
+
+	private void OnCloseButtonPressed() 
+	{
+		tabs.Visible = false;
+	}
 	private void OnLengthBoxValueChanged(float value)
 	{
 		length = (int)value;
@@ -61,7 +69,8 @@ public partial class NeworLoad : Control
 	private void OnBackButtonPressed() 
 	{
 		tabs.Visible = false;
-		hBox.Visible = false;
+		startButton.Visible = false;
+		backButton.Visible = false;
 		newButton.Visible = true;
 		loadButton.Visible = true;
 	}

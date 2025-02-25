@@ -6,6 +6,7 @@ public partial class SceneManager : Node
 	public SteppingStonesBoard board {get; set;}
 	[Export]
 	private String _mainSceneFile = "res://Scenes/Main.tscn";
+	private String _titleSceneFile = "res://Scenes/titlescreen.tscn";
 	public static SceneManager Instance {get; private set;}
 	// public int width {set; get;}
 	// public int length {set; get;}
@@ -19,6 +20,11 @@ public partial class SceneManager : Node
 	public void goToMainBoard(SteppingStonesBoard board) {
 		this.board = board;
 		GetTree().ChangeSceneToFile(_mainSceneFile);
+	}
+
+	
+	public void goToTitleScreen() {
+		GetTree().ChangeSceneToFile(_titleSceneFile);
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
