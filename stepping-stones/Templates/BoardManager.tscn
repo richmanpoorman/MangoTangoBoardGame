@@ -82,3 +82,5 @@ pushLeftID = 1
 pushRightID = 2
 scoutMoveID = 4
 tileMoveID = 5
+
+[connection signal="onSelection" from="Selection" to="." method="onSelection"]
