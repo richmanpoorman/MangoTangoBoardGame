@@ -14,6 +14,9 @@ public partial class SelectSquare : Node2D
 	[Export]
 	private TileMapLayer selectionGrid; 
 
+	[Signal]
+	public delegate void onSelectionEventHandler(int row, int column);
+
 	private Board board;
 
 	private Location _position;
@@ -40,7 +43,7 @@ public partial class SelectSquare : Node2D
 			GD.Print("Mouse Result: ", position.row(), ", ", position.column());
 		else 
 			GD.Print("Mouse Result: null");
-		boardManager.onSelection();
+		EmitSignal(SignalName.onSelection, _position.row(), _position.column()); 
     }
 
 	public Location selection() { return _position; }
