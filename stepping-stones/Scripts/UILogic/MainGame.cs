@@ -14,6 +14,13 @@ public partial class MainGame : Node2D
 		sceneManager = SceneManager.Instance;
 		manager = GetNode<BoardManager>("Main/BoardManager");
 		CallDeferred(MethodName.DeferredSetupCleanup);
+		manager.onPlayerWin += handleWin;
+	}
+	private void handleWin()
+	{
+		GetNode<Control>("GameUI").Visible = false;
+		GetNode<Node2D>("Main").Visible = false;
+		GetNode<Control>("WinScreen").Visible = true;
 	}
 
 	public void DeferredSetupCleanup() {

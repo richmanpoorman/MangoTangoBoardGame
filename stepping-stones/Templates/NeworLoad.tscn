@@ -92,6 +92,7 @@ root_subfolder = "user://"
 filters = PackedStringArray("*.step")
 
 [node name="Tabs" type="TabContainer" parent="."]
+visible = false
 material = SubResource("CanvasItemMaterial_8nm86")
 layout_mode = 1
 anchors_preset = -1
