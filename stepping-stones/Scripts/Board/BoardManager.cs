@@ -130,6 +130,17 @@ public partial class BoardManager : Node
 		}
 	}
 
+	public int playerTileCount(Piece.Color playerTurn) {
+		switch(playerTurn) {
+			case Piece.Color.PLAYER_1:
+				return tileCount / 2;
+			case Piece.Color.PLAYER_2:
+				return (tileCount + 1) / 2; 
+			default: 
+				return -1; 
+		}
+	} 
+
 	/*onSelection
 	Inputs: None
 	Returns: None
