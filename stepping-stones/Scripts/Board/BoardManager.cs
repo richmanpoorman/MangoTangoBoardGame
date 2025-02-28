@@ -82,7 +82,10 @@ public partial class BoardManager : Node
 		_board = board; 
 		onRestart();
 	}
-	
+	public void setPhase(GamePhase phase) {
+		gamePhase = phase; 
+		_eventBus.EmitSignal(EventBus.SignalName.onPhaseStart, (int)phase);
+	}
 	#nullable enable
 
 	public void onWin() {

@@ -14,6 +14,7 @@ public partial class EventBus : Node
         }
 
         Bus = this;
+		GD.Print("Bus Initialized");
     }
 
     /*
