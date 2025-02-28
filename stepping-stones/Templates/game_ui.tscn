@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/UILogic/GameUi.cs" id="1_n15e5"]
 
-[node name="GameUI" type="Control" node_paths=PackedStringArray("saveBox", "loadBox", "turnLabel")]
+[node name="GameUI" type="Control" node_paths=PackedStringArray("saveBox", "loadBox", "turnLabel", "redTiles", "blueTiles")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,6 +13,8 @@ script = ExtResource("1_n15e5")
 saveBox = NodePath("CanvasLayer/SaveDialog")
 loadBox = NodePath("CanvasLayer/LoadDialog")
 turnLabel = NodePath("CanvasLayer/TurnLabel")
+redTiles = NodePath("CanvasLayer/RedLabel")
+blueTiles = NodePath("CanvasLayer/BlueLabel")
 metadata/_edit_use_anchors_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -69,6 +71,30 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 36
 bbcode_enabled = true
 text = "Current Turn is: [color=red] Red [/color]"
+fit_content = true
+autowrap_mode = 2
+
+[node name="RedLabel" type="RichTextLabel" parent="CanvasLayer"]
+offset_right = 399.0
+offset_bottom = 99.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "Player 1 has: [color=#FA003F] -3 [/color] tiles"
+fit_content = true
+autowrap_mode = 2
+
+[node name="BlueLabel" type="RichTextLabel" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -399.0
+offset_bottom = 99.0
+grow_horizontal = 0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "Player 2 has: [color=dodger_blue] -3 [/color] tiles"
 fit_content = true
 autowrap_mode = 2
 

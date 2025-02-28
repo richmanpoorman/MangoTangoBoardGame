@@ -24,6 +24,8 @@ public partial class NeworLoad : Control
 	private int width = 5;
 	private int length = 7;
 
+	private int numTiles = 4;
+
 	private void OnNewGameButtonPressed() 
 	{
 		tabs.Visible = true;
@@ -34,7 +36,7 @@ public partial class NeworLoad : Control
 	}
 	private void OnStartGameButtonPressed() 
 	{
-		sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length));
+		sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
 	}
 	private void OnLoadGameButtonPressed() 
 	{
@@ -42,7 +44,8 @@ public partial class NeworLoad : Control
 	}
 
 	private void OnMainLoadFileSelected(String path) {
-		sceneManager.goToMainBoard(saver.LoadGame(path));
+
+		sceneManager.goToMainBoard(saver.LoadGame(path).ToTuple());
 	}
 
 	private void OnWidthBoxValueChanged(float value)
@@ -58,6 +61,10 @@ public partial class NeworLoad : Control
 	private void OnLengthBoxValueChanged(float value)
 	{
 		length = (int)value;
+	}
+	private void OnNumTilesBoxValueChanged(float value) 
+	{
+		numTiles = (int)value;
 	}
 	
 	public override void _Ready()

@@ -18,7 +18,7 @@ public partial class Titlescreen : Control
 	}
 
 	private void OnMainLoadFileSelected(String path) {
-		sceneManager.goToMainBoard(saver.LoadGame(path));
+		sceneManager.goToMainBoard(saver.LoadGame(path).ToTuple());
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)

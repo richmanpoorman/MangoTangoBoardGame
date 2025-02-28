@@ -16,5 +16,3 @@ position = Vector2(220, 45)
 [node name="BoardManager" parent="." instance=ExtResource("6_yf7y7")]
 position = Vector2(-30, -7)
 scale = Vector2(4, 4)
-player1DefaultTileCount = 2
-player2DefaultTileCount = 2
