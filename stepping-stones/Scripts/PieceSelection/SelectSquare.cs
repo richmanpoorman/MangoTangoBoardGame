@@ -14,15 +14,18 @@ public partial class SelectSquare : Node2D
 	[Export]
 	private TileMapLayer selectionGrid; 
 
-	[Signal]
-	public delegate void onSelectionEventHandler(int row, int column);
+	
 
 	private Board board;
 
 	private Location _position;
 	private MouseButton _mouseButton = MouseButton.None;
+	private EventBus _eventBus; 
 
-    public override void _Ready() { board = boardManager.board(); }
+    public override void _Ready() {
+		_eventBus = EventBus.Bus;
+		board = boardManager.board();
+	}
 
     public override void _Input(InputEvent @event)
     {
@@ -43,7 +46,7 @@ public partial class SelectSquare : Node2D
 			GD.Print("Mouse Result: ", position.row(), ", ", position.column());
 		else 
 			GD.Print("Mouse Result: null");
-		EmitSignal(SignalName.onSelection, _position.row(), _position.column()); 
+		_eventBus.EmitSignal(EventBus.SignalName.onSelection, _position.row(), _position.column()); 
     }
 
 	public Location selection() { return _position; }

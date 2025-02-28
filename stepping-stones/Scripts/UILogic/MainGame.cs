@@ -9,12 +9,17 @@ public partial class MainGame : Node2D
 	private FileSaver saver =  new GameSaver();
 	private SceneManager sceneManager;
 
+	private EventBus _eventBus; 
+
 	public override void _Ready()
 	{
+		_eventBus = EventBus.Bus;
 		sceneManager = SceneManager.Instance;
 		manager = GetNode<BoardManager>("Main/BoardManager");
 		CallDeferred(MethodName.DeferredSetupCleanup);
-		manager.onPlayerWin += handleWin;
+
+		// Connect(EventBus.SignalName.onPlayerWin, Callable.From(handleWin));
+		_eventBus.onPlayerWin += handleWin;
 	}
 	private void handleWin()
 	{

@@ -14,12 +14,18 @@ public partial class BoardDisplay : Node2D
 	[Export]
 	private int spaceTileID, player1ScoutID, player2ScoutID, player1TileID, player2TileID; 
 	
-	
+	private EventBus _eventBus; 
 	
 	private Board board; 
 	
 	public override void _Ready()
 	{
+		_eventBus = EventBus.Bus;
+
+		_eventBus.onBoardUpdate += _onUpdate; 
+		_eventBus.onBoardReset  += _onRestart; 
+		// Connect(EventBus.SignalName.onBoardUpdate, Callable.From(_onUpdate));
+		// Connect(EventBus.SignalName.onBoardReset, Callable.From(onRestart));
 		initializeBoard(); 
 		updateDisplay(); 
 	}
@@ -39,6 +45,14 @@ public partial class BoardDisplay : Node2D
 	}
 
 	#nullable enable
+	public void _onUpdate() {
+		updateDisplay(); 
+	}
+
+	public void _onRestart() {
+		initializeBoard();
+	}
+
 	public void updateDisplay() {
 		board = boardManager.board(); 
 		

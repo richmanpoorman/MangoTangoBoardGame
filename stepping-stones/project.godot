@@ -18,6 +18,7 @@ config/icon="res://Sprites/TileSprites/icon.svg"
 [autoload]
 
 SceneManager="*res://Scripts/UILogic/SceneManager.cs"
+EventBus="*res://Scripts/EventBus.cs"
 
 [dotnet]
 
