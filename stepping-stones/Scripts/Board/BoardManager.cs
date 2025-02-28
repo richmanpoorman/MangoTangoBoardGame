@@ -23,16 +23,27 @@ public partial class BoardManager : Node
 	private SteppingStonesBoard _board = new GridSteppingStonesBoard(5, 7); // new GridBoard(7, 5); 
 	private Rules _ruleset = new WeightedScout(); 
 
-	private static int _totalTiles = 2;
+	// private static int _totalTiles = 2;
+	[Export] 
+	private int player1DefaultTileCount = 20; 
+	[Export]
+	private int player2DefaultTileCount = 20; 
+
+	private Dictionary<Piece.Color, int> tileCounts = new Dictionary<Piece.Color, int>() {
+		{Piece.Color.PLAYER_1, 20}, 
+		{Piece.Color.PLAYER_2, 20}
+	};
 	
 	
 	// Current board state
 	private GamePhase gamePhase = GamePhase.PLACE;
-	private int tileCount = _totalTiles * 2;
+	// private int tileCount = _totalTiles * 2;
 	private Piece.Color currentPlayer = Piece.Color.PLAYER_1; 
 	#nullable enable
 	private Location? previousPosition = null; 
 	#nullable disable
+
+	
 
 	[Export]
 	private SelectSquare selector; 
@@ -75,6 +86,9 @@ public partial class BoardManager : Node
 	[Signal]
 	public delegate void onTilePushEventHandler(); 
 
+	public override void _Ready() {
+		onRestart();
+	}
 
     /*board
     Inputs: None
@@ -109,8 +123,9 @@ public partial class BoardManager : Node
 		EmitSignal(SignalName.onPhaseStart, (int)GamePhase.PLACE);
 		currentPlayer = Piece.Color.PLAYER_1; 
 		unmarkSelection(); 
-		tileCount = _totalTiles * 2;
-
+		// tileCount = _totalTiles * 2;
+		setTileCount(Piece.Color.PLAYER_1, player1DefaultTileCount);
+		setTileCount(Piece.Color.PLAYER_2, player2DefaultTileCount);
 
 		display.initializeBoard(); 
 		EmitSignal(SignalName.onBoardReset);
@@ -130,16 +145,13 @@ public partial class BoardManager : Node
 		}
 	}
 
-	public int playerTileCount(Piece.Color playerTurn) {
-		switch(playerTurn) {
-			case Piece.Color.PLAYER_1:
-				return tileCount / 2;
-			case Piece.Color.PLAYER_2:
-				return (tileCount + 1) / 2; 
-			default: 
-				return -1; 
-		}
+	public int playerTileCount(Piece.Color player) {
+		return tileCounts[player]; 
 	} 
+
+	public void setTileCount(Piece.Color player, int count) {
+		tileCounts[player] = count; 
+	}
 
 	/*onSelection
 	Inputs: None
@@ -209,9 +221,12 @@ public partial class BoardManager : Node
 
 	private bool duringPlacingPhase(Location selection) {
 		
+		if (tileCounts[currentPlayer] == 0) {
+			switchPhases();
+			return false; 
+		} 
 		bool didPlace = addTile(selection, currentPlayer);
-		if (didPlace) tileCount -= 1; 
-		if (tileCount == 0) switchPhases(); 
+		if (didPlace) tileCounts[currentPlayer] -= 1; 
 		return didPlace;
 	}
 
