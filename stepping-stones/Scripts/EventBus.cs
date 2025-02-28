@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
 
 public partial class EventBus : Node
 {
@@ -15,7 +17,17 @@ public partial class EventBus : Node
 
         Bus = this;
 		GD.Print("Bus Initialized");
+		
+		connectSignals(); 
+		 
     }
+	// Connects associated signals, which should also trigger if one is sent
+	private void connectSignals() {
+		onTileMove   += () => EmitSignal(SignalName.onBoardUpdate);
+		onTilePlace  += () => EmitSignal(SignalName.onBoardUpdate);
+		onTilePush   += () => EmitSignal(SignalName.onBoardUpdate);
+		onBoardReset += () => EmitSignal(SignalName.onBoardUpdate);
+	}
 
     /*
      *    SIGNALS
@@ -60,5 +72,4 @@ public partial class EventBus : Node
     [Signal]
 	public delegate void onSelectionEventHandler(int row, int column);
 
-    
 }

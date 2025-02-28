@@ -25,9 +25,9 @@ public partial class BoardManager : Node
 
 	// private static int _totalTiles = 2;
 	[Export] 
-	private int player1DefaultTileCount = 20; 
+	public int player1DefaultTileCount = 20; 
 	[Export]
-	private int player2DefaultTileCount = 20; 
+	public int player2DefaultTileCount = 20; 
 
 	private Dictionary<Piece.Color, int> tileCounts = new Dictionary<Piece.Color, int>() {
 		{Piece.Color.PLAYER_1, 20}, 
