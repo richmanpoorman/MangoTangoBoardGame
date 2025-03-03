@@ -4,62 +4,27 @@ using System.Collections.Generic;
 using System.Data;
 using System.Numerics;
 
+/*TODO: 1. Move away from new Location implementation
+2. Double-check for correctness
+3. turn grid from int to tilemap (or use fn to turn tilemap into grid
+4. have communicate with AI class (tbc) about next best move*/
 
-public class Location
-{
-	private int x;
-	private int y;
-
-	private static Dictionary<Tuple<int, int>, Location> locations = new Dictionary<Tuple<int, int>, Location>(); 
-
-	public static Location at(int row, int column) {
-		Tuple<int, int> position = new Tuple<int, int>(row, column); 
-		if (!locations.ContainsKey(position)) locations[position] = new Location(row, column); 
-		return locations[position]; 
-	}
-
-	/*Location (constructor)
-	Inputs: int row, int column
-	Returns: Location
-	Description: Constructor of Location*/
-    //public for purposes of debugging. TOOD: replace any creation of location
-	public Location(int row, int column){
-		x = row;
-		y = column;
-	}
-	
-	/*row
-	Inputs: None
-	Returns: Int
-	Description: Returns row of Location instance*/
-	public int row(){
-		return x;
-	}
-	/*column
-	Inputs: None
-	Returns: Int
-	Description: Returns column of Location instance*/
-	public int column(){
-		return y;
-	}
-
-
-	public Location left() { return new Location(x, y - 1); }
-	public Location right() { return new Location(x, y + 1); }
-	public Location up() { return new Location(x - 1, y); }
-	public Location down() { return new Location(x + 1, y); }
-
-	public string toString() {
-		return (char)(row() + 'a') + "" + column().ToString(); 
-	}
-
-	public static Location fromString(string representation) {
-		int row = representation[0] - 'a'; 
-		int column = -1; 
-		if (Int32.TryParse(representation.Substring(1), out column)) 
-			return Location.at(row, column); 
-		return Location.at(-1, -1);
-	}
+public class CoordComp : Comparer<(int, Location)> {
+    public override int Compare((int, Location) x, (int, Location) y)
+    {
+        if (x.Item1.CompareTo(y.Item1) != 0)
+        {
+            return x.Item1.CompareTo(y.Item1);
+        } else if (x.Item2.row().CompareTo(y.Item2.row()) != 0){
+            return x.Item2.row().CompareTo(y.Item2.row());
+        } else if (x.Item2.column().CompareTo(y.Item2.column()) != 0){
+            return x.Item2.column().CompareTo(y.Item2.column());
+        }
+        else
+        {
+            return 0;
+        }
+    }
 }
 
 //adapted from https://www.geeksforgeeks.org/a-search-algorithm/
@@ -147,8 +112,8 @@ public class AStarAlgo
             This open list is implemented as a SortedSet of tuple (f, (i, j)).
             We use a custom comparer to compare tuples based on their f values.
         */
-        SortedSet<(int, Location)> openList = new SortedSet<(int, Location)>(
-            Comparer<(int, Location)>.Create((a, b) => a.Item1.CompareTo(b.Item1)));
+		//TODO: thing here
+        SortedSet<(int, Location)> openList = new SortedSet<(int, Location)>(new CoordComp());
 
         // Put the starting cell on the open list and set its
         // 'f' as 0
@@ -175,14 +140,14 @@ public class AStarAlgo
             {
                 for (int j = -1; j <= 1; j++)
                 {
-                    //TODO: THIS BROKEN
-                    if (Math.Abs(i) + Math.Abs(j) != 1)
+                    //TODO: THIS BROKEN; breaks when i == -1 && j == +-j
+                    if ((i == 0 && j == 0) || (i == 1 && j != 0) || (i == -1 && j != 0))
                         //if 0, not moving. Skip. Since moving in cardinal dir, either i or j should be 0
                         continue;
 
                     int newX = x + i;
                     int newY = y + j;
-
+                    
                     // If this successor is a valid cell
                     if (IsValid(newX, newY, ROW, COL))
                     {
@@ -202,9 +167,16 @@ public class AStarAlgo
                         // list or if it is blocked, then ignore it.
                         if (!closedList[newX, newY] && IsUnBlocked(grid, newX, newY))
                         {
+                            
+
                             int gNew = cellDetails[x, y].g + 1;
                             int hNew = CalculateHValue(newX, newY, destCol);
                             int fNew = gNew + hNew;
+
+                            if(newX == 2 && newY == 2) {
+                                Console.Write("Checking for 2, 2; "+gNew + " " + hNew + " " + fNew + "\n");
+                                Console.Write(cellDetails[newX, newY].f + "\n");
+                            }
 
                             // If it isn’t on the open list, add it to
                             // the open list. Make the current square
@@ -232,8 +204,25 @@ public class AStarAlgo
         // reach the destination cell. This may happen when the
         // there is no way to destination cell (due to
         // blockages)
-        if (!foundDest)
+        if (!foundDest) {
             Console.WriteLine("Failed to find the Destination Cell");
+            for (int r = 0; r< ROW; r++){
+				for(int c = 0; c < COL; c++) {
+					if(IsUnBlocked(grid, r, c)){
+                        if(cellDetails[r, c].f < 10)
+    					    Console.Write(cellDetails[r, c].f + " , ");
+                        else if(cellDetails[r, c].f == int.MaxValue)
+    					    Console.Write("-2, ");
+                        else
+    					    Console.Write(cellDetails[r, c].f + ", ");
+                        }
+
+                    else
+                        Console.Write("-1, ");
+				}
+				Console.Write("\n");
+			}
+        }
     }
 
     // A Utility Function to check whether given cell (row, col)
@@ -299,10 +288,6 @@ public class AStarAlgo
     }
 
     // Driver method
-    //TODO: Breaks after dest = 3;
-    /*TODO: Does not check if dest col spot is free this is semi-intentional, as
-    can push last tile out of way? Depending on ruleset. Huh*/
-
     public static void Main(string[] args)
     {
         /* Description of the Grid-
@@ -312,20 +297,19 @@ public class AStarAlgo
         {
             {1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 1, 0, 1, 1, 1, 0, 1, 1},
-            {1, 1, 1, 0, 1, 1, 0, 1, 0, 1},
+            {1, 1, 1/*< HATES THIS? (2,2)*/, 0, 1, 1, 0, 1, 0, 1},
             {0, 0, 1, 0, 1, 0, 0, 0, 0, 1},
             {1, 1, 1, 0, 1, 1, 1, 0, 1, 0},
             {1, 0, 1, 1, 1, 1, 0, 1, 0, 0},
             {1, 0, 0, 0, 0, 1, 0, 0, 0, 1},
             {1, 0, 1, 1, 1, 1, 0, 1, 1, 1},
-            {1, 1, 1, 0, 0, 0, 1, 0, 0, 1}
+            {1, 0, 1, 0, 0, 0, 1, 0, 0, 1}
         };
 
         // Source is the left-most bottom-most corner
         Location src = new Location(8, 0);
 
-        // Destination is the left-most top-most corner
-        int dest = 9;
+        int dest = 8;
 
         AStar(grid, src, dest);
     }
