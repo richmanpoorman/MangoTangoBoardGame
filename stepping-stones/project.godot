@@ -19,6 +19,7 @@ config/icon="res://Sprites/TileSprites/icon.svg"
 
 SceneManager="*res://Scripts/UILogic/SceneManager.cs"
 EventBus="*res://Scripts/EventBus.cs"
+AudioManager="*res://Templates/AudioManager.tscn"
 
 [dotnet]
 

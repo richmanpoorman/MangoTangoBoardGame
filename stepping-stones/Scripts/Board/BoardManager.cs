@@ -82,6 +82,7 @@ public partial class BoardManager : Node
 		_board = board; 
 		onRestart();
 	}
+	public GamePhase phase() { return gamePhase; } 
 	public void setPhase(GamePhase phase) {
 		gamePhase = phase; 
 		_eventBus.EmitSignal(EventBus.SignalName.onPhaseStart, (int)phase);
@@ -273,9 +274,13 @@ public partial class BoardManager : Node
 			unmarkSelection(); 
 			return false; 
 		}
+		bool isTileMove = _board.tileAt(selection) == null; 
 		bool isSuccess = _board.movePiece(previousPosition, selection);
 		unmarkSelection();
-		if (isSuccess) _eventBus.EmitSignal(EventBus.SignalName.onTileMove);
+		if (isSuccess) {
+			string signal = isTileMove ? EventBus.SignalName.onTileMove : EventBus.SignalName.onScoutMove; 
+			_eventBus.EmitSignal(signal); 
+		}
 		return isSuccess;
 	}
 
