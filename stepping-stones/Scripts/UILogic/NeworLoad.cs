@@ -36,6 +36,7 @@ public partial class NeworLoad : Control
 	}
 	private void OnStartGameButtonPressed() 
 	{
+		sceneManager.newGame = true;
 		sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
 	}
 	private void OnLoadGameButtonPressed() 
@@ -45,6 +46,7 @@ public partial class NeworLoad : Control
 
 	private void OnMainLoadFileSelected(String path) {
 
+		sceneManager.newGame = false;
 		sceneManager.goToMainBoard(saver.LoadGame(path).ToTuple());
 	}
 

@@ -68,6 +68,7 @@ public partial class GameUi : Control
 		updateRedTiles(p1Tiles);
 		updateBlueTiles(p2Tiles);
 		switchColorText();
+		switchPhaseText();
 		_eventBus.onTilePlace += onTilePlace;
 		_eventBus.onTurnChange += onTurnChange;
 		_eventBus.onPhaseStart += phaseSwitched;
@@ -90,7 +91,16 @@ public partial class GameUi : Control
 		
 	}
 	public void switchPhaseText() {
-		switch (manager.)
+		switch (manager.phase()) {
+			case BoardManager.GamePhase.PLACE:
+				phaseLabel.Text = "Placing Phase";
+				break;
+			case BoardManager.GamePhase.MOVE:
+				phaseLabel.Text = "Movement Phase";
+				break;
+			default:
+				break;
+		}
 	}
 	public void updateRedTiles() {
 		redTiles.Text = "Player 1 has: [color=#FA003F] " + 
@@ -132,6 +142,7 @@ public partial class GameUi : Control
 	{
 		// currentPlayer = manager.playerTurn();
 		// switchColorText();
+		switchPhaseText();
 		switch (phase)
 		{
 			case BoardManager.GamePhase.MOVE:
@@ -152,10 +163,10 @@ public partial class GameUi : Control
 	private void switchColorText () {
 		switch(currentPlayer) {
 			case Piece.Color.PLAYER_1:
-				turnLabel.Text = "Current Turn is: [color=#FA003F] Player 1 [/color]";
+				turnLabel.Text = "[color=#FA003F] Player 1 [/color]'s turn";
 				break;
 			case Piece.Color.PLAYER_2:
-				turnLabel.Text = "Current Turn is: [color=dodger_blue] Player 2 [/color]";
+				turnLabel.Text = "Current Turn is: [color=dodger_blue] Player 2 [/color]'s turn";
 				break;
 			default:
 					break;
