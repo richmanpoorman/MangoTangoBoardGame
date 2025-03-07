@@ -20,6 +20,8 @@ public partial class GameUi : Control
 	
 	[Export]
 	public RichTextLabel turnLabel;
+	[Export]
+	public RichTextLabel phaseLabel;
 
 	[Export]
 	public RichTextLabel redTiles;
@@ -83,28 +85,30 @@ public partial class GameUi : Control
 	}
 	private void onTurnChange(Piece.Color turn)
 	{
-		if (turn != currentPlayer) {
-			switchColorText();
-			currentPlayer = turn;
-		}
+		currentPlayer = turn;
+		switchColorText();
+		
 	}
-	private void updateRedTiles() {
+	public void switchPhaseText() {
+		switch (manager.)
+	}
+	public void updateRedTiles() {
 		redTiles.Text = "Player 1 has: [color=#FA003F] " + 
 								(manager.playerTileCount(Piece.Color.PLAYER_1) - 1) + 
 								"[/color] tiles";
 	}
-	private void updateBlueTiles () {
+	public void updateBlueTiles () {
 		blueTiles.Text = "Player 2 has: [color=dodger_blue] " + 
 								(manager.playerTileCount(Piece.Color.PLAYER_2) - 1) + 
 								"[/color] tiles";
 	}
 
-	private void updateRedTiles(int tiles) {
+	public void updateRedTiles(int tiles) {
 		redTiles.Text = "Player 1 has: [color=#FA003F] " + 
 								tiles + 
 								"[/color] tiles";
 	}
-	private void updateBlueTiles (int tiles) {
+	public void updateBlueTiles (int tiles) {
 		blueTiles.Text = "Player 2 has: [color=dodger_blue] " + 
 								tiles + 
 								"[/color] tiles";
@@ -121,11 +125,13 @@ public partial class GameUi : Control
 				updateBlueTiles();
 				break;
 			default:
-					break;
+				break;
 			}
 	}
 	private void phaseSwitched(BoardManager.GamePhase phase) 
 	{
+		// currentPlayer = manager.playerTurn();
+		// switchColorText();
 		switch (phase)
 		{
 			case BoardManager.GamePhase.MOVE:

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Schema;
 
 public partial class MainGame : Node2D
@@ -14,6 +15,15 @@ public partial class MainGame : Node2D
 	private EventBus _eventBus; 
 	private BoardManager.GamePhase phase;
 
+	[Export]
+	private GameUi gameUi;
+
+	private bool _newGame;
+	private int _p1Tiles;
+	private int _p2Tiles;
+
+	private SteppingStonesBoard _board;
+
 	public override void _Ready()
 	{
 		_eventBus = EventBus.Bus;
@@ -24,6 +34,10 @@ public partial class MainGame : Node2D
 		// Connect(EventBus.SignalName.onPlayerWin, Callable.From(handleWin));
 		_eventBus.onPlayerWin += handleWin;
 		_eventBus.onPhaseStart += updatePhase;
+		_p1Tiles = sceneManager.p1Tiles;
+		_p2Tiles = sceneManager.p2Tiles;
+		_newGame = sceneManager.newGame;
+		_board = sceneManager.board;
 	}
 	private void handleWin()
 	{
@@ -37,9 +51,9 @@ public partial class MainGame : Node2D
 	private void configureBoard(SteppingStonesBoard board) {
 		// GD.Print("I was deffered :)");
 		// GD.Print("1: " + sceneManager.p1Tiles + "tiles, 2: " + sceneManager.p2Tiles);
-		manager.setBoard(sceneManager.board);
-		manager.setTileCount(Piece.Color.PLAYER_1, sceneManager.p1Tiles);
-		manager.setTileCount(Piece.Color.PLAYER_2, sceneManager.p2Tiles);
+		manager.setBoard(_board);
+		manager.setTileCount(Piece.Color.PLAYER_1, _p1Tiles);
+		manager.setTileCount(Piece.Color.PLAYER_2, _p2Tiles);
 		manager.setTurn(sceneManager.turn);
 		phase = sceneManager.phase;
 		manager.setPhase(phase);
@@ -61,9 +75,7 @@ public partial class MainGame : Node2D
 	}
 	public void OnUIResetGame() {
 		Board tmp = manager.board();
-		sceneManager.board = new GridSteppingStonesBoard(manager.board().size()[0], manager.board().size()[1]);
-		manager.setBoard(sceneManager.board);
-		if (!sceneManager.newGame) 
+		if (!_newGame) 
 		{
 			int tileCount = 0;
 			foreach(Tile tile in tmp.tileLayer()) {
@@ -71,21 +83,29 @@ public partial class MainGame : Node2D
 					tileCount++;
 				}
 			}
-			int iniTiles = manager.playerTileCount(Piece.Color.PLAYER_1) + tileCount / 2 - 1;
-			sceneManager.p1Tiles = iniTiles;
-			sceneManager.p2Tiles = iniTiles;
+			GD.Print("p1tiles: " +  _p1Tiles +", p2tiles:" + _p2Tiles + ", tilecount: " + tileCount);
+			int iniTiles = ((Math.Max(_p1Tiles, _p2Tiles) + tileCount) / 2) - 1;
+			_p1Tiles = iniTiles;
+			_p2Tiles = iniTiles;
+			_newGame = true;
 		}
-		manager.setTileCount(Piece.Color.PLAYER_1, sceneManager.p1Tiles);
-		manager.setTileCount(Piece.Color.PLAYER_2, sceneManager.p2Tiles);
+		_board = new GridSteppingStonesBoard(manager.board().size()[0], manager.board().size()[1]);
+		manager.setBoard(_board);
+
+		manager.setTileCount(Piece.Color.PLAYER_1, _p1Tiles);
+		manager.setTileCount(Piece.Color.PLAYER_2, _p2Tiles);
+		gameUi.updateBlueTiles(_p1Tiles);
+		gameUi.updateRedTiles(_p2Tiles);
 	}
 	public void OnUILoadGame(String path) {
 		GD.Print("Game Loaded");
-		(SteppingStonesBoard board, Piece.Color turn, int p1Tiles, int p2Tiles, BoardManager.GamePhase phase) 
+		(SteppingStonesBoard board, Piece.Color turn, _p1Tiles, _p2Tiles, BoardManager.GamePhase phase) 
 			= saver.LoadGame(path);
 		manager.setBoard(board);	
-		manager.setTileCount(Piece.Color.PLAYER_1, p1Tiles);
-		manager.setTileCount(Piece.Color.PLAYER_2, p2Tiles);
-		manager.setTurn(turn); 
+		manager.setTileCount(Piece.Color.PLAYER_1, _p1Tiles);
+		manager.setTileCount(Piece.Color.PLAYER_2, _p2Tiles);
+		manager.setTurn(turn);
+
 		}
 		
 }
