@@ -27,7 +27,7 @@ boardManager = NodePath("..")
 
 [node name="LocalSelection2" parent="BoardManager" node_paths=PackedStringArray("boardManager") instance=ExtResource("3_05bbn")]
 position = Vector2(0, -1)
-player = 1
+_player = 1
 boardManager = NodePath("..")
 
 [node name="Board" parent="BoardManager" node_paths=PackedStringArray("boardManager") instance=ExtResource("2_ptpue")]
