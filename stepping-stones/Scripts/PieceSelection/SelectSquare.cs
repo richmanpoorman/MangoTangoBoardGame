@@ -5,12 +5,15 @@ public partial class SelectSquare : Node2D, MoveSelector
 {
 	[Export]
 	private Piece.Color _player = Piece.Color.PLAYER_1; 
+	
+	private Piece.Color _currentTurn = Piece.Color.PLAYER_1;
+
 	public enum ClickType {
 		LEFT, RIGHT, MIDDLE, NONE
 	}
 
-	[Export]
-	private BoardManager boardManager; 
+	// [Export]
+	// private BoardManager boardManager; 
 
 	[Export]
 	private TileMapLayer selectionGrid; 
@@ -20,15 +23,18 @@ public partial class SelectSquare : Node2D, MoveSelector
 	private MouseButton _mouseButton = MouseButton.None;
 	private EventBus _eventBus; 
 
-	public void setBoardManager(BoardManager manager) { boardManager = manager; }
+	// public void setBoardManager(BoardManager manager) { boardManager = manager; }
 
     public override void _Ready() {
 		_eventBus = EventBus.Bus;
+		_eventBus.onTurnChange += onTurnChange; 
 	}
+
+	public void onTurnChange(Piece.Color turn) { _currentTurn = turn; }
 
     public override void _Input(InputEvent @event)
     {
-		if (boardManager.playerTurn() != _player) return; // Only try to process on your turn 
+		if (_currentTurn != _player) return; // Only try to process on your turn (only needed because local shares a board)
 		// GD.Print("Event");
 		if (@event is not InputEventMouseButton) return; 
 
