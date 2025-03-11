@@ -1,9 +1,10 @@
 using Godot;
 using System;
 
-public partial class SelectSquare : Node2D
+public partial class SelectSquare : Node2D, MoveSelector
 {
-
+	[Export]
+	private Piece.Color _player = Piece.Color.PLAYER_1; 
 	public enum ClickType {
 		LEFT, RIGHT, MIDDLE, NONE
 	}
@@ -14,21 +15,20 @@ public partial class SelectSquare : Node2D
 	[Export]
 	private TileMapLayer selectionGrid; 
 
-	
-
-	private Board board;
 
 	private Location _position;
 	private MouseButton _mouseButton = MouseButton.None;
 	private EventBus _eventBus; 
 
+	public void setBoardManager(BoardManager manager) { boardManager = manager; }
+
     public override void _Ready() {
 		_eventBus = EventBus.Bus;
-		board = boardManager.board();
 	}
 
     public override void _Input(InputEvent @event)
     {
+		if (boardManager.playerTurn() != _player) return; // Only try to process on your turn 
 		// GD.Print("Event");
 		if (@event is not InputEventMouseButton) return; 
 
@@ -43,12 +43,19 @@ public partial class SelectSquare : Node2D
 		_mouseButton = mouseEvent.ButtonIndex;
 
 		if (selection() is Location position)
-			GD.Print("Mouse Result: ", position.row(), ", ", position.column());
+			GD.Print("PLAYER: ", _player, " has Mouse Result: ", position.row(), ", ", position.column());
 		else 
-			GD.Print("Mouse Result: null");
-		_eventBus.EmitSignal(EventBus.SignalName.onSelection, _position.row(), _position.column()); 
+			GD.Print("PLAYER: ", _player, "Mouse Result: null");
+		
+		emitMove(); 
     }
 
 	public Location selection() { return _position; }
 	public MouseButton mouseButton() { return _mouseButton; }
+
+    public Piece.Color player() { return _player; }
+
+    public void emitMove() { _eventBus.EmitSignal(EventBus.SignalName.onSelection, (int)_player, _position.row(), _position.column()); }
+
+    public void setPlayer(Piece.Color playerColor) { _player = playerColor; }
 }

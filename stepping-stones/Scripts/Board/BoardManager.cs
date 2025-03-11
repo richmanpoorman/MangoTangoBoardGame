@@ -134,7 +134,11 @@ public partial class BoardManager : Node
 	Returns: None
 	Description: attempts selected action based on click; updates board; if action sucessful, switches player turn
 	*/
-	public void onCellSelection(int row, int column) {
+	public void onCellSelection(Piece.Color player, int row, int column) {
+		if (player != currentPlayer) return;  // If they play out of turn, don't let them 
+
+		GD.Print("Manager sees player: ", player);
+
 		Location selection = Location.at(row, column);
 		// Location selection = selector.selection(); 
 
