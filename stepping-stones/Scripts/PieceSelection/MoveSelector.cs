@@ -5,6 +5,5 @@ public interface MoveSelector {
     public void setPlayer(Piece.Color playerColor);
     public Piece.Color player(); // Which player this selector selects moves for
     public Location selection(); 
-    public void setBoardManager(BoardManager manager); 
     public void emitMove(); 
 }
