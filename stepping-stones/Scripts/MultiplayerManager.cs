@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public partial class MultiplayerManager : Node
 {
     private WebRtcPeerConnection peerConnection;
+    private SignalingServer signalingServer;
+
     private Timer connectionCheckTimer;
     private Godot.Collections.Array iceServers = new Godot.Collections.Array
     {
@@ -41,6 +43,11 @@ public partial class MultiplayerManager : Node
         peerConnection.SessionDescriptionCreated += OnSessionDescriptionCreated;
         peerConnection.IceCandidateCreated += OnIceCandidateCreated;
 
+        signalingServer = new SignalingServer("ws://your-signaling-server-url");
+        signalingServer.MessageReceived += HandleSignalingMessage;
+        signalingServer.ConnectToServer();
+
+
         GD.Print("WebRTC Peer Connection initialized successfully.");
     }
 
@@ -75,6 +82,34 @@ public partial class MultiplayerManager : Node
     private void SendSignalingMessage(string messageType, string data)
     {
         GD.Print($"[SIGNALING] Sending {messageType} data.");
-        // TODO: Implement actual signaling mechanism (WebSocket or manual exchange)
+        signalingServer.SendMessage(messageType, data);
     }
+
+
+    private void HandleSignalingMessage(string messageType, string data)
+{
+    GD.Print($"[SIGNALING] Received {messageType}: {data}");
+
+    if (messageType == "offer" || messageType == "answer")
+    {
+        peerConnection.SetRemoteDescription(messageType, data);
+    }
+    else if (messageType == "ice")
+    {
+        string[] parts = data.Split('|'); // Expecting "media|index|candidate"
+        if (parts.Length == 3)
+        {
+            string media = parts[0];
+            int index = int.Parse(parts[1]);
+            string candidate = parts[2];
+
+            peerConnection.AddIceCandidate(media, index, candidate);
+        }
+        else
+        {
+            GD.PrintErr($"[SIGNALING] Invalid ICE candidate format received: {data}");
+        }
+    }
+}
+
 }
