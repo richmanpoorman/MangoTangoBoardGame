@@ -43,7 +43,7 @@ public partial class MultiplayerManager : Node
         peerConnection.SessionDescriptionCreated += OnSessionDescriptionCreated;
         peerConnection.IceCandidateCreated += OnIceCandidateCreated;
 
-        signalingServer = new SignalingServer("ws://your-signaling-server-url");
+        signalingServer = new SignalingServer("ws://localhost:8080");
         signalingServer.MessageReceived += HandleSignalingMessage;
         signalingServer.ConnectToServer();
 
