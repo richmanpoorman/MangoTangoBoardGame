@@ -42,7 +42,7 @@ public partial class MainGame : Node2D
 	private void handleWin()
 	{
 		GetNode<Control>("GameUI").Visible = false;
-		GetNode<Node2D>("Main").Visible = false;
+		//GetNode<Node2D>("Main").Visible = false;
 		GetNode<Control>("WinScreen").Visible = true;
 	}
 	private void DeferredSetupCleanup () {
