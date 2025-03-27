@@ -5,8 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://blw73vqu1bt56" path="res://Templates/game_ui.tscn" id="2_0kd1q"]
 [ext_resource type="PackedScene" uid="uid://buck6twco02sl" path="res://Templates/WinScreen.tscn" id="4_42kku"]
 
-[node name="MainGame" type="Node2D"]
+[node name="MainGame" type="Node2D" node_paths=PackedStringArray("gameUi")]
 script = ExtResource("1_i1pwg")
+gameUi = NodePath("GameUI")
 
 [node name="GameUI" parent="." instance=ExtResource("2_0kd1q")]
 
