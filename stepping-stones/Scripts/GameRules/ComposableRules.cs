@@ -69,7 +69,7 @@ public class ComposableRules : Rules
             int oppositeSideRow    = from.row()    + Math.Sign(to.row()    - from.row()   ), 
                 oppositeSideColumn = from.column() + Math.Sign(to.column() - from.column());
             Location oppositeSideSquare = Location.at(oppositeSideRow, oppositeSideColumn); 
-            if (board.isOnBoard(oppositeSideSquare) && board.tileAt(oppositeSideSquare).color() == playerTurn) {
+            if (board.isOnBoard(oppositeSideSquare) && board.tileAt(oppositeSideSquare) != null && board.tileAt(oppositeSideSquare).color() == playerTurn) {
                 // ... Then fail only if the player's scout is not there to divide it
 
                 Scout? scoutOnDivider = board.scoutAt(from);

@@ -238,7 +238,10 @@ public partial class BoardManager : Node
 		}
 		GD.Print("Attempt Push");
 		if (!_ruleset.isValidPush(_board, previousPosition, selection, currentPlayer)) {
-			unmarkSelection();
+			if (selection != previousPosition) {
+				unmarkSelection(); 
+				markSelection(selection); 
+			} else unmarkSelection(); 
 			return false; 
 		}
 		bool isSuccess = _board.pushMove(previousPosition, selection);
@@ -277,7 +280,11 @@ public partial class BoardManager : Node
 		}
 		GD.Print("Attempt Move");
 		if (!_ruleset.isValidPieceMove(_board, previousPosition, selection, currentPlayer)) { 
-			unmarkSelection(); 
+			
+			if (selection != previousPosition) {
+				unmarkSelection(); 
+				markSelection(selection); 
+			} else unmarkSelection(); 
 			return false; 
 		}
 		bool isTileMove = _board.tileAt(selection) == null; 
