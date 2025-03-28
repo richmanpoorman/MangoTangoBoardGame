@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using Godot;
 
-public class WeightedScout : Rules 
+public class WeightedScoutRules : Rules 
 {
     Rules baseRules = new BasicRules();
     private int SCOUT_WEIGHT = 1; 
-    public WeightedScout() {}
+    public WeightedScoutRules() {}
 
     public bool hasWon(Board board, Piece.Color playerTurn)
     {

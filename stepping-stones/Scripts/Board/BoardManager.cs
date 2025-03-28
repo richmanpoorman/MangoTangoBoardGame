@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 
 // Manages the state of the board, and holds the actual board itself
@@ -21,7 +22,7 @@ public partial class BoardManager : Node
 	// public delegate void SwitchPlayerEventHandler();
 	// Set up
 	private SteppingStonesBoard _board = new GridSteppingStonesBoard(5, 7); // new GridBoard(7, 5); 
-	private Rules _ruleset = new WeightedScout(); 
+	private Rules _ruleset = new ComposableRules(1, false, false); // new ComposableRules(1, false, false); 
 
 	// private static int _totalTiles = 2;
 	[Export] 
@@ -78,6 +79,7 @@ public partial class BoardManager : Node
 	}
 	public Piece.Color playerTurn() { return currentPlayer;}
 	public void setTurn(Piece.Color turn) { currentPlayer = turn;}
+	public void setRules(Rules rules) { _ruleset = rules; }
 	public void setBoard(SteppingStonesBoard board){ 
 		_board = board; 
 		onRestart();
