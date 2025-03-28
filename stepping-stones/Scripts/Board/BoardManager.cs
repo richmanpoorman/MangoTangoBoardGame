@@ -22,6 +22,11 @@ public partial class BoardManager : Node
 	// public delegate void SwitchPlayerEventHandler();
 	// Set up
 	private SteppingStonesBoard _board = new GridSteppingStonesBoard(5, 7); // new GridBoard(7, 5); 
+
+	[Export]
+	private int _scoutWeight = 1; 
+	[Export]
+	private bool _cantSplit = false, _onlyOffensiveWeight = false;  
 	private Rules _ruleset = new ComposableRules(1, false, false); // new ComposableRules(1, false, false); 
 
 	// private static int _totalTiles = 2;
@@ -57,6 +62,8 @@ public partial class BoardManager : Node
 	private EventBus _eventBus; 
 
 	public override void _Ready() {
+		_ruleset = new ComposableRules(_scoutWeight, _cantSplit, _onlyOffensiveWeight);
+
 		_eventBus = EventBus.Bus;
 		_eventBus.onSelection += onCellSelection; 
 		// Connect(EventBus.SignalName.onSelection, Callable.From(onCellSelection));
