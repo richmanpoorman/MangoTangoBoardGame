@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 
 // Manages the state of the board, and holds the actual board itself
@@ -21,7 +22,12 @@ public partial class BoardManager : Node
 	// public delegate void SwitchPlayerEventHandler();
 	// Set up
 	private SteppingStonesBoard _board = new GridSteppingStonesBoard(5, 7); // new GridBoard(7, 5); 
-	private Rules _ruleset = new WeightedScout(); 
+
+	[Export]
+	private int _scoutWeight = 1; 
+	[Export]
+	private bool _cantSplit = false, _onlyOffensiveWeight = false;  
+	private Rules _ruleset = new ComposableRules(1, false, false); // new ComposableRules(1, false, false); 
 
 	// private static int _totalTiles = 2;
 	[Export] 
@@ -56,6 +62,8 @@ public partial class BoardManager : Node
 	private EventBus _eventBus; 
 
 	public override void _Ready() {
+		_ruleset = new ComposableRules(_scoutWeight, _cantSplit, _onlyOffensiveWeight);
+
 		_eventBus = EventBus.Bus;
 		_eventBus.onSelection += onCellSelection; 
 		// Connect(EventBus.SignalName.onSelection, Callable.From(onCellSelection));
@@ -78,6 +86,7 @@ public partial class BoardManager : Node
 	}
 	public Piece.Color playerTurn() { return currentPlayer;}
 	public void setTurn(Piece.Color turn) { currentPlayer = turn;}
+	public void setRules(Rules rules) { _ruleset = rules; }
 	public void setBoard(SteppingStonesBoard board){ 
 		_board = board; 
 		onRestart();
@@ -134,7 +143,11 @@ public partial class BoardManager : Node
 	Returns: None
 	Description: attempts selected action based on click; updates board; if action sucessful, switches player turn
 	*/
-	public void onCellSelection(int row, int column) {
+	public void onCellSelection(Piece.Color player, int row, int column) {
+		if (player != currentPlayer) return;  // If they play out of turn, don't let them 
+
+		GD.Print("Manager sees player: ", player);
+
 		Location selection = Location.at(row, column);
 		// Location selection = selector.selection(); 
 
@@ -232,7 +245,10 @@ public partial class BoardManager : Node
 		}
 		GD.Print("Attempt Push");
 		if (!_ruleset.isValidPush(_board, previousPosition, selection, currentPlayer)) {
-			unmarkSelection();
+			if (selection != previousPosition) {
+				unmarkSelection(); 
+				markSelection(selection); 
+			} else unmarkSelection(); 
 			return false; 
 		}
 		bool isSuccess = _board.pushMove(previousPosition, selection);
@@ -271,7 +287,11 @@ public partial class BoardManager : Node
 		}
 		GD.Print("Attempt Move");
 		if (!_ruleset.isValidPieceMove(_board, previousPosition, selection, currentPlayer)) { 
-			unmarkSelection(); 
+			
+			if (selection != previousPosition) {
+				unmarkSelection(); 
+				markSelection(selection); 
+			} else unmarkSelection(); 
 			return false; 
 		}
 		bool isTileMove = _board.tileAt(selection) == null; 

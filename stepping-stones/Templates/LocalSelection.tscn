@@ -1,0 +1,62 @@
+[gd_scene load_steps=15 format=3 uid="uid://dmr1nwcsr3f6t"]
+
+[ext_resource type="Script" path="res://Scripts/PieceSelection/SelectSquare.cs" id="1_cxqbb"]
+[ext_resource type="Texture2D" uid="uid://dxh3l4vov127u" path="res://Sprites/SelectionSprites/push_down.PNG" id="2_1migo"]
+[ext_resource type="Texture2D" uid="uid://dbx15l5lcpbld" path="res://Sprites/SelectionSprites/push_left.PNG" id="3_hai7w"]
+[ext_resource type="Texture2D" uid="uid://bmmqthsfyq51k" path="res://Sprites/SelectionSprites/push_right.PNG" id="4_g2jq8"]
+[ext_resource type="Texture2D" uid="uid://kli631hx5tu5" path="res://Sprites/SelectionSprites/push_up.PNG" id="5_1ugmt"]
+[ext_resource type="Texture2D" uid="uid://d4c6e6iqmn707" path="res://Sprites/SelectionSprites/scout_move.PNG" id="6_f0osa"]
+[ext_resource type="Texture2D" uid="uid://bbqdgcbrxdat" path="res://Sprites/SelectionSprites/tile_move.PNG" id="7_ofu04"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dvf2s"]
+resource_name = "push_down"
+texture = ExtResource("2_1migo")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4d60o"]
+resource_name = "push_left"
+texture = ExtResource("3_hai7w")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4evd6"]
+resource_name = "push_right"
+texture = ExtResource("4_g2jq8")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_llnee"]
+resource_name = "push_up"
+texture = ExtResource("5_1ugmt")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d30rg"]
+resource_name = "scout_move"
+texture = ExtResource("6_f0osa")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wmkup"]
+resource_name = "tile_move"
+texture = ExtResource("7_ofu04")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_mabuf"]
+tile_size = Vector2i(16, 10)
+sources/0 = SubResource("TileSetAtlasSource_dvf2s")
+sources/1 = SubResource("TileSetAtlasSource_4d60o")
+sources/2 = SubResource("TileSetAtlasSource_4evd6")
+sources/3 = SubResource("TileSetAtlasSource_llnee")
+sources/4 = SubResource("TileSetAtlasSource_d30rg")
+sources/5 = SubResource("TileSetAtlasSource_wmkup")
+
+[node name="LocalSelection" type="Node2D" node_paths=PackedStringArray("selectionGrid")]
+position = Vector2(0, -2)
+script = ExtResource("1_cxqbb")
+selectionGrid = NodePath("SelectionGrid")
+
+[node name="SelectionGrid" type="TileMapLayer" parent="."]
+tile_set = SubResource("TileSet_mabuf")

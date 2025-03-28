@@ -21,17 +21,16 @@ public partial class EventBus : Node
 		connectSignals(); 
 		 
     }
-	// Connects associated signals, which should also trigger if one is sent
-	private void connectSignals() {
-		onTileMove   += () => EmitSignal(SignalName.onBoardUpdate);
-		onTilePlace  += () => EmitSignal(SignalName.onBoardUpdate);
-		onTilePush   += () => EmitSignal(SignalName.onBoardUpdate);
-		onBoardReset += () => EmitSignal(SignalName.onBoardUpdate);
-	}
+	
 
     /*
      *    SIGNALS
      */
+	[Signal] 
+	public delegate void onJoinRoomEventHandler(string roomCode); 
+
+	[Signal]
+	public delegate void onMakeRoomEventHandler(); 
 
     [Signal]
 	public delegate void onPlayerWinEventHandler(); 
@@ -70,6 +69,13 @@ public partial class EventBus : Node
 
     // When a square is selected
     [Signal]
-	public delegate void onSelectionEventHandler(int row, int column);
+	public delegate void onSelectionEventHandler(Piece.Color player, int row, int column);
 
+	// Connects associated signals, which should also trigger if one is sent
+	private void connectSignals() {
+		onTileMove   += () => EmitSignal(SignalName.onBoardUpdate);
+		onTilePlace  += () => EmitSignal(SignalName.onBoardUpdate);
+		onTilePush   += () => EmitSignal(SignalName.onBoardUpdate);
+		onBoardReset += () => EmitSignal(SignalName.onBoardUpdate);
+	}
 }

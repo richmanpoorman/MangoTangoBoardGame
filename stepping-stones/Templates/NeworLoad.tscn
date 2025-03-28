@@ -6,7 +6,7 @@
 
 [sub_resource type="Theme" id="Theme_hkbsb"]
 
-[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "tabs")]
+[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,6 +24,9 @@ startButton = NodePath("Secondary/StartGame")
 backButton = NodePath("Secondary/BackButton")
 newButton = NodePath("Primary/NewGameButton")
 loadButton = NodePath("Primary/LoadGameButton")
+makeRoomButton = NodePath("Primary/MakeRoomButton")
+joinRoomButton = NodePath("Primary/JoinRoomButton")
+roomJoiner = NodePath("Room Code")
 tabs = NodePath("Tabs")
 
 [node name="Secondary" type="HBoxContainer" parent="."]
@@ -57,14 +60,14 @@ text = "Return
 [node name="Primary" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.499
-anchor_top = 0.525
-anchor_right = 0.499
-anchor_bottom = 0.525
-offset_left = -230.689
-offset_top = 42.915
-offset_right = 308.311
-offset_bottom = 148.915
+anchor_left = 0.339
+anchor_top = 0.591
+anchor_right = 0.767
+anchor_bottom = 0.755
+offset_left = -0.448029
+offset_top = 0.0319824
+offset_right = 16.416
+offset_bottom = -0.240021
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -72,7 +75,7 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 48
-text = "New Game"
+text = " New Game "
 
 [node name="LoadGameButton" type="Button" parent="Primary"]
 layout_mode = 2
@@ -90,6 +93,17 @@ file_mode = 0
 access = 1
 root_subfolder = "user://"
 filters = PackedStringArray("*.step")
+
+[node name="MakeRoomButton" type="Button" parent="Primary"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 48
+text = "Make Room"
+
+[node name="JoinRoomButton" type="Button" parent="Primary"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = " Join Room "
 
 [node name="Tabs" type="TabContainer" parent="."]
 visible = false
@@ -141,12 +155,25 @@ visible = false
 layout_mode = 2
 text = "Close Menu"
 
+[node name="Room Code" type="LineEdit" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 256.0
+offset_top = 176.0
+offset_right = 1035.0
+offset_bottom = 293.0
+placeholder_text = "Enter Room Code"
+alignment = 1
+
 [connection signal="pressed" from="Secondary/StartGame" to="." method="OnStartGameButtonPressed"]
 [connection signal="pressed" from="Secondary/BackButton" to="." method="OnBackButtonPressed"]
 [connection signal="pressed" from="Primary/NewGameButton" to="." method="OnNewGameButtonPressed"]
 [connection signal="pressed" from="Primary/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
 [connection signal="file_selected" from="Primary/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]
+[connection signal="pressed" from="Primary/MakeRoomButton" to="." method="onMakeRoomPressed"]
+[connection signal="pressed" from="Primary/JoinRoomButton" to="." method="onJoinRoomPressed"]
 [connection signal="value_changed" from="Tabs/GameSettings/WidthBox" to="." method="OnWidthBoxValueChanged"]
 [connection signal="value_changed" from="Tabs/GameSettings/LengthBox" to="." method="OnLengthBoxValueChanged"]
 [connection signal="value_changed" from="Tabs/GameSettings/NumTilesBox" to="." method="OnNumTilesBoxValueChanged"]
 [connection signal="pressed" from="Tabs/GameSettings/CloseButton" to="." method="OnCloseButtonPressed"]
+[connection signal="text_submitted" from="Room Code" to="." method="onJoinCodeEntered"]
