@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 public class GameSaver : FileSaver
 {
 	// Called when the node enters;
@@ -22,7 +23,8 @@ public class GameSaver : FileSaver
 			Tile? currTile = board.tileAt(Location.at(i ,j)); 
 			if (currTile != null) {
 				char color = (currTile.color() == Piece.Color.PLAYER_1) ? 'r' : 'b';
-				entry = "" + (char)('a' + i) + (j + 1) + '=' + color + 't';
+				string col = (j < 10) ?  string.Concat("0", (char)(j + '1')) : j.ToString(); 
+				entry = "" + (char)('a' + i) + col + '=' + color + 't';
 				Scout? currScout = board.scoutAt(Location.at(i,j));
 				if (currScout != null) {
 					entry += 's';
@@ -30,6 +32,7 @@ public class GameSaver : FileSaver
 			}
 			if (entry != "") {
 				gameFile.StoreLine(entry);
+				GD.Print(entry);
 			}
 		}
 		gameFile.Close();
@@ -40,6 +43,7 @@ public class GameSaver : FileSaver
 		if (!FileAccess.FileExists(fileName)) {
 			throw new System.IO.FileNotFoundException();
 		}
+		// GD.Print(fileName); TODO: LEADING 0
 		FileAccess gameFile = FileAccess.Open(fileName, FileAccess.ModeFlags.Read);
 		int[] size = gameFile.GetLine().Split(", ").
 							Select(s => int.Parse(s.Substring(s.IndexOf(":") + 1))).ToArray();
@@ -61,9 +65,9 @@ public class GameSaver : FileSaver
 		while (gameFile.GetPosition() < gameFile.GetLength()) {
 			String line = gameFile.GetLine();
 			int row = line[0] - 'a';
-			int col = line[1] - '1';
+			int col = int.Parse(line.Substring(1, 2)) - 1;
 			GD.Print("row is: " + row + ", col is: " + col);
-			Piece.Color color = (line[3] == 'r') ? Piece.Color.PLAYER_1 : Piece.Color.PLAYER_2;
+			Piece.Color color = (line[4] == 'r') ? Piece.Color.PLAYER_1 : Piece.Color.PLAYER_2;
 			Tile currTile = new Tile(color);
 			board.addTile(currTile, Location.at(row, col));
 			if (line.EndsWith("s")) {

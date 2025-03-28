@@ -36,6 +36,16 @@ public partial class GameUi : Control
 	private EventBus _eventBus; 
 	private SceneManager sceneManager;
 
+	public void hideAll () {
+		redTiles.Hide();
+		blueTiles.Hide();
+		turnLabel.Hide();
+		phaseLabel.Hide();
+		GetNode<Button>("CanvasLayer/SaveButton").Visible = false;
+		GetNode<Button>("CanvasLayer/LoadButton").Visible = false;
+		GetNode<Button>("CanvasLayer/ResetButton").Visible = false;
+	}
+	
 	private void OnResetButtonPressed() 
 	{
 		EmitSignal(SignalName.ResetGame);
@@ -166,7 +176,7 @@ public partial class GameUi : Control
 				turnLabel.Text = "[color=#FA003F] Player 1 [/color]'s turn";
 				break;
 			case Piece.Color.PLAYER_2:
-				turnLabel.Text = "Current Turn is: [color=dodger_blue] Player 2 [/color]'s turn";
+				turnLabel.Text = "[color=dodger_blue] Player 2 [/color]'s turn";
 				break;
 			default:
 					break;
