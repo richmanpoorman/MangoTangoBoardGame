@@ -26,6 +26,11 @@ public partial class EventBus : Node
     /*
      *    SIGNALS
      */
+	[Signal] 
+	public delegate void onJoinRoomEventHandler(string roomCode); 
+
+	[Signal]
+	public delegate void onMakeRoomEventHandler(); 
 
     [Signal]
 	public delegate void onPlayerWinEventHandler(); 
