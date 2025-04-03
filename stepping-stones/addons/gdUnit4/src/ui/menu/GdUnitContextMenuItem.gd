@@ -1,14 +1,13 @@
 class_name GdUnitContextMenuItem
 
 enum MENU_ID {
-	UNDEFINED = 0,
 	TEST_RUN = 1000,
 	TEST_DEBUG = 1001,
 	TEST_RERUN = 1002,
 	CREATE_TEST = 1010,
 }
 
-var id: MENU_ID = MENU_ID.UNDEFINED:
+var id: MENU_ID:
 	set(value):
 		id = value
 	get:

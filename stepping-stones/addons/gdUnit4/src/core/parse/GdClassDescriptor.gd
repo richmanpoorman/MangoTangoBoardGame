@@ -3,6 +3,7 @@ extends RefCounted
 
 
 var _name :String
+var _parent :GdClassDescriptor = null
 var _is_inner_class :bool
 var _functions :Array[GdFunctionDescriptor]
 
@@ -13,8 +14,16 @@ func _init(p_name :String, p_is_inner_class :bool, p_functions :Array[GdFunction
 	_functions = p_functions
 
 
+func set_parent_clazz(p_parent :GdClassDescriptor) -> void:
+	_parent = p_parent
+
+
 func name() -> String:
 	return _name
+
+
+func parent() -> GdClassDescriptor:
+	return _parent
 
 
 func is_inner_class() -> bool:

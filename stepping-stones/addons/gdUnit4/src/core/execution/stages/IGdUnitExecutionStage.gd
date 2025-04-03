@@ -14,7 +14,7 @@ var _debug_mode := false
 ##    await MyExecutionStage.new().execute(<GdUnitExecutionContext>)
 ## [/codeblock][br]
 func execute(context :GdUnitExecutionContext) -> void:
-	GdUnitThreadManager.get_current_context().set_execution_context(context)
+	context.set_active()
 	@warning_ignore("redundant_await")
 	await _execute(context)
 
