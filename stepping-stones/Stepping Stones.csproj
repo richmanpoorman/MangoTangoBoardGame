@@ -6,6 +6,8 @@
     <LangVersion>11.0</LangVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+    <!--Disable warning of invalid/incompatible GodotSharp version-->
+    <NoWarn>NU1605</NoWarn>
     <RootNamespace>SteppingStones</RootNamespace>
   </PropertyGroup>
 <ItemGroup>

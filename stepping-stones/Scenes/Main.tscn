@@ -19,7 +19,3 @@ offset_left = -169.0
 offset_top = -190.0
 offset_right = -150.0
 offset_bottom = -190.0
-
-[connection signal="LoadGame" from="GameUI" to="." method="OnUILoadGame"]
-[connection signal="ResetGame" from="GameUI" to="." method="OnUIResetGame"]
-[connection signal="SaveGame" from="GameUI" to="." method="OnUISaveGame"]

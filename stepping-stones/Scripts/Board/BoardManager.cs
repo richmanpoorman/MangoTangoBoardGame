@@ -62,17 +62,17 @@ public partial class BoardManager : Node
 		onRestart();
 	}
 
-    /*board
-    Inputs: None
-    Returns: Board
-    Description: returns the board BoardManager uses*/
+	/*board
+	Inputs: None
+	Returns: Board
+	Description: returns the board BoardManager uses*/
 	public Board board() { return _board; }
 
 	/*onUpdate
-    Inputs: None
-    Returns: None
-    Description: Updates display*/
-    public void onUpdate() {
+	Inputs: None
+	Returns: None
+	Description: Updates display*/
+	public void onUpdate() {
 		// display.updateDisplay();
 		_eventBus.EmitSignal(EventBus.SignalName.onBoardUpdate);
 	}
