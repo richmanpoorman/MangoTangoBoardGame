@@ -1,7 +1,5 @@
 using Godot;
-using System;
-using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
+using Godot.Collections; 
 
 public partial class EventBus : Node
 {
@@ -70,6 +68,11 @@ public partial class EventBus : Node
     // When a square is selected
     [Signal]
 	public delegate void onSelectionEventHandler(Piece.Color player, int row, int column);
+
+	// When a new tileset is created
+	[Signal]
+	public delegate void onChangePieceTilesetEventHandler(TileSet newSprites, Dictionary<Piece.Color, Dictionary<Piece.PieceType, int>> tilesetIDs);
+
 
 	// Connects associated signals, which should also trigger if one is sent
 	private void connectSignals() {

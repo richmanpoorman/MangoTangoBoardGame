@@ -5,12 +5,14 @@ public interface Piece
 	// Wrappers for different fields of the piece
 	public enum Color {
 		PLAYER_1, 
-		PLAYER_2
+		PLAYER_2,
+		MISSING
 	};
 
 	public enum PieceType {
 		TILE, 
-		SCOUT
+		SCOUT,
+		MISSING
 	};
 
 	// Functions 

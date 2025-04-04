@@ -24,6 +24,7 @@ public partial class BoardDisplay : Node2D
 
 		_eventBus.onBoardUpdate += _onUpdate; 
 		_eventBus.onBoardReset  += _onRestart; 
+		_eventBus.onChangePieceTileset += _onTilesetChange;
 		// Connect(EventBus.SignalName.onBoardUpdate, Callable.From(_onUpdate));
 		// Connect(EventBus.SignalName.onBoardReset, Callable.From(onRestart));
 		initializeBoard(); 
@@ -51,6 +52,21 @@ public partial class BoardDisplay : Node2D
 
 	public void _onRestart() {
 		initializeBoard();
+		_onUpdate(); 
+	}
+
+	public void _onTilesetChange(TileSet newSprites, Godot.Collections.Dictionary<Piece.Color, Godot.Collections.Dictionary<Piece.PieceType, int>> tilesetIDs) {
+		spacesLayer.TileSet = newSprites;
+		tileLayer.TileSet   = newSprites; 
+		scoutLayer.TileSet  = newSprites; 
+		
+		spaceTileID    = tilesetIDs[Piece.Color.MISSING][Piece.PieceType.MISSING];
+		player1ScoutID = tilesetIDs[Piece.Color.PLAYER_1][Piece.PieceType.SCOUT];
+		player2ScoutID = tilesetIDs[Piece.Color.PLAYER_1][Piece.PieceType.TILE];
+		player1TileID  = tilesetIDs[Piece.Color.PLAYER_2][Piece.PieceType.SCOUT];
+		player2TileID  = tilesetIDs[Piece.Color.PLAYER_2][Piece.PieceType.TILE];
+
+		_onRestart(); 
 	}
 
 	public void updateDisplay() {
