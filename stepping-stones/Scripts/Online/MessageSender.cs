@@ -4,14 +4,18 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Text;
+using Microsoft.VisualBasic;
+using System.Linq;
 
-public partial class MessageSender : Node
+public partial class MessageSender
 {
 	// Called when the node enters the scene tree for the first time.
 	[Export]
-	string ipAddr; int port; int version;
+	public string ipAddr; 
+	public int port; 
+	
+	public int messVersion;
 	#nullable enable
-	IPEndPoint? endPoint = null;
 	Socket? client = null;
 	public static string Pad4(int num) {
 		string res = "";
@@ -20,10 +24,44 @@ public partial class MessageSender : Node
         }
         return res + num.ToString();
 	}
-	public async Task RunRoom(){
-		if (endPoint == null) {
-			endPoint = new (IPAddress.Parse(ipAddr), port);
+
+	private async Task<(string hostIp, int port)> GetHostIpAsync(Socket client, string roomID) {
+		byte[] message = Encoding.UTF8.GetBytes(Pad4(messVersion) + Pad4(2) + Pad4(roomID.Length) + roomID);
+		await client.SendAsync(message);
+		byte[] buf = new byte[1024];
+
+		await client.ReceiveAsync(buf, SocketFlags.None);
+		
+		return BufToIp(buf, 9);
+	}
+	public static (string hostIp, int port) BufToIp(byte[] buf, int start) {
+		
+		ArraySegment<byte> ipbytes = new ArraySegment<byte>(buf, start, 4);
+		ArraySegment<byte> portbytes = new ArraySegment<byte>(buf, start + 4, 4);
+		byte[] finportbytes = portbytes.ToArray();
+		if (BitConverter.IsLittleEndian) {
+			finportbytes = portbytes.Reverse().ToArray();
 		}
+		int port = BitConverter.ToInt32(finportbytes);
+		string ip = ipbytes[0] + "." + ipbytes[1] + "." + ipbytes[2] 
+								   + "." + ipbytes[3];
+		return (ip, port);
+	}
+	public async Task<(string hostIp, int port)>  JoinRoomAsync(string roomID){
+		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
+		using Socket client = new(
+    		endPoint.AddressFamily, 
+    		SocketType.Stream, 
+    		ProtocolType.Tcp);
+		GD.Print("client socket made");
+		await client.ConnectAsync(endPoint);
+		GD.Print("client connected");
+		return await GetHostIpAsync(client, roomID);
+
+	}
+
+	public async Task RunRoomAsync(){
+		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
 		using Socket client = new(
     		endPoint.AddressFamily, 
     		SocketType.Stream, 
@@ -31,7 +69,7 @@ public partial class MessageSender : Node
 		await client.ConnectAsync(endPoint);
 		string roomID = ""; 
 		try {
-			roomID = await MakeRoom(client);
+			roomID = await MakeRoomAsync(client);
 		} catch (System.ApplicationException e){
 			GD.Print(e.Message);
 			return;
@@ -61,33 +99,25 @@ public partial class MessageSender : Node
 		ip += num  / 256 / 256 / 256 % 256 + ".";
 		return ip;
 	}
-	public async Task<string> MakeRoom(Socket client) {
-		byte[] message = Encoding.UTF8.GetBytes(Pad4(version) + Pad4(1));
+	public async Task<string> MakeRoomAsync(Socket client) {
+		byte[] message = Encoding.UTF8.GetBytes(Pad4(messVersion) + Pad4(0));
 		await client.SendAsync(message);
 		byte[] buffer = new byte[100];
 		int received = await client.ReceiveAsync(buffer, SocketFlags.None);
+		GD.Print("Got a response");
 		if (received < 8) {
 			throw new ApplicationException($"expected at least 8 bytes, only got {received}");
 		}
-		int version = Int32.Parse(Encoding.UTF8.GetString(buffer, 0, 4));
+		int recVersion = Int32.Parse(Encoding.UTF8.GetString(buffer, 0, 4));
 		int mType = Int32.Parse(Encoding.UTF8.GetString(buffer, 4, 4));
+		GD.Print($"mType is {mType}");
 		if (mType != 1) {
 			throw new ApplicationException($"expected message type 1, got {mType}");
 		}
+		
 		int length = Int32.Parse(Encoding.UTF8.GetString(buffer, 8, 4));
-		return Encoding.UTF8.GetString(buffer, 8, length);
-	}
-
-	public void JoinRoom(string roomID) {
-
+		GD.Print($"length is {length}");
+		return Encoding.UTF8.GetString(buffer, 12, length);
 	}
 	#nullable disable
-	public override void _Ready()
-	{
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
 }

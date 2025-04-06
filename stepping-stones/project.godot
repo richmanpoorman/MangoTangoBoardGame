@@ -29,6 +29,10 @@ project/assembly_name="Stepping Stones"
 
 enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
 
+[gdunit4]
+
+settings/test/test_lookup_folder="Tests"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
