@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://b74baklwnvmkn"]
-
-[ext_resource type="PackedScene" uid="uid://b0l7rpib6tsof" path="res://Templates/BoardManager.tscn" id="1_1n4o7"]
-
-[node name="TestPlace" type="Node2D"]
-
-[node name="BoardManager" parent="." instance=ExtResource("1_1n4o7")]
