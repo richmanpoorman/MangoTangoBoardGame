@@ -6,12 +6,14 @@ public interface Piece
 	public enum Color {
 		PLAYER_1, 
 		PLAYER_2,
+		BLANK, 
 		MISSING
 	};
 
 	public enum PieceType {
 		TILE, 
 		SCOUT,
+		BLANK,
 		MISSING
 	};
 

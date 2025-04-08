@@ -1,53 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://bkgd4htwt4ar5"]
+[gd_scene load_steps=3 format=3 uid="uid://bkgd4htwt4ar5"]
 
 [ext_resource type="Script" path="res://Scripts/Visualization/BoardDisplay.cs" id="1_1smbk"]
-[ext_resource type="Texture2D" uid="uid://bww8qxj1scs07" path="res://Sprites/TileSprites/Basic-Square.PNG" id="2_w5p0n"]
-[ext_resource type="Texture2D" uid="uid://ci17wdqovb18q" path="res://Sprites/TileSprites/Blue Player.PNG" id="3_816ml"]
-[ext_resource type="Texture2D" uid="uid://ba3lrmbmgo6b" path="res://Sprites/TileSprites/Blue Tile.PNG" id="4_lj6lf"]
-[ext_resource type="Texture2D" uid="uid://c12e6fuinc1ah" path="res://Sprites/TileSprites/Red Player.PNG" id="5_jug18"]
-[ext_resource type="Texture2D" uid="uid://bpbsqrtamrh17" path="res://Sprites/TileSprites/Red Tile.PNG" id="6_ig23n"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c5qjw"]
-resource_name = "Empty"
-texture = ExtResource("2_w5p0n")
-texture_region_size = Vector2i(16, 10)
-0:0/0 = 0
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ggo7i"]
-resource_name = "BluePlayer"
-texture = ExtResource("3_816ml")
-texture_region_size = Vector2i(10, 11)
-0:0/0 = 0
-0:0/0/texture_origin = Vector2i(0, 6)
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_utcso"]
-resource_name = "BlueTile"
-texture = ExtResource("4_lj6lf")
-texture_region_size = Vector2i(16, 14)
-0:0/0 = 0
-0:0/0/texture_origin = Vector2i(0, 2)
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gq86t"]
-resource_name = "RedPlayer"
-texture = ExtResource("5_jug18")
-texture_region_size = Vector2i(10, 11)
-0:0/0 = 0
-0:0/0/texture_origin = Vector2i(0, 6)
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oyva7"]
-resource_name = "RedTile"
-texture = ExtResource("6_ig23n")
-texture_region_size = Vector2i(16, 14)
-0:0/0 = 0
-0:0/0/texture_origin = Vector2i(0, 2)
-
-[sub_resource type="TileSet" id="TileSet_0fasa"]
-tile_size = Vector2i(16, 10)
-sources/1 = SubResource("TileSetAtlasSource_c5qjw")
-sources/2 = SubResource("TileSetAtlasSource_ggo7i")
-sources/3 = SubResource("TileSetAtlasSource_utcso")
-sources/5 = SubResource("TileSetAtlasSource_gq86t")
-sources/6 = SubResource("TileSetAtlasSource_oyva7")
+[ext_resource type="TileSet" uid="uid://brvhq55juvbiw" path="res://Templates/Tilesets/PieceTileset.tres" id="2_3uhbl"]
 
 [node name="Board" type="Node2D" node_paths=PackedStringArray("spacesLayer", "tileLayer", "scoutLayer")]
 script = ExtResource("1_1smbk")
@@ -61,10 +15,10 @@ player1TileID = 6
 player2TileID = 3
 
 [node name="SpacesLayer" type="TileMapLayer" parent="."]
-tile_set = SubResource("TileSet_0fasa")
+tile_set = ExtResource("2_3uhbl")
 
 [node name="TileLayer" type="TileMapLayer" parent="."]
-tile_set = SubResource("TileSet_0fasa")
+tile_set = ExtResource("2_3uhbl")
 
 [node name="ScoutLayer" type="TileMapLayer" parent="."]
-tile_set = SubResource("TileSet_0fasa")
+tile_set = ExtResource("2_3uhbl")

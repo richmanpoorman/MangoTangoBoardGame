@@ -13,14 +13,26 @@ public partial class SceneManager : Node
 	[Export]
 	private String _mainSceneFile = "res://Scenes/Main.tscn";
 	private String _titleSceneFile = "res://Scenes/titlescreen.tscn";
+	private String _defaultPieceTileset = "res://Templates/Tilesets/PieceTileset.tres"; 
+
+	// For changing the tiles 
+	[Export]
+	public TileSet playerTiles {get; private set; }
+	public Godot.Collections.Dictionary<Piece.Color, Godot.Collections.Dictionary<Piece.PieceType, int>> tilesetIDs {get; private set; }
+
 	public static SceneManager Instance {get; private set;}
 	// public int width {set; get;}
 	// public int length {set; get;}
 	// Called when the node enters the scene tree for the first time.
+
+	private EventBus _bus; 
 	public override void _Ready()
 	{
 		Instance = this;
 		board = new GridSteppingStonesBoard(5, 7);
+		_bus  = EventBus.Bus; 
+		_bus.onChangePieceTileset += _onTilesetChange; 
+		playerTiles = GD.Load<TileSet>(_defaultPieceTileset);
 	}
 	public void goToMainBoard (Tuple<SteppingStonesBoard, Piece.Color, int, 
 									int, BoardManager.GamePhase> tuple) {
@@ -47,9 +59,9 @@ public partial class SceneManager : Node
 		GetTree().ChangeSceneToFile(_titleSceneFile);
 	}
 
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
+	private void _onTilesetChange(TileSet newSprites, Godot.Collections.Dictionary<Piece.Color, Godot.Collections.Dictionary<Piece.PieceType, int>> tilesetIDs) {
+		this.playerTiles = newSprites; 
+		this.tilesetIDs  = tilesetIDs; 
 	}
+
 }

@@ -7,15 +7,17 @@ using System.Collections.Generic;
 public partial class AssetSelection : Node2D
 {    
     private struct AssetSelector {
-        public AssetSelector(Button _popupButton, FileDialog _spriteChooser, CompressedTexture2D _defaultSprite) {
+        public AssetSelector(Button _popupButton, FileDialog _spriteChooser, CompressedTexture2D _defaultSprite, int _verticalOffset) {
             popupButton = _popupButton; 
             spriteChooser = _spriteChooser; 
             defaultSprite = _defaultSprite; 
+            verticalOffset = _verticalOffset; 
         }
 
         public Button popupButton {set; get; }
         public FileDialog spriteChooser {set; get; }
         public CompressedTexture2D defaultSprite {set; get; }
+        public int verticalOffset {set; get; }
     }
     [Export]
     private int maxStringLength = 30; 
@@ -39,13 +41,15 @@ public partial class AssetSelection : Node2D
     [Export]
     private CompressedTexture2D[] defaultSprites; 
 
+    [Export]
+    private SpinBox[] offsetSelections; 
 
     public override void _Ready() {
         _bus = EventBus.Bus; 
 
         int size = assetTypes.Length; 
         for (int i = 0; i < size; i++) 
-            assetSelections[assetTypes[i]] = new AssetSelector(popupButtons[i], spriteChoosers[i], defaultSprites[i]); 
+            assetSelections[assetTypes[i]] = new AssetSelector(popupButtons[i], spriteChoosers[i], defaultSprites[i], (int)offsetSelections[i].Value); 
 
         foreach (var (assetType, assetSelector) in assetSelections) {
             assetSelector.popupButton.Pressed        += () => assetSelector.spriteChooser.Popup(); 
@@ -75,6 +79,7 @@ public partial class AssetSelection : Node2D
         TileSetAtlasSource spriteSheet = new TileSetAtlasSource();
         Texture2D sprites;
         if (path.Equals("")) {
+            GD.Print("Using Default");
             sprites = asset.defaultSprite; 
         } else {
             Image image = new Image();
@@ -94,6 +99,8 @@ public partial class AssetSelection : Node2D
         spriteSheet.TextureRegionSize = (Vector2I)sprites.GetSize(); 
         spriteSheet.Texture = sprites; 
         spriteSheet.CreateTile(Vector2I.Zero); 
+        TileData data = spriteSheet.GetTileData(Vector2I.Zero, 0);
+        data.TextureOrigin = new Vector2I(0, asset.verticalOffset); 
         
         return spriteSheet; 
     }
@@ -128,8 +135,9 @@ public partial class AssetSelection : Node2D
             case "P2_TILE":
                 return (Piece.Color.PLAYER_2, Piece.PieceType.TILE); 
             case "EMPTY_SQUARE":
-                return (Piece.Color.MISSING, Piece.PieceType.MISSING); 
+                return (Piece.Color.BLANK, Piece.PieceType.BLANK); 
         }
+        GD.Print(assetType + " could not be defined"); 
         return (Piece.Color.MISSING, Piece.PieceType.MISSING); 
     }
 }
