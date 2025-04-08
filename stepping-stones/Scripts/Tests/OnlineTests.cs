@@ -54,10 +54,35 @@ public class OnlineTests {
         // GD.PrintErr("Connected");
         string roomID = await host.MakeRoomAsync(hostSock);
 		GD.Print("room made");
-		var hostInfo = await client.JoinRoomAsync(roomID);
+		(_, var hostInfo) = await client.JoinRoomAsync(roomID);
 		GD.Print("got host info");
-		GD.PushWarning($"host ip is {hostInfo.hostIp}:{hostInfo.port}");
+		GD.PushWarning($"host ip is {hostInfo.ip}:{hostInfo.port}");
 		// AssertThat(false).IsEqual(true);
         // GD.PrintErr($"got code");
 	}
+	#nullable enable
+	[TestCase]
+	public async Task handshakeTest() {
+		(Socket hostSock, string? roomID) = await host.MkSocketandCodeAsync();
+		if (roomID == null) {
+			AssertThat(true).IsEqual(false);
+			return;
+		}
+		(Socket clientSock, MessageSender.ipPort cc) = await client.JoinRoomAsync(roomID);
+		MessageSender.ipPort? hc = await host.GetClientIpAsync(hostSock);
+		await hostSock.DisconnectAsync(true);
+		await clientSock.DisconnectAsync(true);
+		if (hc == null) {
+			AssertThat(true).IsEqual(false);
+			return;
+		}
+		var hTask = Task.Run(() => host.sendHandshakeAsync(hostSock, "imhost", (MessageSender.ipPort)hc));
+		var cTask = Task.Run(() => client.sendHandshakeAsync(clientSock, "imclient", (MessageSender.ipPort)cc));
+		string hString = await hTask;
+		string cString = await cTask;
+		AssertThat(hString).IsEqual("imclientrwx");
+		AssertThat(cString).IsEqual("imhostrwx");
+
+	}
+	#nullable disable
 	}

@@ -17,8 +17,17 @@ public partial class MessageSender
 	public int messVersion;
 
 	private int localPort;
+
+	public struct ipPort {
+		public ipPort(string ip, int port) {
+			this.ip = ip; this.port = port;
+		}
+		public string ip;
+		public int port;
+	}
 	#nullable enable
 	Socket? client = null;
+	
 	public static string Pad4(int num) {
 		string res = "";
         for (int i = 0; i < (4-num.ToString().Length); i++) {
@@ -27,7 +36,7 @@ public partial class MessageSender
         return res + num.ToString();
 	}
 
-	private async Task<(string hostIp, int port)> GetHostIpAsync(Socket client, string roomID) {
+	private async Task<ipPort> GetHostIpAsync(Socket client, string roomID) {
 		byte[] message = Encoding.UTF8.GetBytes(Pad4(messVersion) + Pad4(2) + Pad4(roomID.Length) + roomID);
 		await client.SendAsync(message);
 		byte[] buf = new byte[1024];
@@ -36,7 +45,7 @@ public partial class MessageSender
 		
 		return BufToIp(buf, 9);
 	}
-	public static (string hostIp, int port) BufToIp(byte[] buf, int start) {
+	public static ipPort BufToIp(byte[] buf, int start) {
 		
 		ArraySegment<byte> ipbytes = new ArraySegment<byte>(buf, start, 4);
 		ArraySegment<byte> portbytes = new ArraySegment<byte>(buf, start + 4, 4);
@@ -47,9 +56,9 @@ public partial class MessageSender
 		int port = BitConverter.ToInt32(finportbytes);
 		string ip = ipbytes[0] + "." + ipbytes[1] + "." + ipbytes[2] 
 								   + "." + ipbytes[3];
-		return (ip, port);
+		return new ipPort(ip, port);
 	}
-	public async Task<(string hostIp, int port)>  JoinRoomAsync(string roomID){
+	public async Task<(Socket, ipPort)>  JoinRoomAsync(string roomID){
 		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
 		using Socket client = new(
     		endPoint.AddressFamily, 
@@ -58,7 +67,7 @@ public partial class MessageSender
 		GD.Print("client socket made");
 		await client.ConnectAsync(endPoint);
 		GD.Print("client connected");
-		return await GetHostIpAsync(client, roomID);
+		return (client, await GetHostIpAsync(client, roomID));
 		
 
 	}
@@ -74,37 +83,36 @@ public partial class MessageSender
 		GD.Print("client connected");
 		var ext =  await GetHostIpAsync(client, roomID);
 		await client.DisconnectAsync(true);
-		return await sendHandshakeAsync(client,prepend,ext);
+		return await sendHandshakeAsync(client,prepend, ext);
 	}
 
-	public async Task RunRoomAsync(){
+	public async Task<(Socket sock, string? roomCode)> MkSocketandCodeAsync () {
 		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
 		using Socket client = new(
     		endPoint.AddressFamily, 
     		SocketType.Stream, 
     		ProtocolType.Tcp);
 		await client.ConnectAsync(endPoint);
-		string roomID = ""; 
-		try {
-			roomID = await MakeRoomAsync(client);
-		} catch (System.ApplicationException e){
-			GD.Print(e.Message);
-			return;
-		}
-		
+		return (client, await MakeRoomAsync(client));
+	}
+
+	public async Task<ipPort?> GetClientIpAsync(Socket client) {
 		byte[] buffer = new byte[1024];
 		
 		int received = await client.ReceiveAsync(buffer, SocketFlags.None);
 		if (received < 8) {
-			return;
+			return null;
 		}
 		int version = Int32.Parse(Encoding.UTF8.GetString(buffer, 0, 4));
 		int mType = Int32.Parse(Encoding.UTF8.GetString(buffer, 4, 4));
+		
 		if (mType != 4) {
-			return;
+			return null;
 		}
-		await client.DisconnectAsync(true);
+
+		return BufToIp(buffer, 9);
 	}
+
 
 	public async Task<string> DebugRunRoomAsync(string prepend = ""){
 		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
@@ -143,20 +151,20 @@ public partial class MessageSender
 		ip += num  / 256 / 256 / 256 % 256 + ".";
 		return ip;
 	}
-	public async Task<string> MakeRoomAsync(Socket client) {
+	public async Task<string?> MakeRoomAsync(Socket client) {
 		byte[] message = Encoding.UTF8.GetBytes(Pad4(messVersion) + Pad4(0));
 		await client.SendAsync(message);
 		byte[] buffer = new byte[100];
 		int received = await client.ReceiveAsync(buffer, SocketFlags.None);
 		GD.Print("Got a response");
 		if (received < 8) {
-			throw new ApplicationException($"expected at least 8 bytes, only got {received}");
+			return null;
 		}
 		int recVersion = Int32.Parse(Encoding.UTF8.GetString(buffer, 0, 4));
 		int mType = Int32.Parse(Encoding.UTF8.GetString(buffer, 4, 4));
 		GD.Print($"mType is {mType}");
 		if (mType != 1) {
-			throw new ApplicationException($"expected message type 1, got {mType}");
+			return null;
 		}
 		
 		int length = Int32.Parse(Encoding.UTF8.GetString(buffer, 8, 4));
@@ -164,10 +172,10 @@ public partial class MessageSender
 		return Encoding.UTF8.GetString(buffer, 12, length);
 	}
 
-	public async Task<string> sendHandshakeAsync (Socket client, string prepend, (string extIp, int port) ext) {
+	public async Task<string> sendHandshakeAsync (Socket client, string prepend, ipPort ext) {
 		string flags = "-w-";
 		byte[] buf   = new byte[40];
-		IPEndPoint endPoint = new (IPAddress.Parse(ext.extIp), ext.port);
+		IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
 		await client.ConnectAsync(endPoint);
 		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
 		await Task.Delay(100);
@@ -180,10 +188,10 @@ public partial class MessageSender
 		return Encoding.ASCII.GetString(buf);
 	}
 
-	public async Task sendHandshakeAsync (Socket client, (string extIp, int port) ext) {
+	public async Task sendHandshakeAsync (Socket client, ipPort ext) {
 		string flags = "-w-";
 		byte[] buf   = new byte[40];
-		IPEndPoint endPoint = new (IPAddress.Parse(ext.extIp), ext.port);
+		IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
 		await client.ConnectAsync(endPoint);
 		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
 		await Task.Delay(100);
