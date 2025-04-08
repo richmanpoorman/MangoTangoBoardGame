@@ -12,7 +12,7 @@ namespace GdUnitDefaultTestNamespace
 	public class MainGameTest
 	{
 		// TestSuite generated from
-		private const string sourceClazzPath = "/Users/janebrockett/Documents/GitHub/MangoTangoBoardGame/stepping-stones/Scripts/UILogic/MainGame.cs";
+		private const string sourceClazzPath = "./../../../Scripts/UILogic/MainGame.cs";
 		[TestCase]
 		public async Task setPlayerTile()
 		{
@@ -24,6 +24,8 @@ namespace GdUnitDefaultTestNamespace
 			manager.setBoard(board);
 			manager.setTileCount(Piece.Color.PLAYER_1, 5);
 			Assertions.AssertThat(manager.playerTileCount(Piece.Color.PLAYER_1)).IsEqual(5);
-			}
+			manager.setTileCount(Piece.Color.PLAYER_2, 6);
+			Assertions.AssertThat(manager.playerTileCount(Piece.Color.PLAYER_2)).IsEqual(6);
+		}
 	}
 }
