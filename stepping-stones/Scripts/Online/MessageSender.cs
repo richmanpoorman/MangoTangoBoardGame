@@ -15,6 +15,8 @@ public partial class MessageSender
 	public int port; 
 	
 	public int messVersion;
+
+	private int localPort;
 	#nullable enable
 	Socket? client = null;
 	public static string Pad4(int num) {
@@ -57,7 +59,22 @@ public partial class MessageSender
 		await client.ConnectAsync(endPoint);
 		GD.Print("client connected");
 		return await GetHostIpAsync(client, roomID);
+		
 
+	}
+
+	public async Task<string> DebugJoinRoom(string roomID, string prepend) {
+		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
+		using Socket client = new(
+    		endPoint.AddressFamily, 
+    		SocketType.Stream, 
+    		ProtocolType.Tcp);
+		GD.Print("client socket made");
+		await client.ConnectAsync(endPoint);
+		GD.Print("client connected");
+		var ext =  await GetHostIpAsync(client, roomID);
+		await client.DisconnectAsync(true);
+		return await sendHandshakeAsync(client,prepend,ext);
 	}
 
 	public async Task RunRoomAsync(){
@@ -86,10 +103,37 @@ public partial class MessageSender
 		if (mType != 4) {
 			return;
 		}
-		ArraySegment<byte> ccipbytes = new ArraySegment<byte>(buffer, 8, 4);
-		int ccport = BitConverter.ToInt32(buffer, 12);
-		string ccip = ccipbytes[0] + "." + ccipbytes[1] + "." + ccipbytes[2] 
-								   + "." + ccipbytes[3];
+		await client.DisconnectAsync(true);
+	}
+
+	public async Task<string> DebugRunRoomAsync(string prepend = ""){
+		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
+		using Socket client = new(
+    		endPoint.AddressFamily, 
+    		SocketType.Stream, 
+    		ProtocolType.Tcp);
+		await client.ConnectAsync(endPoint);
+		string roomID = ""; 
+		try {
+			roomID = await MakeRoomAsync(client);
+		} catch (System.ApplicationException e){
+			GD.Print(e.Message);
+			return e.Message;
+		}
+		
+		byte[] buffer = new byte[1024];
+		
+		int received = await client.ReceiveAsync(buffer, SocketFlags.None);
+		if (received < 8) {
+			return "bad len";
+		}
+		int version = Int32.Parse(Encoding.UTF8.GetString(buffer, 0, 4));
+		int mType = Int32.Parse(Encoding.UTF8.GetString(buffer, 4, 4));
+		if (mType != 4) {
+			return "bad mess code";
+		}
+		await client.DisconnectAsync(true);
+		return await sendHandshakeAsync(client,prepend, BufToIp(buffer, 9));
 	}
 	public static string ipFromInt(int num) {
 		string ip = "";
@@ -118,6 +162,37 @@ public partial class MessageSender
 		int length = Int32.Parse(Encoding.UTF8.GetString(buffer, 8, 4));
 		GD.Print($"length is {length}");
 		return Encoding.UTF8.GetString(buffer, 12, length);
+	}
+
+	public async Task<string> sendHandshakeAsync (Socket client, string prepend, (string extIp, int port) ext) {
+		string flags = "-w-";
+		byte[] buf   = new byte[40];
+		IPEndPoint endPoint = new (IPAddress.Parse(ext.extIp), ext.port);
+		await client.ConnectAsync(endPoint);
+		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		await Task.Delay(100);
+		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		await client.ReceiveAsync(buf, SocketFlags.None);
+		string recFlags = Encoding.ASCII.GetString(buf);
+		flags = prepend + "rwx";
+		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		await client.ReceiveAsync(buf, SocketFlags.None);
+		return Encoding.ASCII.GetString(buf);
+	}
+
+	public async Task sendHandshakeAsync (Socket client, (string extIp, int port) ext) {
+		string flags = "-w-";
+		byte[] buf   = new byte[40];
+		IPEndPoint endPoint = new (IPAddress.Parse(ext.extIp), ext.port);
+		await client.ConnectAsync(endPoint);
+		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		await Task.Delay(100);
+		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		await client.ReceiveAsync(buf, SocketFlags.None);
+		string recFlags = Encoding.ASCII.GetString(buf);
+		flags = "rwx";
+		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		await client.ReceiveAsync(buf, SocketFlags.None);
 	}
 	#nullable disable
 }

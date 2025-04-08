@@ -57,7 +57,7 @@ public class OnlineTests {
 		var hostInfo = await client.JoinRoomAsync(roomID);
 		GD.Print("got host info");
 		GD.PushWarning($"host ip is {hostInfo.hostIp}:{hostInfo.port}");
-		AssertThat(false).IsEqual(true);
+		// AssertThat(false).IsEqual(true);
         // GD.PrintErr($"got code");
 	}
 	}
