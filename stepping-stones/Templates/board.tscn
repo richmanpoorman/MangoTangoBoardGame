@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkgd4htwt4ar5"]
+
+[ext_resource type="Script" path="res://Scripts/Visualization/BoardDisplay.cs" id="1_1smbk"]
+[ext_resource type="TileSet" uid="uid://brvhq55juvbiw" path="res://Templates/Tilesets/PieceTileset.tres" id="2_3uhbl"]
+
+[node name="Board" type="Node2D" node_paths=PackedStringArray("spacesLayer", "tileLayer", "scoutLayer")]
+script = ExtResource("1_1smbk")
+spacesLayer = NodePath("SpacesLayer")
+tileLayer = NodePath("TileLayer")
+scoutLayer = NodePath("ScoutLayer")
+spaceTileID = 1
+player1ScoutID = 5
+player2ScoutID = 2
+player1TileID = 6
+player2TileID = 3
+
+[node name="SpacesLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_3uhbl")
+
+[node name="TileLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_3uhbl")
+
+[node name="ScoutLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_3uhbl")

@@ -1,0 +1,204 @@
+[gd_scene load_steps=6 format=3 uid="uid://cgelfsecvh8rq"]
+
+[ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
+[ext_resource type="PackedScene" uid="uid://nahy7hvx33ut" path="res://Templates/AssetCreator.tscn" id="2_u8ll1"]
+[ext_resource type="Script" path="res://Scripts/Customization/AssetPopupManager.cs" id="3_t0cuw"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8nm86"]
+
+[sub_resource type="Theme" id="Theme_hkbsb"]
+
+[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_14iu0")
+loadBox = NodePath("Primary/Primary/LoadGameButton/MainLoad")
+startButton = NodePath("Secondary/StartGame")
+backButton = NodePath("Secondary/BackButton")
+newButton = NodePath("Primary/Primary/NewGameButton")
+loadButton = NodePath("Primary/Primary/LoadGameButton")
+makeRoomButton = NodePath("Primary/Primary/MakeRoomButton")
+joinRoomButton = NodePath("Primary/Primary/JoinRoomButton")
+roomJoiner = NodePath("Room Code")
+tabs = NodePath("Tabs")
+
+[node name="AssetCreator" parent="." instance=ExtResource("2_u8ll1")]
+visible = false
+position = Vector2(117, 69)
+
+[node name="Secondary" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -239.193
+offset_top = -154.589
+offset_right = 203.807
+offset_bottom = -58.5895
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="StartGame" type="Button" parent="Secondary"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Start Game"
+
+[node name="BackButton" type="Button" parent="Secondary"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Return
+"
+
+[node name="Primary" type="VBoxContainer" parent="."]
+layout_direction = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -559.0
+offset_top = 71.0
+offset_right = 560.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Primary" type="HBoxContainer" parent="Primary"]
+layout_mode = 2
+alignment = 1
+
+[node name="NewGameButton" type="Button" parent="Primary/Primary"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 48
+text = " New Game "
+
+[node name="LoadGameButton" type="Button" parent="Primary/Primary"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Load Game"
+
+[node name="MainLoad" type="FileDialog" parent="Primary/Primary/LoadGameButton"]
+auto_translate_mode = 1
+title = "Open a File"
+initial_position = 1
+size = Vector2i(275, 300)
+ok_button_text = "Open"
+dialog_hide_on_ok = true
+file_mode = 0
+access = 1
+root_subfolder = "user://"
+filters = PackedStringArray("*.step")
+
+[node name="MakeRoomButton" type="Button" parent="Primary/Primary"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 48
+text = "Make Room"
+
+[node name="JoinRoomButton" type="Button" parent="Primary/Primary"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = " Join Room "
+
+[node name="Settings Bar" type="HBoxContainer" parent="Primary"]
+layout_mode = 2
+alignment = 1
+
+[node name="Create Assets" type="Button" parent="Primary/Settings Bar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Custom Tiles"
+
+[node name="Asset Popup Manager" type="Node2D" parent="Primary/Settings Bar/Create Assets" node_paths=PackedStringArray("assetCreator")]
+script = ExtResource("3_t0cuw")
+assetCreator = NodePath("../../../../AssetCreator")
+
+[node name="Tabs" type="TabContainer" parent="."]
+visible = false
+material = SubResource("CanvasItemMaterial_8nm86")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.533
+anchor_top = 0.206
+anchor_right = 0.533
+anchor_bottom = 0.206
+offset_left = -193.0
+offset_right = 193.0
+offset_bottom = 289.0
+grow_horizontal = 2
+theme = SubResource("Theme_hkbsb")
+current_tab = 0
+
+[node name="GameSettings" type="VBoxContainer" parent="Tabs"]
+custom_minimum_size = Vector2(100, 45)
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="WidthBox" type="SpinBox" parent="Tabs/GameSettings"]
+layout_mode = 2
+min_value = 1.0
+max_value = 26.0
+value = 5.0
+alignment = 3
+prefix = "Width"
+
+[node name="LengthBox" type="SpinBox" parent="Tabs/GameSettings"]
+layout_mode = 2
+min_value = 1.0
+max_value = 26.0
+value = 7.0
+alignment = 3
+prefix = "Length"
+
+[node name="NumTilesBox" type="SpinBox" parent="Tabs/GameSettings"]
+layout_mode = 2
+min_value = 1.0
+max_value = 26.0
+value = 4.0
+alignment = 3
+prefix = "Tiles"
+
+[node name="CloseButton" type="Button" parent="Tabs/GameSettings"]
+visible = false
+layout_mode = 2
+text = "Close Menu"
+
+[node name="Room Code" type="LineEdit" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 256.0
+offset_top = 176.0
+offset_right = 1035.0
+offset_bottom = 293.0
+placeholder_text = "Enter Room Code"
+alignment = 1
+
+[connection signal="pressed" from="AssetCreator/UI Elements/Sprite Selector/Selectors/Submission Button" to="Primary/Settings Bar/Create Assets/Asset Popup Manager" method="_onSubmission"]
+[connection signal="pressed" from="Secondary/StartGame" to="." method="OnStartGameButtonPressed"]
+[connection signal="pressed" from="Secondary/BackButton" to="." method="OnBackButtonPressed"]
+[connection signal="pressed" from="Primary/Primary/NewGameButton" to="." method="OnNewGameButtonPressed"]
+[connection signal="pressed" from="Primary/Primary/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
+[connection signal="file_selected" from="Primary/Primary/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]
+[connection signal="pressed" from="Primary/Primary/MakeRoomButton" to="." method="onMakeRoomPressed"]
+[connection signal="pressed" from="Primary/Primary/JoinRoomButton" to="." method="onJoinRoomPressed"]
+[connection signal="pressed" from="Primary/Settings Bar/Create Assets" to="Primary/Settings Bar/Create Assets/Asset Popup Manager" method="_onCustomizationButtonClick"]
+[connection signal="value_changed" from="Tabs/GameSettings/WidthBox" to="." method="OnWidthBoxValueChanged"]
+[connection signal="value_changed" from="Tabs/GameSettings/LengthBox" to="." method="OnLengthBoxValueChanged"]
+[connection signal="value_changed" from="Tabs/GameSettings/NumTilesBox" to="." method="OnNumTilesBoxValueChanged"]
+[connection signal="pressed" from="Tabs/GameSettings/CloseButton" to="." method="OnCloseButtonPressed"]
+[connection signal="text_submitted" from="Room Code" to="." method="onJoinCodeEntered"]
+
+[editable path="AssetCreator"]

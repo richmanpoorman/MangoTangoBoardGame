@@ -1,0 +1,49 @@
+[gd_resource type="TileSet" load_steps=11 format=3 uid="uid://brvhq55juvbiw"]
+
+[ext_resource type="Texture2D" uid="uid://bww8qxj1scs07" path="res://Sprites/TileSprites/Basic-Square.PNG" id="1_4fxgb"]
+[ext_resource type="Texture2D" uid="uid://ci17wdqovb18q" path="res://Sprites/TileSprites/Blue Player.PNG" id="2_ybykv"]
+[ext_resource type="Texture2D" uid="uid://ba3lrmbmgo6b" path="res://Sprites/TileSprites/Blue Tile.PNG" id="3_lyavk"]
+[ext_resource type="Texture2D" uid="uid://c12e6fuinc1ah" path="res://Sprites/TileSprites/Red Player.PNG" id="4_tcesc"]
+[ext_resource type="Texture2D" uid="uid://bpbsqrtamrh17" path="res://Sprites/TileSprites/Red Tile.PNG" id="5_v0bqo"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c5qjw"]
+resource_name = "Empty"
+texture = ExtResource("1_4fxgb")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ggo7i"]
+resource_name = "BluePlayer"
+texture = ExtResource("2_ybykv")
+texture_region_size = Vector2i(10, 11)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 6)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_utcso"]
+resource_name = "BlueTile"
+texture = ExtResource("3_lyavk")
+texture_region_size = Vector2i(16, 14)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 2)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gq86t"]
+resource_name = "RedPlayer"
+texture = ExtResource("4_tcesc")
+texture_region_size = Vector2i(10, 11)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 6)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oyva7"]
+resource_name = "RedTile"
+texture = ExtResource("5_v0bqo")
+texture_region_size = Vector2i(16, 14)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 2)
+
+[resource]
+tile_size = Vector2i(16, 10)
+sources/1 = SubResource("TileSetAtlasSource_c5qjw")
+sources/2 = SubResource("TileSetAtlasSource_ggo7i")
+sources/3 = SubResource("TileSetAtlasSource_utcso")
+sources/5 = SubResource("TileSetAtlasSource_gq86t")
+sources/6 = SubResource("TileSetAtlasSource_oyva7")

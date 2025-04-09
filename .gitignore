@@ -1,0 +1,7 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Godot 4+ specific ignores in project
+stepping-stones/.godot/
+stepping-stones/android/

@@ -1,0 +1,73 @@
+[gd_scene load_steps=16 format=3 uid="uid://b0l7rpib6tsof"]
+
+[ext_resource type="Script" path="res://Scripts/Board/BoardManager.cs" id="1_ps4u1"]
+[ext_resource type="Texture2D" uid="uid://dxh3l4vov127u" path="res://Sprites/SelectionSprites/push_down.PNG" id="4_16s11"]
+[ext_resource type="Texture2D" uid="uid://dbx15l5lcpbld" path="res://Sprites/SelectionSprites/push_left.PNG" id="5_xeu7p"]
+[ext_resource type="Texture2D" uid="uid://bmmqthsfyq51k" path="res://Sprites/SelectionSprites/push_right.PNG" id="6_025ar"]
+[ext_resource type="Texture2D" uid="uid://kli631hx5tu5" path="res://Sprites/SelectionSprites/push_up.PNG" id="7_q7ur0"]
+[ext_resource type="Texture2D" uid="uid://d4c6e6iqmn707" path="res://Sprites/SelectionSprites/scout_move.PNG" id="8_km4uu"]
+[ext_resource type="Texture2D" uid="uid://bbqdgcbrxdat" path="res://Sprites/SelectionSprites/tile_move.PNG" id="9_raylb"]
+[ext_resource type="Script" path="res://Scripts/PieceSelection/DisplayOptions.cs" id="10_oec4o"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_khb04"]
+resource_name = "push_down"
+texture = ExtResource("4_16s11")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ao5mx"]
+resource_name = "push_left"
+texture = ExtResource("5_xeu7p")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ga41x"]
+resource_name = "push_right"
+texture = ExtResource("6_025ar")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hmkl0"]
+resource_name = "push_up"
+texture = ExtResource("7_q7ur0")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rfsmv"]
+resource_name = "scout_move"
+texture = ExtResource("8_km4uu")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gm1as"]
+resource_name = "tile_move"
+texture = ExtResource("9_raylb")
+texture_region_size = Vector2i(16, 10)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_ftd5x"]
+tile_size = Vector2i(16, 10)
+sources/0 = SubResource("TileSetAtlasSource_khb04")
+sources/1 = SubResource("TileSetAtlasSource_ao5mx")
+sources/2 = SubResource("TileSetAtlasSource_ga41x")
+sources/3 = SubResource("TileSetAtlasSource_hmkl0")
+sources/4 = SubResource("TileSetAtlasSource_rfsmv")
+sources/5 = SubResource("TileSetAtlasSource_gm1as")
+
+[node name="BoardManager" type="Node2D" node_paths=PackedStringArray("moveOptionsDisplay")]
+script = ExtResource("1_ps4u1")
+moveOptionsDisplay = NodePath("OptionDisplay")
+
+[node name="DisplayGrid" type="TileMapLayer" parent="."]
+z_index = 1
+position = Vector2(0, -3)
+tile_set = SubResource("TileSet_ftd5x")
+
+[node name="OptionDisplay" type="Node2D" parent="." node_paths=PackedStringArray("displayLayer")]
+script = ExtResource("10_oec4o")
+displayLayer = NodePath("../DisplayGrid")
+pushUpID = 3
+pushLeftID = 1
+pushRightID = 2
+scoutMoveID = 4
+tileMoveID = 5
