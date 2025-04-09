@@ -41,20 +41,58 @@ namespace GdUnitDefaultTestNamespace
 			Assertions.AssertThat(manager.board().tileAt(Location.at(1,2)).color()).IsEqual(turn1);
 			Assertions.AssertThat(manager.playerTurn()).IsNotEqual(turn1);
 
-			//check that nothing happens when p1 tries to go
+			//check that nothing happens when p1 tries to go on p2 turn
 			Assertions.AssertThat(manager.board().tileAt(Location.at(2,2))).IsEqual(null);
 			manager.onCellSelection(turn1, 2, 2);
 			Assertions.AssertThat(manager.board().tileAt(Location.at(2,2))).IsEqual(null);
 			Assertions.AssertThat(manager.playerTurn()).IsNotEqual(turn1);
 
-			
+		}
+
+		[TestCase]
+		public void boundPlaceTest(){
+			ISceneRunner runner = ISceneRunner.Load("res://Scenes/Board_Scene.tscn");
+			BoardManager manager = (BoardManager)runner.FindChild("BoardManager");//game.manager;
+			GridSteppingStonesBoard board = new GridSteppingStonesBoard(5, 7);
+			manager.setBoard(board);
+
+			Piece.Color turn1 = manager.playerTurn();
+			int numTiles = manager.playerTileCount(turn1);
+			manager.onCellSelection(turn1, -1, 2);
+			//make sure that trying to place in invalid spot did nothing; since
+			//doesn't exist on board, can't make sure that that spot is still null
+			Assertions.AssertThat(manager.playerTurn()).IsEqual(turn1);
+			Assertions.AssertThat(manager.playerTileCount(turn1)).IsEqual(numTiles);
 
 		}
 
-	// 	[TestCase]
-	// 	public void boundPlaceTest(){}
+	[TestCase]
+	public void noMoveOutOfBounds(){
+		ISceneRunner runner = ISceneRunner.Load("res://Scenes/Board_Scene.tscn");
+		BoardManager manager = (BoardManager)runner.FindChild("BoardManager");//game.manager;
+		GridSteppingStonesBoard board = new GridSteppingStonesBoard(5, 7);
+		manager.setBoard(board);
 
-	// 	public void noMoveOutOfBounds(){}
+		Piece.Color turn1 = manager.playerTurn();
+		int numTiles = manager.playerTileCount(turn1);
+		manager.onCellSelection(turn1, 0, 0);
+		Assertions.AssertThat(manager.board().tileAt(Location.at(0,0)).color()).IsEqual(turn1);
+		manager.setPhase(BoardManager.GamePhase.MOVE);
+		manager.setTurn(turn1);
+		
+		manager.onCellSelection(turn1, 0, 0);
+		manager.onCellSelection(turn1, -1, 0);
+		Assertions.AssertThat(manager.board().tileAt(Location.at(0,0)).color()).IsEqual(turn1);
+		Assertions.AssertThat(manager.playerTurn()).IsEqual(turn1);
+
+		manager.onCellSelection(turn1, 0, 0);
+		manager.onCellSelection(turn1, 0, -1);
+		Assertions.AssertThat(manager.board().tileAt(Location.at(0,0)).color()).IsEqual(turn1);
+		Assertions.AssertThat(manager.playerTurn()).IsEqual(turn1);
+
+		//Tests going negative: TODO: Potential extension: overshoot?
+
+	}
 
 	// 	public void noMoveWrongColor(){}
 
