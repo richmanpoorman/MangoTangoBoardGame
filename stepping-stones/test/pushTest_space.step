@@ -1,0 +1,22 @@
+rows:9, cols:9
+turn:1, p1:0, p2:0, phase:move
+a04=rt
+b04=rt
+c02=rt
+c03=rt
+c04=bt
+c07=bt
+d03=bt
+d09=bt
+e02=rts
+e03=bt
+e07=rt
+e08=bts
+e09=rt
+f07=bt
+f08=bt
+f09=bt
+g02=rt
+g04=bt
+g05=rt
+g06=rt
