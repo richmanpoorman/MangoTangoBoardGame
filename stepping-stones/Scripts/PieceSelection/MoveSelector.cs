@@ -6,4 +6,5 @@ public interface MoveSelector {
     public Piece.Color player(); // Which player this selector selects moves for
     public Location selection(); 
     public void emitMove(); 
+    
 }

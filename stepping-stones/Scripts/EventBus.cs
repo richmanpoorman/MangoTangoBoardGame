@@ -24,12 +24,15 @@ public partial class EventBus : Node
     /*
      *    SIGNALS
      */
+	// If joining a room online
 	[Signal] 
 	public delegate void onJoinRoomEventHandler(string roomCode); 
 
+	// If making a room for online
 	[Signal]
 	public delegate void onMakeRoomEventHandler(); 
 
+	// If a player wins
     [Signal]
 	public delegate void onPlayerWinEventHandler(); 
 
@@ -72,6 +75,13 @@ public partial class EventBus : Node
 	// When a new tileset is created
 	[Signal]
 	public delegate void onChangePieceTilesetEventHandler(TileSet newSprites, Dictionary<Piece.Color, Dictionary<Piece.PieceType, int>> tilesetIDs);
+
+	// When a new player joins the game (be it from online, user, or AI), as well as the color
+	[Signal]
+	public delegate void onPlayerJoinEventHandler(Piece.Color player, CreatePlayerSelectors.PlayerType selectorType);
+
+	[Signal]
+	public delegate void onPlayerLeaveEventHandler(Piece.Color player);
 
 
 	// Connects associated signals, which should also trigger if one is sent
