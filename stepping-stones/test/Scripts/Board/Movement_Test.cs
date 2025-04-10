@@ -14,7 +14,7 @@ namespace GdUnitDefaultTestNamespace
 		private ISceneRunner runner;
 		private BoardManager manager;
 		private GridSteppingStonesBoard board;
-		[Before]
+		[BeforeTest]
 		public void setup(){
 			runner = ISceneRunner.Load("res://Scenes/Board_Scene.tscn");
 			manager = (BoardManager)runner.FindChild("BoardManager");

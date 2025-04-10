@@ -15,12 +15,12 @@ namespace GdUnitDefaultTestNamespace
 		private ISceneRunner runner;
 		private BoardManager manager;
 		private GridSteppingStonesBoard board;
-        Piece.Color p1, p2;
+        private Piece.Color p1, p2;
         private Stopwatch stopwatch;
         private const int maxMoveMilli = 100;
         private const int maxSaveLoadMilli = 1000;
 
-		[Before]
+		[BeforeTest]
 		public void setup(){
             stopwatch = new Stopwatch();
 			runner = ISceneRunner.Load("res://Scenes/Board_Scene.tscn");
