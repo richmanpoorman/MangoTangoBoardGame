@@ -26,13 +26,21 @@ public partial class BoardDisplay : Node2D
 		
 		_eventBus = EventBus.Bus;
 		_eventBus.onChangePieceTileset += _onTilesetChange;
-		_eventBus.onBoardUpdate += _onUpdate; 
-		_eventBus.onBoardReset  += _onRestart; 
+		_eventBus.onBoardUpdate        += _onUpdate; 
+		_eventBus.onBoardReset         += _onRestart; 
 		// Connect(EventBus.SignalName.onBoardUpdate, Callable.From(_onUpdate));
 		// Connect(EventBus.SignalName.onBoardReset, Callable.From(onRestart));
 		initializeBoard(); 
 		updateDisplay(); 
 	}
+
+    public override void _ExitTree()
+    {
+		_eventBus.onChangePieceTileset -= _onTilesetChange;
+		_eventBus.onBoardUpdate        -= _onUpdate; 
+		_eventBus.onBoardReset         -= _onRestart; 
+    }
+
 
 	public void initializeBoard() {
 		

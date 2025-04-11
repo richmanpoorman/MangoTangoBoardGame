@@ -39,6 +39,13 @@ public partial class MainGame : Node2D
 		_newGame = sceneManager.newGame;
 		_board = sceneManager.board;
 	}
+
+    public override void _ExitTree()
+    {
+        _eventBus.onPlayerWin  -= handleWin;
+		_eventBus.onPhaseStart -= updatePhase;
+    }
+
 	private void handleWin()
 	{
 		GetNode<Control>("GameUI").Visible = false;

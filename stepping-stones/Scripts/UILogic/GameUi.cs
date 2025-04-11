@@ -85,6 +85,15 @@ public partial class GameUi : Control
 		_eventBus.onBoardReset += resetUi;
 	}
 
+    public override void _ExitTree()
+    {
+		_eventBus.onTilePlace  -= onTilePlace;
+		_eventBus.onTurnChange -= onTurnChange;
+		_eventBus.onPhaseStart -= phaseSwitched;
+		_eventBus.onBoardReset -= resetUi;
+    }
+
+
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	private void resetUi () 
 	{

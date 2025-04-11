@@ -30,6 +30,11 @@ public partial class SelectSquare : Node2D, MoveSelector
 		_eventBus.onTurnChange += onTurnChange; 
 	}
 
+    public override void _ExitTree()
+    {
+        _eventBus.onTurnChange -= onTurnChange; 
+    }
+
 	public void onTurnChange(PlayerColor turn) { _currentTurn = turn; }
 
     public override void _Input(InputEvent @event)

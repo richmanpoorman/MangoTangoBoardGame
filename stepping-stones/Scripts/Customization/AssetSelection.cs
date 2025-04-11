@@ -48,6 +48,7 @@ public partial class AssetSelection : Node2D
         _bus = EventBus.Bus; 
 
         int size = assetTypes.Length; 
+        GD.Print($"AssetType Length: {assetTypes.Length}, \nPopup Buttons Length: {popupButtons.Length}, \nSprite Choosers Length: {spriteChoosers.Length}. \nDefault Sprites Length: {defaultSprites.Length}, \nOffset Selections Length {offsetSelections.Length}");
         for (int i = 0; i < size; i++) 
             assetSelections[assetTypes[i]] = new AssetSelector(popupButtons[i], spriteChoosers[i], defaultSprites[i], (int)offsetSelections[i].Value); 
 

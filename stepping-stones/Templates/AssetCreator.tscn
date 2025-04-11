@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://nahy7hvx33ut"]
+[gd_scene load_steps=7 format=3 uid="uid://3fbkkrcg4rvl"]
 
 [ext_resource type="Script" path="res://Scripts/Customization/AssetSelection.cs" id="1_gd06v"]
 [ext_resource type="Texture2D" uid="uid://c12e6fuinc1ah" path="res://Sprites/TileSprites/Red Player.PNG" id="2_s381t"]

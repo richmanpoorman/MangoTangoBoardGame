@@ -68,6 +68,12 @@ public partial class BoardManager : Node2D, GameboardManager
 		onRestart();
 	}
 
+    public override void _ExitTree()
+    {
+        _eventBus.onSelection -= onCellSelection;
+    }
+
+
     /*board
     Inputs: None
     Returns: Board

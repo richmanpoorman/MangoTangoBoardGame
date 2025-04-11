@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cgelfsecvh8rq"]
 
 [ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
-[ext_resource type="PackedScene" uid="uid://nahy7hvx33ut" path="res://Templates/AssetCreator.tscn" id="2_u8ll1"]
+[ext_resource type="PackedScene" uid="uid://3fbkkrcg4rvl" path="res://Templates/AssetCreator.tscn" id="2_u8ll1"]
 [ext_resource type="Script" path="res://Scripts/Customization/AssetPopupManager.cs" id="3_t0cuw"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8nm86"]

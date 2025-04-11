@@ -21,6 +21,14 @@ public partial class CreatePlayerSelectors : Node2D
 		bus.onPlayerLeave += onPlayerLeave; 
 	}
 
+    public override void _EnterTree()
+    {
+		EventBus bus = EventBus.Bus; 
+        bus.onPlayerJoin  -= onPlayerJoin; 
+		bus.onPlayerLeave -= onPlayerLeave; 
+    }
+
+
 
 	private void onPlayerJoin(PlayerColor player, PlayerType selectorType) {
 		// Get the right node

@@ -34,6 +34,12 @@ public partial class SceneManager : Node
 		_bus.onChangePieceTileset += _onTilesetChange; 
 		playerTiles = GD.Load<TileSet>(_defaultPieceTileset);
 	}
+    public override void _ExitTree()
+    {
+        _bus.onChangePieceTileset -= _onTilesetChange; 
+    }
+
+
 	public void goToMainBoard (Tuple<SteppingStonesBoard, PlayerColor, int, 
 									int, GamePhase> tuple) {
 		(board, turn, p1Tiles, p2Tiles, phase) = tuple;
