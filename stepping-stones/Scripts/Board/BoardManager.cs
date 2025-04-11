@@ -5,7 +5,7 @@ using System.Data;
 using System.Diagnostics;
 
 // Manages the state of the board, and holds the actual board itself
-public partial class BoardManager : Node
+public partial class BoardManager : Node2D, GameboardManager 
 { 
 
 	public enum GamePhase {
@@ -87,7 +87,7 @@ public partial class BoardManager : Node
 	public Piece.Color playerTurn() { return currentPlayer;}
 	public void setTurn(Piece.Color turn) { currentPlayer = turn;}
 	public void setRules(Rules rules) { _ruleset = rules; }
-	public void setBoard(SteppingStonesBoard board){ 
+	public void setBoard(SteppingStonesBoard board) { 
 		_board = board; 
 		onRestart();
 	}
@@ -107,6 +107,8 @@ public partial class BoardManager : Node
 		gamePhase = GamePhase.PLACE; 
 		_eventBus.EmitSignal(EventBus.SignalName.onPhaseStart, (int)GamePhase.PLACE);
 		currentPlayer = Piece.Color.PLAYER_1; 
+		_eventBus.EmitSignal(EventBus.SignalName.onTurnChange, (int)currentPlayer);
+
 		unmarkSelection(); 
 		// tileCount = _totalTiles * 2;
 		setTileCount(Piece.Color.PLAYER_1, player1DefaultTileCount);
@@ -149,15 +151,7 @@ public partial class BoardManager : Node
 		GD.Print("Manager sees player: ", player);
 
 		Location selection = Location.at(row, column);
-		// Location selection = selector.selection(); 
 
-		// GD.Print("Selection: (", selection.row(), ", ", selection.column(), ")");
-
-		// if (previousPosition is Location prev) 
-		// 	GD.Print("Previous: (", prev.row(), ", ", prev.column(), ")");
-		// else 	
-		// 	GD.Print("Previous: null");	
-		
 		bool finishTurn = false;
 		switch(gamePhase) {
 			case GamePhase.PLACE: 
@@ -167,19 +161,6 @@ public partial class BoardManager : Node
 				finishTurn = duringMovingPhase(selection);
 			break; 
 		}
-
-
-		// switch(selector.mouseButton()) {
-		// 	case MouseButton.Left:
-		// 		finishTurn =  movePiece(selection);
-		// 	break; 
-		// 	case MouseButton.Right:
-		// 		finishTurn = addTile(selection, currentPlayer);
-		// 	break;
-		// 	case MouseButton.Middle:
-		// 		finishTurn = pushPieces(selection);
-		// 	break; 
-		// }
 		
 
 		onUpdate();
