@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cgelfsecvh8rq"]
+[gd_scene load_steps=6 format=3 uid="uid://cgelfsecvh8rq"]
 
 [ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
+[ext_resource type="PackedScene" uid="uid://nahy7hvx33ut" path="res://Templates/AssetCreator.tscn" id="2_u8ll1"]
+[ext_resource type="Script" path="res://Scripts/Customization/AssetPopupManager.cs" id="3_t0cuw"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8nm86"]
 
@@ -11,23 +13,23 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -68.0
-offset_top = -14.0
-offset_right = -68.0
-offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_14iu0")
-loadBox = NodePath("Primary/LoadGameButton/MainLoad")
+loadBox = NodePath("Primary/Primary/LoadGameButton/MainLoad")
 startButton = NodePath("Secondary/StartGame")
 backButton = NodePath("Secondary/BackButton")
-newButton = NodePath("Primary/NewGameButton")
-loadButton = NodePath("Primary/LoadGameButton")
-makeRoomButton = NodePath("Primary/MakeRoomButton")
-joinRoomButton = NodePath("Primary/JoinRoomButton")
+newButton = NodePath("Primary/Primary/NewGameButton")
+loadButton = NodePath("Primary/Primary/LoadGameButton")
+makeRoomButton = NodePath("Primary/Primary/MakeRoomButton")
+joinRoomButton = NodePath("Primary/Primary/JoinRoomButton")
 roomJoiner = NodePath("Room Code")
 tabs = NodePath("Tabs")
+
+[node name="AssetCreator" parent="." instance=ExtResource("2_u8ll1")]
+visible = false
+position = Vector2(117, 69)
 
 [node name="Secondary" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -57,32 +59,38 @@ theme_override_font_sizes/font_size = 48
 text = "Return
 "
 
-[node name="Primary" type="HBoxContainer" parent="."]
+[node name="Primary" type="VBoxContainer" parent="."]
+layout_direction = 1
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.339
-anchor_top = 0.591
-anchor_right = 0.767
-anchor_bottom = 0.755
-offset_left = -0.448029
-offset_top = 0.0319824
-offset_right = 16.416
-offset_bottom = -0.240021
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -559.0
+offset_top = 71.0
+offset_right = 560.0
+offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 
-[node name="NewGameButton" type="Button" parent="Primary"]
+[node name="Primary" type="HBoxContainer" parent="Primary"]
+layout_mode = 2
+alignment = 1
+
+[node name="NewGameButton" type="Button" parent="Primary/Primary"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 48
 text = " New Game "
 
-[node name="LoadGameButton" type="Button" parent="Primary"]
+[node name="LoadGameButton" type="Button" parent="Primary/Primary"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Load Game"
 
-[node name="MainLoad" type="FileDialog" parent="Primary/LoadGameButton"]
+[node name="MainLoad" type="FileDialog" parent="Primary/Primary/LoadGameButton"]
 auto_translate_mode = 1
 title = "Open a File"
 initial_position = 1
@@ -94,16 +102,29 @@ access = 1
 root_subfolder = "user://"
 filters = PackedStringArray("*.step")
 
-[node name="MakeRoomButton" type="Button" parent="Primary"]
+[node name="MakeRoomButton" type="Button" parent="Primary/Primary"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 48
 text = "Make Room"
 
-[node name="JoinRoomButton" type="Button" parent="Primary"]
+[node name="JoinRoomButton" type="Button" parent="Primary/Primary"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = " Join Room "
+
+[node name="Settings Bar" type="HBoxContainer" parent="Primary"]
+layout_mode = 2
+alignment = 1
+
+[node name="Create Assets" type="Button" parent="Primary/Settings Bar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Custom Tiles"
+
+[node name="Asset Popup Manager" type="Node2D" parent="Primary/Settings Bar/Create Assets" node_paths=PackedStringArray("assetCreator")]
+script = ExtResource("3_t0cuw")
+assetCreator = NodePath("../../../../AssetCreator")
 
 [node name="Tabs" type="TabContainer" parent="."]
 visible = false
@@ -165,15 +186,19 @@ offset_bottom = 293.0
 placeholder_text = "Enter Room Code"
 alignment = 1
 
+[connection signal="pressed" from="AssetCreator/UI Elements/Sprite Selector/Selectors/Submission Button" to="Primary/Settings Bar/Create Assets/Asset Popup Manager" method="_onSubmission"]
 [connection signal="pressed" from="Secondary/StartGame" to="." method="OnStartGameButtonPressed"]
 [connection signal="pressed" from="Secondary/BackButton" to="." method="OnBackButtonPressed"]
-[connection signal="pressed" from="Primary/NewGameButton" to="." method="OnNewGameButtonPressed"]
-[connection signal="pressed" from="Primary/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
-[connection signal="file_selected" from="Primary/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]
-[connection signal="pressed" from="Primary/MakeRoomButton" to="." method="onMakeRoomPressed"]
-[connection signal="pressed" from="Primary/JoinRoomButton" to="." method="onJoinRoomPressed"]
+[connection signal="pressed" from="Primary/Primary/NewGameButton" to="." method="OnNewGameButtonPressed"]
+[connection signal="pressed" from="Primary/Primary/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
+[connection signal="file_selected" from="Primary/Primary/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]
+[connection signal="pressed" from="Primary/Primary/MakeRoomButton" to="." method="onMakeRoomPressed"]
+[connection signal="pressed" from="Primary/Primary/JoinRoomButton" to="." method="onJoinRoomPressed"]
+[connection signal="pressed" from="Primary/Settings Bar/Create Assets" to="Primary/Settings Bar/Create Assets/Asset Popup Manager" method="_onCustomizationButtonClick"]
 [connection signal="value_changed" from="Tabs/GameSettings/WidthBox" to="." method="OnWidthBoxValueChanged"]
 [connection signal="value_changed" from="Tabs/GameSettings/LengthBox" to="." method="OnLengthBoxValueChanged"]
 [connection signal="value_changed" from="Tabs/GameSettings/NumTilesBox" to="." method="OnNumTilesBoxValueChanged"]
 [connection signal="pressed" from="Tabs/GameSettings/CloseButton" to="." method="OnCloseButtonPressed"]
 [connection signal="text_submitted" from="Room Code" to="." method="onJoinCodeEntered"]
+
+[editable path="AssetCreator"]

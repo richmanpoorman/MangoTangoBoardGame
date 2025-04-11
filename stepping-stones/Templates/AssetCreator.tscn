@@ -1,0 +1,258 @@
+[gd_scene load_steps=7 format=3 uid="uid://nahy7hvx33ut"]
+
+[ext_resource type="Script" path="res://Scripts/Customization/AssetSelection.cs" id="1_gd06v"]
+[ext_resource type="Texture2D" uid="uid://c12e6fuinc1ah" path="res://Sprites/TileSprites/Red Player.PNG" id="2_s381t"]
+[ext_resource type="Texture2D" uid="uid://bpbsqrtamrh17" path="res://Sprites/TileSprites/Red Tile.PNG" id="3_4toiu"]
+[ext_resource type="Texture2D" uid="uid://ci17wdqovb18q" path="res://Sprites/TileSprites/Blue Player.PNG" id="4_axac3"]
+[ext_resource type="Texture2D" uid="uid://bww8qxj1scs07" path="res://Sprites/TileSprites/Basic-Square.PNG" id="4_qbt0e"]
+[ext_resource type="Texture2D" uid="uid://ba3lrmbmgo6b" path="res://Sprites/TileSprites/Blue Tile.PNG" id="5_3hcjc"]
+
+[node name="AssetCreator" type="Node2D"]
+
+[node name="UI Elements" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 295.0
+offset_bottom = 131.0
+
+[node name="Sprite Selector" type="Control" parent="UI Elements"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 684.0
+offset_bottom = 31.0
+
+[node name="Selectors" type="VBoxContainer" parent="UI Elements/Sprite Selector"]
+layout_mode = 0
+offset_right = 881.0
+offset_bottom = 475.0
+
+[node name="P1 Scout Selection" type="HBoxContainer" parent="UI Elements/Sprite Selector/Selectors"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors/P1 Scout Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "P1 Scout Sprite"
+
+[node name="Sprite Selector" type="Button" parent="UI Elements/Sprite Selector/Selectors/P1 Scout Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.01
+text = "File:"
+alignment = 0
+
+[node name="Image Filer" type="FileDialog" parent="UI Elements/Sprite Selector/Selectors/P1 Scout Selection/Sprite Selector"]
+auto_translate_mode = 1
+handle_input_locally = false
+title = "Open a File"
+initial_position = 1
+size = Vector2i(324, 300)
+unresizable = true
+ok_button_text = "Open"
+dialog_close_on_escape = false
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png", "*jpg")
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="Verticeal Offset" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors/P1 Scout Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Vertical Offset: "
+
+[node name="Offset" type="SpinBox" parent="UI Elements/Sprite Selector/Selectors/P1 Scout Selection"]
+layout_mode = 2
+min_value = -20.0
+max_value = 20.0
+value = 6.0
+custom_arrow_step = 10.0
+
+[node name="P1 Tile Selection" type="HBoxContainer" parent="UI Elements/Sprite Selector/Selectors"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors/P1 Tile Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "P1 Tile Sprite"
+
+[node name="Sprite Selector" type="Button" parent="UI Elements/Sprite Selector/Selectors/P1 Tile Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.01
+text = "File:"
+alignment = 0
+
+[node name="Image Filer" type="FileDialog" parent="UI Elements/Sprite Selector/Selectors/P1 Tile Selection/Sprite Selector"]
+auto_translate_mode = 1
+handle_input_locally = false
+title = "Open a File"
+initial_position = 1
+size = Vector2i(324, 300)
+unresizable = true
+ok_button_text = "Open"
+dialog_close_on_escape = false
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png", "*jpg")
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="Verticeal Offset" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors/P1 Tile Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Vertical Offset: "
+
+[node name="Offset" type="SpinBox" parent="UI Elements/Sprite Selector/Selectors/P1 Tile Selection"]
+layout_mode = 2
+min_value = -20.0
+max_value = 20.0
+value = 2.0
+
+[node name="P2 Scout Selection" type="HBoxContainer" parent="UI Elements/Sprite Selector/Selectors"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors/P2 Scout Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "P2 Scout Sprite"
+
+[node name="Sprite Selector" type="Button" parent="UI Elements/Sprite Selector/Selectors/P2 Scout Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.01
+text = "File:"
+alignment = 0
+
+[node name="Image Filer" type="FileDialog" parent="UI Elements/Sprite Selector/Selectors/P2 Scout Selection/Sprite Selector"]
+auto_translate_mode = 1
+handle_input_locally = false
+title = "Open a File"
+initial_position = 1
+size = Vector2i(324, 300)
+unresizable = true
+ok_button_text = "Open"
+dialog_close_on_escape = false
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png", "*jpg")
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="Verticeal Offset" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors/P2 Scout Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Vertical Offset: "
+
+[node name="Offset" type="SpinBox" parent="UI Elements/Sprite Selector/Selectors/P2 Scout Selection"]
+layout_mode = 2
+min_value = -20.0
+max_value = 20.0
+value = 6.0
+
+[node name="P2 Tile Selection" type="HBoxContainer" parent="UI Elements/Sprite Selector/Selectors"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors/P2 Tile Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "P2 Tile Sprite"
+
+[node name="Sprite Selector" type="Button" parent="UI Elements/Sprite Selector/Selectors/P2 Tile Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.01
+text = "File:"
+alignment = 0
+
+[node name="Image Filer" type="FileDialog" parent="UI Elements/Sprite Selector/Selectors/P2 Tile Selection/Sprite Selector"]
+auto_translate_mode = 1
+handle_input_locally = false
+title = "Open a File"
+initial_position = 1
+size = Vector2i(324, 300)
+unresizable = true
+ok_button_text = "Open"
+dialog_close_on_escape = false
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png", "*jpg")
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="Verticeal Offset" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors/P2 Tile Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Vertical Offset: "
+
+[node name="Offset" type="SpinBox" parent="UI Elements/Sprite Selector/Selectors/P2 Tile Selection"]
+layout_mode = 2
+min_value = -20.0
+max_value = 20.0
+value = 2.0
+
+[node name="Background Selection" type="HBoxContainer" parent="UI Elements/Sprite Selector/Selectors"]
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors/Background Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Empty Sprite"
+
+[node name="Sprite Selector" type="Button" parent="UI Elements/Sprite Selector/Selectors/Background Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.01
+text = "File:"
+alignment = 0
+
+[node name="Image Filer" type="FileDialog" parent="UI Elements/Sprite Selector/Selectors/Background Selection/Sprite Selector"]
+auto_translate_mode = 1
+handle_input_locally = false
+title = "Open a File"
+initial_position = 1
+size = Vector2i(324, 300)
+unresizable = true
+ok_button_text = "Open"
+dialog_close_on_escape = false
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.png", "*jpg")
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="Verticeal Offset" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors/Background Selection"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Vertical Offset: "
+
+[node name="Offset" type="SpinBox" parent="UI Elements/Sprite Selector/Selectors/Background Selection"]
+layout_mode = 2
+min_value = -20.0
+max_value = 20.0
+
+[node name="Submission Button" type="Button" parent="UI Elements/Sprite Selector/Selectors"]
+layout_mode = 2
+text = "Save"
+
+[node name="Warning" type="RichTextLabel" parent="UI Elements/Sprite Selector/Selectors"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Warning: Currently, there can only be Grid sprites of size 16 x 10 (should make things to that scale)
+"
+
+[node name="Script Elements" type="Node2D" parent="."]
+
+[node name="File Submission" type="Node2D" parent="Script Elements" node_paths=PackedStringArray("popupButtons", "spriteChoosers", "offsetSelections")]
+script = ExtResource("1_gd06v")
+maxStringLength = 50
+assetTypes = PackedStringArray("P1_SCOUT", "P1_TILE", "P2_SCOUT", "P2_TILE", "EMPTY_SQUARE")
+popupButtons = [NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Scout Selection/Sprite Selector"), NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Tile Selection/Sprite Selector"), NodePath("../../UI Elements/Sprite Selector/Selectors/P2 Scout Selection/Sprite Selector"), NodePath("../../UI Elements/Sprite Selector/Selectors/P2 Tile Selection/Sprite Selector"), NodePath("../../UI Elements/Sprite Selector/Selectors/Background Selection/Sprite Selector")]
+spriteChoosers = [NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Scout Selection/Sprite Selector/Image Filer"), NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Tile Selection/Sprite Selector/Image Filer"), NodePath("../../UI Elements/Sprite Selector/Selectors/P2 Scout Selection/Sprite Selector/Image Filer"), NodePath("../../UI Elements/Sprite Selector/Selectors/P2 Tile Selection/Sprite Selector/Image Filer"), NodePath("../../UI Elements/Sprite Selector/Selectors/Background Selection/Sprite Selector/Image Filer")]
+defaultSprites = Array[CompressedTexture2D]([ExtResource("2_s381t"), ExtResource("3_4toiu"), ExtResource("4_axac3"), ExtResource("5_3hcjc"), ExtResource("4_qbt0e")])
+offsetSelections = [NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Scout Selection/Offset"), NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Tile Selection/Offset"), NodePath("../../UI Elements/Sprite Selector/Selectors/P2 Scout Selection/Offset"), NodePath("../../UI Elements/Sprite Selector/Selectors/P2 Tile Selection/Offset"), NodePath("../../UI Elements/Sprite Selector/Selectors/Background Selection/Offset")]
+
+[connection signal="pressed" from="UI Elements/Sprite Selector/Selectors/Submission Button" to="Script Elements/File Submission" method="onSubmission"]

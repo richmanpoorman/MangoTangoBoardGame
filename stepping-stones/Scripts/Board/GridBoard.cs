@@ -1,6 +1,5 @@
-
-using System.Data.Common;
-
+using System;
+using System.Collections.Generic;
 class GridBoard : Board {
 
     private int[] dimensions = {4, 6};
@@ -9,7 +8,22 @@ class GridBoard : Board {
     private Tile?[,] tiles = {}; 
     private Scout?[,] scouts = {}; 
     #nullable disable 
-    
+    public GridBoard(int rowCount, int columnCount, IList<Tuple<Tile, Location>> tileList, IList<Tuple<Scout, Location>> scoutList) {
+        dimensions[0] = rowCount; 
+        dimensions[1] = columnCount; 
+        tiles  = new Tile[rowCount, columnCount]; 
+        scouts = new Scout[rowCount, columnCount];
+
+        foreach (var (tile, location) in tileList) {
+            if (isOnBoard(location)) 
+                addTile(tile, location); 
+        }
+        foreach (var (scout, location) in scoutList) {
+            if (isOnBoard(location)) 
+                addScout(scout, location); 
+        }
+    }
+
     public GridBoard(int rowCount, int columnCount) {
         dimensions[0] = rowCount; 
         dimensions[1] = columnCount; 

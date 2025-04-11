@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://bq6slvsxvf7c4"]
+
+[ext_resource type="PackedScene" uid="uid://b0l7rpib6tsof" path="res://Templates/BoardManager.tscn" id="1_yth11"]
+[ext_resource type="PackedScene" uid="uid://dmr1nwcsr3f6t" path="res://Templates/LocalSelection.tscn" id="2_8au4g"]
+[ext_resource type="PackedScene" uid="uid://bkgd4htwt4ar5" path="res://Templates/board.tscn" id="3_6gr3c"]
+[ext_resource type="Script" path="res://Scripts/Tests/TestSceneTestSuite.cs" id="4_0lpep"]
+
+[node name="TestScene" type="Node2D"]
+
+[node name="BoardManager" parent="." instance=ExtResource("1_yth11")]
+position = Vector2(100, 100)
+scale = Vector2(4, 4)
+player1DefaultTileCount = 2
+player2DefaultTileCount = 2
+
+[node name="LocalSelection" parent="BoardManager" instance=ExtResource("2_8au4g")]
+position = Vector2(0, -1)
+
+[node name="LocalSelection2" parent="BoardManager" instance=ExtResource("2_8au4g")]
+position = Vector2(0, -1)
+_player = 1
+
+[node name="Board" parent="BoardManager" node_paths=PackedStringArray("boardManager") instance=ExtResource("3_6gr3c")]
+boardManager = NodePath("..")
+
+[node name="Tester" type="Node2D" parent="."]
+script = ExtResource("4_0lpep")
