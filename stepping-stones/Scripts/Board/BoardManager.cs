@@ -5,7 +5,7 @@ using System.Data;
 using System.Diagnostics;
 
 // Manages the state of the board, and holds the actual board itself
-public partial class BoardManager : Node
+public partial class BoardManager : Node2D
 { 
 
 	public enum GamePhase {

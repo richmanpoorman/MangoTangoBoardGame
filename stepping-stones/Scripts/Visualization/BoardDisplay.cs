@@ -52,7 +52,10 @@ public partial class BoardDisplay : Node2D
 	public void _onRestart() {
 		initializeBoard();
 	}
-
+	public (Vector2, Vector2I) getSizingInfo() {
+		return (spacesLayer.Position, 
+				spacesLayer.GetUsedRect().Size * spacesLayer.TileSet.TileSize);
+	}
 	public void updateDisplay() {
 		board = boardManager.board(); 
 		

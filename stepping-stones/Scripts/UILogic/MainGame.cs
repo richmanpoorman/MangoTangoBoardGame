@@ -8,12 +8,12 @@ public partial class MainGame : Node2D
 {
 	// Called when the node enters the scene tree for the first time.
 	[Export]
-	public BoardManager manager;
+	public BoardManager manager {get; set;}
 	private FileSaver saver =  new GameSaver();
 	private SceneManager sceneManager;
 
 	private EventBus _eventBus; 
-	private BoardManager.GamePhase phase;
+	public BoardManager.GamePhase phase;
 
 	[Export]
 	private GameUi gameUi;
@@ -26,14 +26,17 @@ public partial class MainGame : Node2D
 
 	public override void _Ready()
 	{
+		GD.Print("Faith rewarded");
 		_eventBus = EventBus.Bus;
 		sceneManager = SceneManager.Instance;
+		GD.Print($"SceneManager p1_tiles: {sceneManager.p1Tiles}");
 		manager = GetNode<BoardManager>("Main/BoardManager");
 		CallDeferred(MethodName.DeferredSetupCleanup);
 
 		// Connect(EventBus.SignalName.onPlayerWin, Callable.From(handleWin));
 		_eventBus.onPlayerWin += handleWin;
 		_eventBus.onPhaseStart += updatePhase;
+		_eventBus.onGameReset += OnResetGame;
 		_p1Tiles = sceneManager.p1Tiles;
 		_p2Tiles = sceneManager.p2Tiles;
 		_newGame = sceneManager.newGame;
@@ -52,11 +55,13 @@ public partial class MainGame : Node2D
 	private void configureBoard(SteppingStonesBoard board) {
 		// GD.Print("I was deffered :)");
 		// GD.Print("1: " + sceneManager.p1Tiles + "tiles, 2: " + sceneManager.p2Tiles);
+		GD.Print("configuring board");
 		manager.setBoard(_board);
 		manager.setTileCount(Piece.Color.PLAYER_1, _p1Tiles);
 		manager.setTileCount(Piece.Color.PLAYER_2, _p2Tiles);
 		manager.setTurn(sceneManager.turn);
 		phase = sceneManager.phase;
+		GD.Print($"config phase: {phase}");
 		manager.setPhase(phase);
 	}
 
@@ -74,7 +79,10 @@ public partial class MainGame : Node2D
 		manager.playerTileCount(Piece.Color.PLAYER_2),
 		phase, path);
 	}
-	public void OnUIResetGame() {
+	public void OnResetGame() {
+		GD.Print("resetting");
+		gameUi.showAll();
+		
 		Board tmp = manager.board();
 		if (!_newGame) 
 		{
@@ -92,7 +100,7 @@ public partial class MainGame : Node2D
 		}
 		_board = new GridSteppingStonesBoard(manager.board().size()[0], manager.board().size()[1]);
 		manager.setBoard(_board);
-
+		
 		manager.setTileCount(Piece.Color.PLAYER_1, _p1Tiles);
 		manager.setTileCount(Piece.Color.PLAYER_2, _p2Tiles);
 		gameUi.updateBlueTiles(_p1Tiles);

@@ -21,9 +21,11 @@ public partial class WinScreen : Control
 
 	private void OnPlayButtonPressed()
 	{
-		uiMenu.Visible = true;
-		buttonAlign.Visible = false;
-		winText.Visible = false;
+		// uiMenu.Visible = true;
+		// buttonAlign.Visible = false;
+		// winText.Visible = false;
+		this.Visible = false;
+		EventBus.Bus.EmitSignal(EventBus.SignalName.onGameReset);
 	}
 
 	private void OnGoMainButtonPressed()
