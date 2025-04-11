@@ -8,17 +8,17 @@ public class WeightedScoutRules : Rules
     private int SCOUT_WEIGHT = 1; 
     public WeightedScoutRules() {}
 
-    public bool hasWon(Board board, Piece.Color playerTurn)
+    public bool hasWon(Board board, PlayerColor playerTurn)
     {
         return baseRules.hasWon(board, playerTurn);
     }
 
-    public bool isValidPlace(Board board, Location place, Piece.Color playerTurn)
+    public bool isValidPlace(Board board, Location place, PlayerColor playerTurn)
     {
         return baseRules.isValidPlace(board, place, playerTurn);
     }
 
-    public bool isValidPush(Board board, Location from, Location to, Piece.Color playerTurn) {
+    public bool isValidPush(Board board, Location from, Location to, PlayerColor playerTurn) {
         if (!board.isOnBoard(from)) return false; // If out of bounds start, it is not valid
         if (from.row() == to.row() && from.column() == to.column()) return false; 
         if (from.row() != to.row() && from.column() != to.column()) return false; 
@@ -55,17 +55,17 @@ public class WeightedScoutRules : Rules
         return true;
     }
 
-    public bool isValidScoutMove(Board board, Location from, Location to, Piece.Color playerTurn)
+    public bool isValidScoutMove(Board board, Location from, Location to, PlayerColor playerTurn)
     {
         return baseRules.isValidScoutMove(board, from, to, playerTurn); 
     }
 
-    public bool isValidTileMove(Board board, Location from, Location to, Piece.Color playerTurn)
+    public bool isValidTileMove(Board board, Location from, Location to, PlayerColor playerTurn)
     {
         return baseRules.isValidPieceMove(board, from, to, playerTurn);
     }
 
-    public IList<Rules.ValidMove> legalOptions(Board board, Location start, Piece.Color playerTurn)
+    public IList<Rules.ValidMove> legalOptions(Board board, Location start, PlayerColor playerTurn)
     {
         List<Rules.ValidMove> moves = new List<Rules.ValidMove>(); 
 

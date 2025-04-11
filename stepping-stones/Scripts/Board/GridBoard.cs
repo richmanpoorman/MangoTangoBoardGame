@@ -31,10 +31,10 @@ class GridBoard : Board {
         scouts = new Scout[rowCount, columnCount];
 
         // Set up with the two pieces
-        tiles[rowCount / 2, 1]          = new Tile(Piece.Color.PLAYER_1);
-        tiles[rowCount / 2, columnCount - 2]  = new Tile(Piece.Color.PLAYER_2);
-        scouts[rowCount / 2, 1]         = new Scout(Piece.Color.PLAYER_1);
-        scouts[rowCount / 2, columnCount - 2] = new Scout(Piece.Color.PLAYER_2);
+        tiles[rowCount / 2, 1]          = new Tile(PlayerColor.PLAYER_1);
+        tiles[rowCount / 2, columnCount - 2]  = new Tile(PlayerColor.PLAYER_2);
+        scouts[rowCount / 2, 1]         = new Scout(PlayerColor.PLAYER_1);
+        scouts[rowCount / 2, columnCount - 2] = new Scout(PlayerColor.PLAYER_2);
     }
 
     public int[] size() { return dimensions; }

@@ -3,11 +3,11 @@
 
 public class Scout : Piece {
 	
-	private Piece.Color __color;
+	private PlayerColor __color;
 
-	public Scout(Piece.Color _color) {
+	public Scout(PlayerColor _color) {
 		__color = _color; 
 	}
-	public Piece.Color color() { return __color; }
-	public Piece.PieceType pieceType() { return Piece.PieceType.SCOUT; }
+	public PlayerColor color() { return __color; }
+	public PieceType pieceType() { return PieceType.SCOUT; }
 }

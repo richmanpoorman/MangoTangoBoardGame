@@ -4,9 +4,9 @@ using System;
 public partial class SelectSquare : Node2D, MoveSelector
 {
 	[Export]
-	private Piece.Color _player = Piece.Color.PLAYER_1; 
+	private PlayerColor _player = PlayerColor.PLAYER_1; 
 	
-	private Piece.Color _currentTurn = Piece.Color.PLAYER_1;
+	private PlayerColor _currentTurn = PlayerColor.PLAYER_1;
 
 	public enum ClickType {
 		LEFT, RIGHT, MIDDLE, NONE
@@ -30,7 +30,12 @@ public partial class SelectSquare : Node2D, MoveSelector
 		_eventBus.onTurnChange += onTurnChange; 
 	}
 
-	public void onTurnChange(Piece.Color turn) { _currentTurn = turn; }
+    public override void _ExitTree()
+    {
+        _eventBus.onTurnChange -= onTurnChange; 
+    }
+
+	public void onTurnChange(PlayerColor turn) { _currentTurn = turn; }
 
     public override void _Input(InputEvent @event)
     {
@@ -59,9 +64,9 @@ public partial class SelectSquare : Node2D, MoveSelector
 	public Location selection() { return _position; }
 	public MouseButton mouseButton() { return _mouseButton; }
 
-    public Piece.Color player() { return _player; }
+    public PlayerColor player() { return _player; }
 
     public void emitMove() { _eventBus.EmitSignal(EventBus.SignalName.onSelection, (int)_player, _position.row(), _position.column()); }
 
-    public void setPlayer(Piece.Color playerColor) { _player = playerColor; }
+    public void setPlayer(PlayerColor playerColor) { _player = playerColor; }
 }

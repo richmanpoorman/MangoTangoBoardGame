@@ -20,17 +20,27 @@ public partial class BoardDisplay : Node2D
 	
 	public override void _Ready()
 	{
+		if (SceneManager.Instance.playerTiles != null && SceneManager.Instance.tilesetIDs != null)
+			_onTilesetChange(SceneManager.Instance.playerTiles, SceneManager.Instance.tilesetIDs);
+		else GD.Print("Display is using the default sprites");
+		
 		_eventBus = EventBus.Bus;
-
-		_eventBus.onBoardUpdate += _onUpdate; 
-		_eventBus.onBoardReset  += _onRestart; 
 		_eventBus.onChangePieceTileset += _onTilesetChange;
+		_eventBus.onBoardUpdate        += _onUpdate; 
+		_eventBus.onBoardReset         += _onRestart; 
 		// Connect(EventBus.SignalName.onBoardUpdate, Callable.From(_onUpdate));
 		// Connect(EventBus.SignalName.onBoardReset, Callable.From(onRestart));
-		_onTilesetChange(SceneManager.Instance.playerTiles, SceneManager.Instance.tilesetIDs);
 		initializeBoard(); 
 		updateDisplay(); 
 	}
+
+    public override void _ExitTree()
+    {
+		_eventBus.onChangePieceTileset -= _onTilesetChange;
+		_eventBus.onBoardUpdate        -= _onUpdate; 
+		_eventBus.onBoardReset         -= _onRestart; 
+    }
+
 
 	public void initializeBoard() {
 		
@@ -56,16 +66,16 @@ public partial class BoardDisplay : Node2D
 		_onUpdate(); 
 	}
 
-	public void _onTilesetChange(TileSet newSprites, Godot.Collections.Dictionary<Piece.Color, Godot.Collections.Dictionary<Piece.PieceType, int>> tilesetIDs) {
+	public void _onTilesetChange(TileSet newSprites, Godot.Collections.Dictionary<PlayerColor, Godot.Collections.Dictionary<PieceType, int>> tilesetIDs) {
 		spacesLayer.TileSet = newSprites;
 		tileLayer.TileSet   = newSprites; 
 		scoutLayer.TileSet  = newSprites; 
 		
-		spaceTileID    = tilesetIDs[Piece.Color.BLANK][Piece.PieceType.BLANK];
-		player1ScoutID = tilesetIDs[Piece.Color.PLAYER_1][Piece.PieceType.SCOUT];
-		player2ScoutID = tilesetIDs[Piece.Color.PLAYER_2][Piece.PieceType.SCOUT];
-		player1TileID  = tilesetIDs[Piece.Color.PLAYER_1][Piece.PieceType.TILE];
-		player2TileID  = tilesetIDs[Piece.Color.PLAYER_2][Piece.PieceType.TILE];
+		spaceTileID    = tilesetIDs[PlayerColor.BLANK][PieceType.BLANK];
+		player1ScoutID = tilesetIDs[PlayerColor.PLAYER_1][PieceType.SCOUT];
+		player2ScoutID = tilesetIDs[PlayerColor.PLAYER_2][PieceType.SCOUT];
+		player1TileID  = tilesetIDs[PlayerColor.PLAYER_1][PieceType.TILE];
+		player2TileID  = tilesetIDs[PlayerColor.PLAYER_2][PieceType.TILE];
 
 		_onRestart(); 
 	}
@@ -108,10 +118,10 @@ public partial class BoardDisplay : Node2D
 
 	private void _setProperTile(Tile tile, Vector2I position) {
 		switch(tile.color()) {
-			case Piece.Color.PLAYER_1:
+			case PlayerColor.PLAYER_1:
 				tileLayer.SetCell(position, player1TileID, Vector2I.Zero);
 			break; 
-			case Piece.Color.PLAYER_2: 
+			case PlayerColor.PLAYER_2: 
 				tileLayer.SetCell(position, player2TileID, Vector2I.Zero);
 			break; 
 			default:
@@ -121,10 +131,10 @@ public partial class BoardDisplay : Node2D
 	}
 	private void _setProperScout(Scout scout, Vector2I position) {
 		switch(scout.color()) {
-			case Piece.Color.PLAYER_1:
+			case PlayerColor.PLAYER_1:
 				scoutLayer.SetCell(position, player1ScoutID, Vector2I.Zero);
 			break; 
-			case Piece.Color.PLAYER_2: 
+			case PlayerColor.PLAYER_2: 
 				scoutLayer.SetCell(position, player2ScoutID, Vector2I.Zero);
 			break; 
 			default:

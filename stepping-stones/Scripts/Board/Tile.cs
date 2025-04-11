@@ -1,11 +1,11 @@
 
 public class Tile : Piece {
 	
-	private Piece.Color __color;
+	private PlayerColor __color;
 
-	public Tile(Piece.Color _color) {
+	public Tile(PlayerColor _color) {
 		__color = _color; 
 	}
-	public Piece.Color color() { return __color; }
-	public Piece.PieceType pieceType() { return Piece.PieceType.TILE; }
+	public PlayerColor color() { return __color; }
+	public PieceType pieceType() { return PieceType.TILE; }
 }

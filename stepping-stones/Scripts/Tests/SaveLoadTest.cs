@@ -18,21 +18,21 @@ public class SaveLoadTest {
 		
 		SteppingStonesBoard board = new GridSteppingStonesBoard(5, 7);
 		var saveWatch = System.Diagnostics.Stopwatch.StartNew();
-		saver.SaveGame(board, Piece.Color.PLAYER_1, 3, 3,
-					   BoardManager.GamePhase.PLACE, "user://savertest.step");
+		saver.SaveGame(board, PlayerColor.PLAYER_1, 3, 3,
+					   GamePhase.PLACE, "user://savertest.step");
 		saveWatch.Stop();
 		long elapsedMs = saveWatch.ElapsedMilliseconds;
 		GD.Print($"Save took {elapsedMs} ms");
 		var loadWatch = System.Diagnostics.Stopwatch.StartNew(); 
-		(SteppingStonesBoard lboard, Piece.Color turn, int p1Tiles, 
-			int p2Tiles, BoardManager.GamePhase phase) = saver.LoadGame(testFile);
+		(SteppingStonesBoard lboard, PlayerColor turn, int p1Tiles, 
+			int p2Tiles, GamePhase phase) = saver.LoadGame(testFile);
 		loadWatch.Stop();
 		long loadMs = loadWatch.ElapsedMilliseconds;
 		GD.Print($"Load took {loadMs} ms");
-		AssertThat(turn).IsEqual(Piece.Color.PLAYER_1);
+		AssertThat(turn).IsEqual(PlayerColor.PLAYER_1);
 		AssertThat(p1Tiles).IsEqual(3);
 		AssertThat(p2Tiles).IsEqual(3);
-		AssertThat(phase).IsEqual(BoardManager.GamePhase.PLACE);
+		AssertThat(phase).IsEqual(GamePhase.PLACE);
 		AssertThat(lboard.size()).IsEqual(board.size());
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 7; j++) {

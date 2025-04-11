@@ -7,13 +7,13 @@ public class GameSaver : FileSaver
 {
 	// Called when the node enters;
     public GameSaver(){}
-	public void SaveGame(Board board, Piece.Color turn, int p1Tiles, 
-                            int p2Tiles, BoardManager.GamePhase phase, String path) {
+	public void SaveGame(Board board, PlayerColor turn, int p1Tiles, 
+                            int p2Tiles, GamePhase phase, String path) {
 		
 		FileAccess gameFile = FileAccess.Open(path, FileAccess.ModeFlags.Write);
 		int[] size = board.size();
-		int currTurn = (turn == Piece.Color.PLAYER_1) ? 1 : 2; 
-		string currPhase = (phase == BoardManager.GamePhase.MOVE) ? "move" : "place"; 
+		int currTurn = (turn == PlayerColor.PLAYER_1) ? 1 : 2; 
+		string currPhase = (phase == GamePhase.MOVE) ? "move" : "place"; 
 		gameFile.StoreLine("rows:"+ size[0] + ", cols:" + size[1]);
 		gameFile.StoreLine("turn:"+ currTurn + ", p1:" + p1Tiles + ", p2:" 
 								+ p2Tiles + ", phase:" + currPhase );
@@ -22,7 +22,7 @@ public class GameSaver : FileSaver
 			String entry = "";
 			Tile? currTile = board.tileAt(Location.at(i ,j)); 
 			if (currTile != null) {
-				char color = (currTile.color() == Piece.Color.PLAYER_1) ? 'r' : 'b';
+				char color = (currTile.color() == PlayerColor.PLAYER_1) ? 'r' : 'b';
 				string col = (j < 10) ?  string.Concat("0", (char)(j + '1')) : j.ToString(); 
 				entry = "" + (char)('a' + i) + col + '=' + color + 't';
 				Scout? currScout = board.scoutAt(Location.at(i,j));
@@ -38,7 +38,7 @@ public class GameSaver : FileSaver
 		gameFile.Close();
 		#nullable disable
 	}
-    public (SteppingStonesBoard, Piece.Color, int, int, BoardManager.GamePhase) 
+    public (SteppingStonesBoard, PlayerColor, int, int, GamePhase) 
 		LoadGame(String fileName) {
 		if (!FileAccess.FileExists(fileName)) {
 			throw new System.IO.FileNotFoundException();
@@ -50,10 +50,10 @@ public class GameSaver : FileSaver
 		int rowCount = size[0]; 
 		int columnCount = size[1];
 		IList<string> inputs = gameFile.GetLine().Split(", ").Select(s => s.Substring(s.IndexOf(":") + 1)).ToList();
-		Piece.Color turn = (inputs[0] == "1") ? Piece.Color.PLAYER_1 : Piece.Color.PLAYER_2;
+		PlayerColor turn = (inputs[0] == "1") ? PlayerColor.PLAYER_1 : PlayerColor.PLAYER_2;
 		int p1Tiles = int.Parse(inputs[1]);
 		int p2Tiles = int.Parse(inputs[2]);
-		BoardManager.GamePhase phase = (inputs[3] == "move") ? BoardManager.GamePhase.MOVE : BoardManager.GamePhase.PLACE;
+		GamePhase phase = (inputs[3] == "move") ? GamePhase.MOVE : GamePhase.PLACE;
 		GD.Print("file size is: " + rowCount + " x " + columnCount);
 		SteppingStonesBoard board = new GridSteppingStonesBoard(size[0], size[1]);
 		GD.Print("board size is: " + board.size()[0] + " x " + board.size()[1]);
@@ -67,7 +67,7 @@ public class GameSaver : FileSaver
 			int row = line[0] - 'a';
 			int col = int.Parse(line.Substring(1, 2)) - 1;
 			GD.Print("row is: " + row + ", col is: " + col);
-			Piece.Color color = (line[4] == 'r') ? Piece.Color.PLAYER_1 : Piece.Color.PLAYER_2;
+			PlayerColor color = (line[4] == 'r') ? PlayerColor.PLAYER_1 : PlayerColor.PLAYER_2;
 			Tile currTile = new Tile(color);
 			board.addTile(currTile, Location.at(row, col));
 			if (line.EndsWith("s")) {

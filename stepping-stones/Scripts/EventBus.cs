@@ -42,11 +42,11 @@ public partial class EventBus : Node
 
     // When the turn changes
 	[Signal]
-	public delegate void onTurnChangeEventHandler(Piece.Color turn); 
+	public delegate void onTurnChangeEventHandler(PlayerColor turn); 
 
     // When the phase of the game changes
 	[Signal]
-	public delegate void onPhaseStartEventHandler(BoardManager.GamePhase phase); 
+	public delegate void onPhaseStartEventHandler(GamePhase phase); 
 
     // Whenever it is possible for the board to update in any way
 	[Signal]
@@ -73,18 +73,18 @@ public partial class EventBus : Node
 
     // When a square is selected
     [Signal]
-	public delegate void onSelectionEventHandler(Piece.Color player, int row, int column);
+	public delegate void onSelectionEventHandler(PlayerColor player, int row, int column);
 
 	// When a new tileset is created
 	[Signal]
-	public delegate void onChangePieceTilesetEventHandler(TileSet newSprites, Dictionary<Piece.Color, Dictionary<Piece.PieceType, int>> tilesetIDs);
+	public delegate void onChangePieceTilesetEventHandler(TileSet newSprites, Dictionary<PlayerColor, Dictionary<PieceType, int>> tilesetIDs);
 
 	// When a new player joins the game (be it from online, user, or AI), as well as the color
 	[Signal]
-	public delegate void onPlayerJoinEventHandler(Piece.Color player, CreatePlayerSelectors.PlayerType selectorType);
+	public delegate void onPlayerJoinEventHandler(PlayerColor player, CreatePlayerSelectors.PlayerType selectorType);
 
 	[Signal]
-	public delegate void onPlayerLeaveEventHandler(Piece.Color player);
+	public delegate void onPlayerLeaveEventHandler(PlayerColor player);
 
 
 	// Connects associated signals, which should also trigger if one is sent

@@ -8,9 +8,7 @@ using System.Diagnostics;
 public partial class BoardManager : Node2D, GameboardManager 
 { 
 
-	public enum GamePhase {
-		PLACE, MOVE 
-	}
+	
 
 	// [Signal]
 	// public delegate void SwitchPhaseEventHandler();
@@ -35,16 +33,16 @@ public partial class BoardManager : Node2D, GameboardManager
 	[Export]
 	private int player2DefaultTileCount = 20; 
 
-	private Dictionary<Piece.Color, int> tileCounts = new Dictionary<Piece.Color, int>() {
-		{Piece.Color.PLAYER_1, 20}, 
-		{Piece.Color.PLAYER_2, 20}
+	private Dictionary<PlayerColor, int> tileCounts = new Dictionary<PlayerColor, int>() {
+		{PlayerColor.PLAYER_1, 20}, 
+		{PlayerColor.PLAYER_2, 20}
 	};
 	
 	
 	// Current board state
 	private GamePhase gamePhase = GamePhase.PLACE;
 	// private int tileCount = _totalTiles * 2;
-	private Piece.Color currentPlayer = Piece.Color.PLAYER_1; 
+	private PlayerColor currentPlayer = PlayerColor.PLAYER_1; 
 	#nullable enable
 	private Location? previousPosition = null; 
 	#nullable disable
@@ -70,6 +68,12 @@ public partial class BoardManager : Node2D, GameboardManager
 		onRestart();
 	}
 
+    public override void _ExitTree()
+    {
+        _eventBus.onSelection -= onCellSelection;
+    }
+
+
     /*board
     Inputs: None
     Returns: Board
@@ -84,8 +88,8 @@ public partial class BoardManager : Node2D, GameboardManager
 		// display.updateDisplay();
 		_eventBus.EmitSignal(EventBus.SignalName.onBoardUpdate);
 	}
-	public Piece.Color playerTurn() { return currentPlayer;}
-	public void setTurn(Piece.Color turn) { currentPlayer = turn;}
+	public PlayerColor playerTurn() { return currentPlayer;}
+	public void setTurn(PlayerColor turn) { currentPlayer = turn;}
 	public void setRules(Rules rules) { _ruleset = rules; }
 	public void setBoard(SteppingStonesBoard board) { 
 		_board = board; 
@@ -106,13 +110,13 @@ public partial class BoardManager : Node2D, GameboardManager
 	public void onRestart() {
 		gamePhase = GamePhase.PLACE; 
 		_eventBus.EmitSignal(EventBus.SignalName.onPhaseStart, (int)GamePhase.PLACE);
-		currentPlayer = Piece.Color.PLAYER_1; 
+		currentPlayer = PlayerColor.PLAYER_1; 
 		_eventBus.EmitSignal(EventBus.SignalName.onTurnChange, (int)currentPlayer);
 
 		unmarkSelection(); 
 		// tileCount = _totalTiles * 2;
-		setTileCount(Piece.Color.PLAYER_1, player1DefaultTileCount);
-		setTileCount(Piece.Color.PLAYER_2, player2DefaultTileCount);
+		setTileCount(PlayerColor.PLAYER_1, player1DefaultTileCount);
+		setTileCount(PlayerColor.PLAYER_2, player2DefaultTileCount);
 
 		// display.initializeBoard(); 
 		_eventBus.EmitSignal(EventBus.SignalName.onBoardReset);
@@ -132,11 +136,11 @@ public partial class BoardManager : Node2D, GameboardManager
 		}
 	}
 
-	public int playerTileCount(Piece.Color player) {
+	public int playerTileCount(PlayerColor player) {
 		return tileCounts[player]; 
 	} 
 
-	public void setTileCount(Piece.Color player, int count) {
+	public void setTileCount(PlayerColor player, int count) {
 		tileCounts[player] = count; 
 	}
 
@@ -145,7 +149,7 @@ public partial class BoardManager : Node2D, GameboardManager
 	Returns: None
 	Description: attempts selected action based on click; updates board; if action sucessful, switches player turn
 	*/
-	public void onCellSelection(Piece.Color player, int row, int column) {
+	public void onCellSelection(PlayerColor player, int row, int column) {
 		if (player != currentPlayer) return;  // If they play out of turn, don't let them 
 
 		GD.Print("Manager sees player: ", player);
@@ -171,15 +175,15 @@ public partial class BoardManager : Node2D, GameboardManager
 				return; 
 			}
 			switch(currentPlayer) {
-				case Piece.Color.PLAYER_1:
+				case PlayerColor.PLAYER_1:
 				GD.Print("Switched to Player 2 from Player 1");
-				currentPlayer = Piece.Color.PLAYER_2; 
-				_eventBus.EmitSignal(EventBus.SignalName.onTurnChange, (int)Piece.Color.PLAYER_2);
+				currentPlayer = PlayerColor.PLAYER_2; 
+				_eventBus.EmitSignal(EventBus.SignalName.onTurnChange, (int)PlayerColor.PLAYER_2);
 				break; 
-				case Piece.Color.PLAYER_2: 
+				case PlayerColor.PLAYER_2: 
 				GD.Print("Switched to Player 1 from Player 2");
-				currentPlayer = Piece.Color.PLAYER_1;
-				_eventBus.EmitSignal(EventBus.SignalName.onTurnChange, (int)Piece.Color.PLAYER_1);
+				currentPlayer = PlayerColor.PLAYER_1;
+				_eventBus.EmitSignal(EventBus.SignalName.onTurnChange, (int)PlayerColor.PLAYER_1);
 				break; 
 			}
 			if (_ruleset.hasWon(_board, currentPlayer)) { // Just in case opponent makes you win
@@ -238,10 +242,10 @@ public partial class BoardManager : Node2D, GameboardManager
 		return isSuccess; 
 	}	
 	/*addTile
-	Inputs: Location, Piece.Color
+	Inputs: Location, PlayerColor
 	Returns: bool
 	Description: Attempts to add tile of given color at location; returns sucess of attempt*/
-	private bool addTile(Location selection, Piece.Color color) {
+	private bool addTile(Location selection, PlayerColor color) {
 		if (!_board.isOnBoard(selection))
 			return false;
 		if (!_ruleset.isValidPlace(_board, selection, color)) return false;

@@ -3,26 +3,14 @@
 public interface Piece
 {
 	// Wrappers for different fields of the piece
-	public enum Color {
-		PLAYER_1, 
-		PLAYER_2,
-		BLANK, 
-		MISSING
-	};
-
-	public enum PieceType {
-		TILE, 
-		SCOUT,
-		BLANK,
-		MISSING
-	};
+	
 
 	// Functions 
 	/*color
 	Inputs: None
 	Returns: enum Color
 	Description: returns color/team of piece*/
-	public Color color();
+	public PlayerColor color();
 	/*pieceType
 	Inputs: None
 	Returns: enum PieceType
