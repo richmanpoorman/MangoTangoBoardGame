@@ -4,10 +4,10 @@ using System;
 public partial class SceneManager : Node
 {
 	public SteppingStonesBoard board {get; set;}
-	public Piece.Color turn {get; set;}
+	public PlayerColor turn {get; set;}
 	public int p1Tiles {get; set;}
 	public int p2Tiles {get; set;}
-	public BoardManager.GamePhase phase {get; set;}
+	public GamePhase phase {get; set;}
 
 	public bool newGame {get; set;}
 	[Export]
@@ -17,8 +17,8 @@ public partial class SceneManager : Node
 
 	// For changing the tiles 
 	[Export]
-	public TileSet playerTiles {get; private set; }
-	public Godot.Collections.Dictionary<Piece.Color, Godot.Collections.Dictionary<Piece.PieceType, int>> tilesetIDs {get; private set; }
+	public TileSet? playerTiles {get; private set; } = null; 
+	public Godot.Collections.Dictionary<PlayerColor, Godot.Collections.Dictionary<PieceType, int>>? tilesetIDs {get; private set; } = null; 
 
 	public static SceneManager Instance {get; private set;}
 	// public int width {set; get;}
@@ -34,8 +34,8 @@ public partial class SceneManager : Node
 		_bus.onChangePieceTileset += _onTilesetChange; 
 		playerTiles = GD.Load<TileSet>(_defaultPieceTileset);
 	}
-	public void goToMainBoard (Tuple<SteppingStonesBoard, Piece.Color, int, 
-									int, BoardManager.GamePhase> tuple) {
+	public void goToMainBoard (Tuple<SteppingStonesBoard, PlayerColor, int, 
+									int, GamePhase> tuple) {
 		(board, turn, p1Tiles, p2Tiles, phase) = tuple;
 		GetTree().ChangeSceneToFile(_mainSceneFile);
 	}
@@ -50,7 +50,7 @@ public partial class SceneManager : Node
 		this.board = board;
 		this.p1Tiles = tiles;
 		this.p2Tiles = tiles;
-		turn = Piece.Color.PLAYER_1;
+		turn = PlayerColor.PLAYER_1;
 		GetTree().ChangeSceneToFile(_mainSceneFile);
 	}
 
@@ -59,7 +59,7 @@ public partial class SceneManager : Node
 		GetTree().ChangeSceneToFile(_titleSceneFile);
 	}
 
-	private void _onTilesetChange(TileSet newSprites, Godot.Collections.Dictionary<Piece.Color, Godot.Collections.Dictionary<Piece.PieceType, int>> tilesetIDs) {
+	private void _onTilesetChange(TileSet newSprites, Godot.Collections.Dictionary<PlayerColor, Godot.Collections.Dictionary<PieceType, int>> tilesetIDs) {
 		this.playerTiles = newSprites; 
 		this.tilesetIDs  = tilesetIDs; 
 	}

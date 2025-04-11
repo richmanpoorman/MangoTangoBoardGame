@@ -10,13 +10,13 @@ public interface BoardStateMachine {
 
     public void changeBoard(SteppingStonesBoard board); 
 
-    public void changeTurn(Piece.Color turn);
+    public void changeTurn(PlayerColor turn);
     
     public void changeRules(Rules rules);
 
     public SteppingStonesBoard board();
     public Rules rules();  
     
-    public Piece.Color turn();
+    public PlayerColor turn();
 
 }

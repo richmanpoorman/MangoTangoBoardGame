@@ -16,18 +16,18 @@ public interface Rules {
         public MoveType move; 
     }
 
-    public bool isValidPush(Board board, Location from, Location to, Piece.Color playerTurn);
-    public bool isValidTileMove(Board board, Location from, Location to, Piece.Color playerTurn);
-    public bool isValidScoutMove(Board board, Location from, Location to, Piece.Color playerTurn);
-    public bool isValidPlace(Board board, Location place, Piece.Color playerTurn); 
+    public bool isValidPush(Board board, Location from, Location to, PlayerColor playerTurn);
+    public bool isValidTileMove(Board board, Location from, Location to, PlayerColor playerTurn);
+    public bool isValidScoutMove(Board board, Location from, Location to, PlayerColor playerTurn);
+    public bool isValidPlace(Board board, Location place, PlayerColor playerTurn); 
 
-    public bool isValidPieceMove(Board board, Location from, Location to, Piece.Color playerTurn) {
+    public bool isValidPieceMove(Board board, Location from, Location to, PlayerColor playerTurn) {
         if (!board.isOnBoard(from) || !board.isOnBoard(to)) return false;
         if (board.tileAt(to) == null) return isValidTileMove(board, from, to, playerTurn); 
         else return isValidScoutMove(board, from, to, playerTurn); 
     }
 
-    public IList<ValidMove> legalOptions(Board board, Location start, Piece.Color playerTurn); 
+    public IList<ValidMove> legalOptions(Board board, Location start, PlayerColor playerTurn); 
 
-    public bool hasWon(Board board, Piece.Color playerTurn);
+    public bool hasWon(Board board, PlayerColor playerTurn);
 }

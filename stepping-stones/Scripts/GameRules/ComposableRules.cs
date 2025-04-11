@@ -14,23 +14,23 @@ public class ComposableRules : Rules
         offensiveScoutWeight = _offensiveScoutWeight;
     }
     
-    public bool hasWon(Board board, Piece.Color playerTurn)
+    public bool hasWon(Board board, PlayerColor playerTurn)
     {
         if (_onlyOneScout(board, playerTurn)) return true; 
         if (_atOppositeSide(board, playerTurn)) return true;
         return false;    
     }
 
-    private bool _atOppositeSide(Board board, Piece.Color playerTurn) {
+    private bool _atOppositeSide(Board board, PlayerColor playerTurn) {
         int[] size = board.size(); 
         Scout?[,] scouts = board.scoutLayer(); 
         
         int checkColumn = -1;
         switch(playerTurn) {
-            case Piece.Color.PLAYER_1: 
+            case PlayerColor.PLAYER_1: 
                 checkColumn = size[1] - 1;
             break; 
-            case Piece.Color.PLAYER_2: 
+            case PlayerColor.PLAYER_2: 
                 checkColumn = 0; 
             break; 
         }
@@ -43,8 +43,8 @@ public class ComposableRules : Rules
 
     }
 
-    private bool _onlyOneScout(Board board, Piece.Color playerTurn) {
-        Piece.Color otherColor = otherPlayer(playerTurn); 
+    private bool _onlyOneScout(Board board, PlayerColor playerTurn) {
+        PlayerColor otherColor = otherPlayer(playerTurn); 
 
         Scout?[,] scouts = board.scoutLayer(); 
         int[] size = board.size(); 
@@ -57,7 +57,7 @@ public class ComposableRules : Rules
         return true; 
     }
 
-    public bool isValidPush(Board board, Location from, Location to, Piece.Color playerTurn) {
+    public bool isValidPush(Board board, Location from, Location to, PlayerColor playerTurn) {
         if (!board.isOnBoard(from)) return false; // If out of bounds start, it is not valid
         if (from.row() == to.row() && from.column() == to.column()) return false; 
         if (from.row() != to.row() && from.column() != to.column()) return false; 
@@ -108,7 +108,7 @@ public class ComposableRules : Rules
         
         return true;
     }
-    public bool isValidTileMove(Board board, Location from, Location to, Piece.Color playerTurn) {
+    public bool isValidTileMove(Board board, Location from, Location to, PlayerColor playerTurn) {
         if (!board.isOnBoard(from) || !board.isOnBoard(to)) return false;
         bool isOrthogonallyConnected = Math.Abs(from.row() - to.row()) + Math.Abs(from.column() - to.column()) == 1; 
         if (!isOrthogonallyConnected) return false; 
@@ -119,7 +119,7 @@ public class ComposableRules : Rules
         
         return true;
     }
-    public bool isValidScoutMove(Board board, Location from, Location to, Piece.Color playerTurn) {
+    public bool isValidScoutMove(Board board, Location from, Location to, PlayerColor playerTurn) {
         if (!board.isOnBoard(from) || !board.isOnBoard(to)) return false;
         bool isOrthogonallyConnected = Math.Abs(from.row() - to.row()) + Math.Abs(from.column() - to.column()) == 1; 
         if (!isOrthogonallyConnected) return false; 
@@ -134,12 +134,12 @@ public class ComposableRules : Rules
         
     }
 
-    public bool isValidPlace(Board board, Location place, Piece.Color playerTurn)
+    public bool isValidPlace(Board board, Location place, PlayerColor playerTurn)
     {
         return board.tileAt(place) == null;
     }
 
-    public IList<Rules.ValidMove> legalOptions(Board board, Location start, Piece.Color playerTurn)
+    public IList<Rules.ValidMove> legalOptions(Board board, Location start, PlayerColor playerTurn)
     {
         List<Rules.ValidMove> moves = new List<Rules.ValidMove>(); 
 
@@ -181,8 +181,8 @@ public class ComposableRules : Rules
         return moves; 
     }
 
-    private Piece.Color otherPlayer(Piece.Color playerTurn) {
-        return playerTurn == Piece.Color.PLAYER_1 ? Piece.Color.PLAYER_2 : Piece.Color.PLAYER_1;
+    private PlayerColor otherPlayer(PlayerColor playerTurn) {
+        return playerTurn == PlayerColor.PLAYER_1 ? PlayerColor.PLAYER_2 : PlayerColor.PLAYER_1;
     }
 
 }

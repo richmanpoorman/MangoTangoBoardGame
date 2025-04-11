@@ -95,7 +95,6 @@ public partial class AssetSelection : Node2D
             sprites = imageTexture;
         }
 
-        // These two lines are the errors
         spriteSheet.TextureRegionSize = (Vector2I)sprites.GetSize(); 
         spriteSheet.Texture = sprites; 
         spriteSheet.CreateTile(Vector2I.Zero); 
@@ -116,7 +115,7 @@ public partial class AssetSelection : Node2D
             // return (newSprites, idMap); 
             int id = newSprites.AddSource(tile); 
 
-            (Piece.Color assetColor, Piece.PieceType assetPieceType) = assetTypeStringToEnums(assetType);  
+            (PlayerColor assetColor, PieceType assetPieceType) = assetTypeStringToEnums(assetType);  
             if (!idMap.ContainsKey((int)assetColor)) idMap[(int)assetColor] = new Godot.Collections.Dictionary<int, int>();
             idMap[(int)assetColor][(int)assetPieceType] = id; 
         }
@@ -124,20 +123,20 @@ public partial class AssetSelection : Node2D
         return (newSprites, idMap);
     }
 
-    private (Piece.Color, Piece.PieceType) assetTypeStringToEnums(string assetType) {
+    private (PlayerColor, PieceType) assetTypeStringToEnums(string assetType) {
         switch(assetType) {
             case "P1_SCOUT":
-                return (Piece.Color.PLAYER_1, Piece.PieceType.SCOUT);
+                return (PlayerColor.PLAYER_1, PieceType.SCOUT);
             case "P1_TILE":
-                return (Piece.Color.PLAYER_1, Piece.PieceType.TILE);
+                return (PlayerColor.PLAYER_1, PieceType.TILE);
             case "P2_SCOUT":
-                return (Piece.Color.PLAYER_2, Piece.PieceType.SCOUT);
+                return (PlayerColor.PLAYER_2, PieceType.SCOUT);
             case "P2_TILE":
-                return (Piece.Color.PLAYER_2, Piece.PieceType.TILE); 
+                return (PlayerColor.PLAYER_2, PieceType.TILE); 
             case "EMPTY_SQUARE":
-                return (Piece.Color.BLANK, Piece.PieceType.BLANK); 
+                return (PlayerColor.BLANK, PieceType.BLANK); 
         }
         GD.Print(assetType + " could not be defined"); 
-        return (Piece.Color.MISSING, Piece.PieceType.MISSING); 
+        return (PlayerColor.MISSING, PieceType.MISSING); 
     }
 }

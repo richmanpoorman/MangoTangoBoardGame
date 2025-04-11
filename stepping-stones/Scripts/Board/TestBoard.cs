@@ -5,13 +5,13 @@ class TestBoard : Board {
 
 
     private Tile[,] testTiles = {
-        {new Tile(Piece.Color.PLAYER_1), null, new Tile(Piece.Color.PLAYER_1)},
-        {new Tile(Piece.Color.PLAYER_2), null, new Tile(Piece.Color.PLAYER_2)}
+        {new Tile(PlayerColor.PLAYER_1), null, new Tile(PlayerColor.PLAYER_1)},
+        {new Tile(PlayerColor.PLAYER_2), null, new Tile(PlayerColor.PLAYER_2)}
     }; 
 
     private Scout[,] testScouts = {
-        {null, null, new Scout(Piece.Color.PLAYER_1)}, 
-        {null, null, new Scout(Piece.Color.PLAYER_2)}
+        {null, null, new Scout(PlayerColor.PLAYER_1)}, 
+        {null, null, new Scout(PlayerColor.PLAYER_2)}
     };
 
     public TestBoard() {

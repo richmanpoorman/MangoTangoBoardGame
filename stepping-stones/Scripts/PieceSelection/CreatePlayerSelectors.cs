@@ -12,7 +12,7 @@ public partial class CreatePlayerSelectors : Node2D
 	[Export] 
 	private PackedScene localSelector, onlineSelector, aiSelector; 
 	
-	private Dictionary<Piece.Color, Node2D> playerSelectors; 
+	private Dictionary<PlayerColor, Node2D> playerSelectors; 
 
 
 	public override void _Ready() {
@@ -22,7 +22,7 @@ public partial class CreatePlayerSelectors : Node2D
 	}
 
 
-	private void onPlayerJoin(Piece.Color player, PlayerType selectorType) {
+	private void onPlayerJoin(PlayerColor player, PlayerType selectorType) {
 		// Get the right node
 		Node2D? selector = selectorType switch {
 			PlayerType.LOCAL  => localSelector  is null ? null : localSelector.Instantiate<Node2D>(), 
@@ -46,7 +46,7 @@ public partial class CreatePlayerSelectors : Node2D
 		playerSelectors[player] = selector; 
 	}
 
-	private void onPlayerLeave(Piece.Color player) {
+	private void onPlayerLeave(PlayerColor player) {
 		if (!playerSelectors.ContainsKey(player)) return; 
 		if (playerSelectors[player] is not null) playerSelectors[player].QueueFree();
 		playerSelectors.Remove(player); 

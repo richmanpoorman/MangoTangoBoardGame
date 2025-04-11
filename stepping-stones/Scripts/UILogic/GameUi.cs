@@ -29,7 +29,7 @@ public partial class GameUi : Control
 	[Export]
 	public RichTextLabel blueTiles;
 
-	private Piece.Color currentPlayer;
+	private PlayerColor currentPlayer;
 
 	private BoardManager manager;
 	private int p1Tiles, p2Tiles;
@@ -94,7 +94,7 @@ public partial class GameUi : Control
 		switchColorText();
 
 	}
-	private void onTurnChange(Piece.Color turn)
+	private void onTurnChange(PlayerColor turn)
 	{
 		currentPlayer = turn;
 		switchColorText();
@@ -102,10 +102,10 @@ public partial class GameUi : Control
 	}
 	public void switchPhaseText() {
 		switch (manager.phase()) {
-			case BoardManager.GamePhase.PLACE:
+			case GamePhase.PLACE:
 				phaseLabel.Text = "Placing Phase";
 				break;
-			case BoardManager.GamePhase.MOVE:
+			case GamePhase.MOVE:
 				phaseLabel.Text = "Movement Phase";
 				break;
 			default:
@@ -114,12 +114,12 @@ public partial class GameUi : Control
 	}
 	public void updateRedTiles() {
 		redTiles.Text = "Player 1 has: [color=#FA003F] " + 
-								(manager.playerTileCount(Piece.Color.PLAYER_1) - 1) + 
+								(manager.playerTileCount(PlayerColor.PLAYER_1) - 1) + 
 								"[/color] tiles";
 	}
 	public void updateBlueTiles () {
 		blueTiles.Text = "Player 2 has: [color=dodger_blue] " + 
-								(manager.playerTileCount(Piece.Color.PLAYER_2) - 1) + 
+								(manager.playerTileCount(PlayerColor.PLAYER_2) - 1) + 
 								"[/color] tiles";
 	}
 
@@ -138,28 +138,28 @@ public partial class GameUi : Control
 	private void onTilePlace()
 	{
 		switch(currentPlayer) {
-			case Piece.Color.PLAYER_1:
+			case PlayerColor.PLAYER_1:
 				updateRedTiles();
 				break;
-			case Piece.Color.PLAYER_2:
+			case PlayerColor.PLAYER_2:
 				updateBlueTiles();
 				break;
 			default:
 				break;
 			}
 	}
-	private void phaseSwitched(BoardManager.GamePhase phase) 
+	private void phaseSwitched(GamePhase phase) 
 	{
 		// currentPlayer = manager.playerTurn();
 		// switchColorText();
 		switchPhaseText();
 		switch (phase)
 		{
-			case BoardManager.GamePhase.MOVE:
+			case GamePhase.MOVE:
 				redTiles.Visible = false;
 				blueTiles.Visible = false;
 				break;
-			case BoardManager.GamePhase.PLACE:
+			case GamePhase.PLACE:
 				redTiles.Visible = true;
 				blueTiles.Visible = true;
 				break;
@@ -172,10 +172,10 @@ public partial class GameUi : Control
 	}
 	private void switchColorText () {
 		switch(currentPlayer) {
-			case Piece.Color.PLAYER_1:
+			case PlayerColor.PLAYER_1:
 				turnLabel.Text = "[color=#FA003F] Player 1 [/color]'s turn";
 				break;
-			case Piece.Color.PLAYER_2:
+			case PlayerColor.PLAYER_2:
 				turnLabel.Text = "[color=dodger_blue] Player 2 [/color]'s turn";
 				break;
 			default:

@@ -1,14 +1,14 @@
 public class MovementState : BoardState
 {
-    private Piece.Color turn;
-    public MovementState(Piece.Color playerTurn) {
+    private PlayerColor turn;
+    public MovementState(PlayerColor playerTurn) {
         turn = playerTurn; 
     }
 
-    public void changeTurn(Piece.Color _turn) { turn = _turn; }
+    public void changeTurn(PlayerColor _turn) { turn = _turn; }
 
 
-    public Piece.Color playerTurn() { return turn; }
+    public PlayerColor playerTurn() { return turn; }
 
     public BoardState processInput(SteppingStonesBoard board, Rules ruleset, Location location)
     {

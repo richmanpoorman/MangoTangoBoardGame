@@ -12,9 +12,9 @@ public class BoardStateManager : BoardStateMachine
     private SteppingStonesBoard _board; 
     private Rules _rules;
     
-    private Dictionary<Piece.Color, int> startingCounts;
-    private Piece.Color startColor;
-    public BoardStateManager(SteppingStonesBoard board, Rules rules, Dictionary<Piece.Color, int> tileCounts, Piece.Color startingColor) {
+    private Dictionary<PlayerColor, int> startingCounts;
+    private PlayerColor startColor;
+    public BoardStateManager(SteppingStonesBoard board, Rules rules, Dictionary<PlayerColor, int> tileCounts, PlayerColor startingColor) {
         changeBoard(board);
         changeRules(rules); 
         changeState(new PlacingState(tileCounts, startingColor));
@@ -46,18 +46,18 @@ public class BoardStateManager : BoardStateMachine
 
     public Rules rules() { return _rules; }
 
-    public int tileCount(Piece.Color player) {
+    public int tileCount(PlayerColor player) {
         if (_currentState is PlacingState placingState) 
             return placingState.tileCount(player);
         else return -1;
     }
 
-    public void setTileCount(Piece.Color player, int count) {
+    public void setTileCount(PlayerColor player, int count) {
         if (_currentState is PlacingState placingState) 
             placingState.setTileCount(player, count);
     }
 
-    public void changeTurn(Piece.Color turn) { _currentState.changeTurn(turn); }
+    public void changeTurn(PlayerColor turn) { _currentState.changeTurn(turn); }
 
-    public Piece.Color turn() { return _currentState.playerTurn(); }
+    public PlayerColor turn() { return _currentState.playerTurn(); }
 }
