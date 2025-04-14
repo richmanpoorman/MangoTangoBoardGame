@@ -23,6 +23,8 @@ public class OnlineTests {
 		client = new MessageSender();
 
         host.messVersion   = version;
+		host.ipAddr = ipAddr;
+		host.port = port;
 		client.messVersion = version; 
 		client.ipAddr = ipAddr;
 		client.port = port;
@@ -39,7 +41,7 @@ public class OnlineTests {
         // GD.PrintErr("Connected");
         string roomID = await host.MakeRoomAsync(client);
         // GD.PrintErr($"got code");
-        GD.Print($"room id is: {roomID}");
+        // GD.Print($"room id is: {roomID}");
 		client.Shutdown(SocketShutdown.Both);
 		client.Close();
 	}
@@ -53,29 +55,34 @@ public class OnlineTests {
         await hostSock.ConnectAsync(endPoint);
         // GD.PrintErr("Connected");
         string roomID = await host.MakeRoomAsync(hostSock);
-		GD.Print("room made");
+		// GD.Print("room made");
 		(_, var hostInfo) = await client.JoinRoomAsync(roomID);
-		GD.Print("got host info");
-		GD.PushWarning($"host ip is {hostInfo.ip}:{hostInfo.port}");
+		// GD.Print("got host info");
+		// GD.PushWarning($"host ip is {hostInfo.ip}:{hostInfo.port}");
 		// AssertThat(false).IsEqual(true);
         // GD.PrintErr($"got code");
 	}
 	#nullable enable
 	[TestCase]
 	public async Task handshakeTest() {
+		GD.Print("starting hs test");
 		(Socket hostSock, string? roomID) = await host.MkSocketandCodeAsync();
+		GD.Print("room made");
 		if (roomID == null) {
 			AssertThat(true).IsEqual(false);
 			return;
 		}
 		(Socket clientSock, MessageSender.ipPort cc) = await client.JoinRoomAsync(roomID);
+		GD.Print("room joined");
 		MessageSender.ipPort? hc = await host.GetClientIpAsync(hostSock);
+		GD.Print("got client ip");
 		await hostSock.DisconnectAsync(true);
 		await clientSock.DisconnectAsync(true);
 		if (hc == null) {
 			AssertThat(true).IsEqual(false);
 			return;
 		}
+		GD.Print("both disconnected, hc not null");
 		var hTask = Task.Run(() => host.sendHandshakeAsync(hostSock, "imhost", (MessageSender.ipPort)hc));
 		var cTask = Task.Run(() => client.sendHandshakeAsync(clientSock, "imclient", (MessageSender.ipPort)cc));
 		string hString = await hTask;

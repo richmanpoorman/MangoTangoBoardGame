@@ -16,7 +16,7 @@ namespace GdUnitDefaultTestNamespace
 		private ISceneRunner runner;
 		private BoardManager manager;
 		private GridSteppingStonesBoard board;
-		private Piece.Color p1, p2;
+		private PlayerColor p1, p2;
 
 
 
@@ -26,8 +26,8 @@ namespace GdUnitDefaultTestNamespace
 			// manager = (BoardManager)runner.FindChild("BoardManager");
 			// board = new GridSteppingStonesBoard(5, 7);
 			// manager.setBoard(board);
-			p1 = Piece.Color.PLAYER_1;
-            p2 = Piece.Color.PLAYER_2;
+			p1 = PlayerColor.PLAYER_1;
+            p2 = PlayerColor.PLAYER_2;
 
 		}
 		// // TestSuite generated from
@@ -37,11 +37,11 @@ namespace GdUnitDefaultTestNamespace
 		// public void placeToMoveIsAutomatic(){
 		// 	manager.setTileCount(p1, 1);
 		// 	manager.setTileCount(p2, 1);
-		// 	Assertions.AssertThat(manager.phase()).IsEqual(BoardManager.GamePhase.PLACE);
+		// 	Assertions.AssertThat(manager.phase()).IsEqual(GamePhase.PLACE);
 
 		// 	manager.onCellSelection(p1, 0, 0);
 		// 	manager.onCellSelection(p2, 0, 1);
-		// 	Assertions.AssertThat(manager.phase()).IsEqual(BoardManager.GamePhase.MOVE);
+		// 	Assertions.AssertThat(manager.phase()).IsEqual(GamePhase.MOVE);
 
 
 		// }
@@ -51,12 +51,12 @@ namespace GdUnitDefaultTestNamespace
 		// {
 		// 	manager.setTileCount(p1, 1);
 		// 	manager.setTileCount(p2, 1);
-		// 	Assertions.AssertThat(manager.phase()).IsEqual(BoardManager.GamePhase.PLACE);
+		// 	Assertions.AssertThat(manager.phase()).IsEqual(GamePhase.PLACE);
 		// 	Assertions.AssertThat(manager.playerTurn()).IsEqual(p1);
 
 		// 	manager.onCellSelection(p1, 0, 0);
 		// 	manager.onCellSelection(p2, 0, 1);
-		// 	Assertions.AssertThat(manager.phase()).IsEqual(BoardManager.GamePhase.MOVE);
+		// 	Assertions.AssertThat(manager.phase()).IsEqual(GamePhase.MOVE);
 		// 	Assertions.AssertThat(manager.playerTurn()).IsEqual(p1);
 
 		// }
@@ -70,7 +70,7 @@ namespace GdUnitDefaultTestNamespace
 			sm.p2Tiles = 4;
 			sm.newGame = false;
 			sm.board = new GridSteppingStonesBoard(5, 7);
-			sm.phase = BoardManager.GamePhase.MOVE;
+			sm.phase = GamePhase.MOVE;
 			runner = ISceneRunner.Load("res://Scenes/Main.tscn");
 		
 			// GD.Print("printing works")
@@ -91,21 +91,21 @@ namespace GdUnitDefaultTestNamespace
 			sm.p2Tiles = 4;
 			sm.newGame = false;
 			sm.board = new GridSteppingStonesBoard(5, 7);
-			sm.phase = BoardManager.GamePhase.MOVE;
+			sm.phase = GamePhase.MOVE;
 			runner = ISceneRunner.Load("res://Scenes/Main.tscn");
 		
 			// GD.Print("printing works")
 			await runner.AwaitIdleFrame();
 			manager = runner.GetProperty<BoardManager>("manager");
-			BoardManager.GamePhase phase = (BoardManager.GamePhase)runner.GetProperty("phase");
+			GamePhase phase = (GamePhase)runner.GetProperty("phase");
 			GD.Print($"phase is {phase}");
 			if (manager is null) {
 				GD.Print("Null manager");
 			}
 			// runner.Invoke("_Ready");
-			AssertThat(phase).IsEqual(BoardManager.GamePhase.MOVE);
+			AssertThat(phase).IsEqual(GamePhase.MOVE);
 			runner.Invoke("OnUIResetGame");
-			AssertThat(manager.phase()).IsEqual(BoardManager.GamePhase.PLACE);
+			AssertThat(manager.phase()).IsEqual(GamePhase.PLACE);
 		}
 		[TestCase]
 		public async Task pushOffBoard(){
@@ -114,21 +114,21 @@ namespace GdUnitDefaultTestNamespace
 			sm.p2Tiles = 4;
 			sm.newGame = false;
 			sm.board = new GridSteppingStonesBoard(5, 7);
-			sm.phase = BoardManager.GamePhase.MOVE;
+			sm.phase = GamePhase.MOVE;
 			runner = ISceneRunner.Load("res://Scenes/Main.tscn");
 		
 			// GD.Print("printing works")
 			await runner.AwaitIdleFrame();
 			manager = runner.GetProperty<BoardManager>("manager");
-			BoardManager.GamePhase phase = (BoardManager.GamePhase)runner.GetProperty("phase");
+			GamePhase phase = (GamePhase)runner.GetProperty("phase");
 			GD.Print($"phase is {phase}");
 			if (manager is null) {
 				GD.Print("Null manager");
 			}
 			// runner.Invoke("_Ready");
-			AssertThat(phase).IsEqual(BoardManager.GamePhase.MOVE);
+			AssertThat(phase).IsEqual(GamePhase.MOVE);
 			runner.Invoke("OnUIResetGame");
-			AssertThat(manager.phase()).IsEqual(BoardManager.GamePhase.PLACE);
+			AssertThat(manager.phase()).IsEqual(GamePhase.PLACE);
 		}
 
 

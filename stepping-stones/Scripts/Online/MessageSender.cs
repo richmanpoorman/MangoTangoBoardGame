@@ -88,10 +88,8 @@ public partial class MessageSender
 
 	public async Task<(Socket sock, string? roomCode)> MkSocketandCodeAsync () {
 		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
-		using Socket client = new(
-    		endPoint.AddressFamily, 
-    		SocketType.Stream, 
-    		ProtocolType.Tcp);
+		Socket client = new (endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+		GD.Print("host sock made");
 		await client.ConnectAsync(endPoint);
 		return (client, await MakeRoomAsync(client));
 	}
@@ -99,7 +97,10 @@ public partial class MessageSender
 	public async Task<ipPort?> GetClientIpAsync(Socket client) {
 		byte[] buffer = new byte[1024];
 		
+		GD.Print("waiting for packet");
+		GD.Print($"host port: {((IPEndPoint)client.LocalEndPoint).Port}");
 		int received = await client.ReceiveAsync(buffer, SocketFlags.None);
+		GD.Print("ip packet received");
 		if (received < 8) {
 			return null;
 		}
@@ -116,10 +117,7 @@ public partial class MessageSender
 
 	public async Task<string> DebugRunRoomAsync(string prepend = ""){
 		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
-		using Socket client = new(
-    		endPoint.AddressFamily, 
-    		SocketType.Stream, 
-    		ProtocolType.Tcp);
+		Socket client = new (endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 		await client.ConnectAsync(endPoint);
 		string roomID = ""; 
 		try {
