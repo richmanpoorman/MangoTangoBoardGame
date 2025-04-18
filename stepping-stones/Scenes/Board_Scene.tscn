@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://84b00vn14xp4"]
+[gd_scene load_steps=4 format=3 uid="uid://84b00vn14xp4"]
 
 [ext_resource type="PackedScene" uid="uid://bkgd4htwt4ar5" path="res://Templates/board.tscn" id="2_ptpue"]
 [ext_resource type="PackedScene" uid="uid://cpjibiw1aw0b1" path="res://Templates/PlayerInstancer.tscn" id="4_oh2oj"]
@@ -12,27 +12,16 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(220, 45)
+
 [node name="BoardManager" parent="." instance=ExtResource("6_yf7y7")]
 position = Vector2(-30, -7)
 scale = Vector2(4, 4)
 player1DefaultTileCount = 2
 player2DefaultTileCount = 2
 
-[node name="LocalSelection2" parent="BoardManager" instance=ExtResource("3_05bbn")]
-position = Vector2(0, -1)
-_player = 1
-
 [node name="Board" parent="BoardManager" node_paths=PackedStringArray("boardManager") instance=ExtResource("2_ptpue")]
 boardManager = NodePath("..")
 
-[node name="Camera2D" type="Camera2D" parent="BoardManager/Board"]
-scale = Vector2(0.25, 0.25)
-
-[node name="LocalSelection" parent="BoardManager" instance=ExtResource("3_05bbn")]
-position = Vector2(0, -1)
-
-[node name="Sizer" type="Node2D" parent="BoardManager" node_paths=PackedStringArray("manager", "camera", "display")]
-script = ExtResource("4_p3vwv")
-manager = NodePath("..")
-camera = NodePath("../Board/Camera2D")
-display = NodePath("../Board")
+[node name="PlayerInstancer" parent="BoardManager" instance=ExtResource("4_oh2oj")]
