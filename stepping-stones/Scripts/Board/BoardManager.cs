@@ -60,7 +60,8 @@ public partial class BoardManager : Node2D, GameboardManager
 	private EventBus _eventBus; 
 
 	public override void _Ready() {
-		_ruleset = new ComposableRules(_scoutWeight, _cantSplit, _onlyOffensiveWeight);
+		setRules(SetRules.rules); 
+		// _ruleset = new ComposableRules(_scoutWeight, _cantSplit, _onlyOffensiveWeight);
 
 		_eventBus = EventBus.Bus;
 		_eventBus.onSelection += onCellSelection; 
