@@ -46,9 +46,18 @@ public partial class GameUi : Control
 		GetNode<Button>("CanvasLayer/ResetButton").Visible = false;
 	}
 	
+	public void showAll () {
+		redTiles.Show();
+		blueTiles.Show();
+		turnLabel.Show();
+		phaseLabel.Show();
+		GetNode<Button>("CanvasLayer/SaveButton").Visible = true;
+		GetNode<Button>("CanvasLayer/LoadButton").Visible = true;
+		GetNode<Button>("CanvasLayer/ResetButton").Visible = true;
+	}
 	private void OnResetButtonPressed() 
 	{
-		EmitSignal(SignalName.ResetGame);
+		EventBus.Bus.EmitSignal(EventBus.SignalName.onGameReset);
 	}
 	private void OnSaveButtonPressed() 
 	{

@@ -68,6 +68,9 @@ public partial class EventBus : Node
 	[Signal]
 	public delegate void onTilePushEventHandler(); 
 
+	[Signal]
+	public delegate void onGameResetEventHandler();
+
     // When a square is selected
     [Signal]
 	public delegate void onSelectionEventHandler(PlayerColor player, int row, int column);
