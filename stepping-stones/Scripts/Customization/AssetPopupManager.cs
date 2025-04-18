@@ -9,8 +9,4 @@ public partial class AssetPopupManager : Node2D
 	private void _onCustomizationButtonClick() {
 		assetCreator.Visible = true; 
 	}
-
-	private void _onSubmission() {
-		assetCreator.Visible = false; 
-	}
 }
