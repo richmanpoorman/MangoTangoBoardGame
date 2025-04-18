@@ -4,6 +4,9 @@ using Godot.Collections;
 public partial class EventBus : Node
 {
     public static EventBus Bus { get; private set; }
+	public static EventBus gdscriptBus() {
+		return Bus;
+	}
 
     public override void _EnterTree()
     {

@@ -7,7 +7,7 @@ using System.Text;
 using Microsoft.VisualBasic;
 using System.Linq;
 
-public partial class MessageSender
+public partial class MessageSender : Node
 {
 	// Called when the node enters the scene tree for the first time.
 	[Export]
@@ -24,6 +24,29 @@ public partial class MessageSender
 		}
 		public string ip;
 		public int port;
+	}
+
+	public class Shake {
+		
+		public bool wrote = false;
+		public bool read = false;
+		public bool both = false;
+
+        public override string ToString() {
+			string val = "";
+			val += read? "r"  : "-";
+			val += wrote?  "w" : "-"; 
+			val += both?  "x"  : "-";
+			return val;
+        }
+		public static Shake ofString(string s) {
+			Shake val = new Shake();
+			val.read = s.Contains("r");
+			val.wrote = s.Contains("w");
+			val.both = s.Contains("x");
+			return val;
+		}
+
 	}
 	#nullable enable
 	Socket? client = null;
@@ -210,36 +233,63 @@ public partial class MessageSender
 		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
 		await client.ReceiveAsync(buf, SocketFlags.None);
 	}
-	public async Task<string> sendClientHSAsync (int localPort, ipPort ext, string prepend = "") {
-		string flags = "-w-";
-		UdpClient udp = new UdpClient(localPort);
+	public async Task<string> sendClientHSAsync (int localPort, ipPort ext, string prepend = "", float time = 10f, float wait = 0.2f) {
+		Shake ourShake = new Shake();
+		ourShake.wrote = true; 
+		PacketPeerUdp udp = new PacketPeerUdp();
+		udp.Bind(localPort);
+		udp.SetDestAddress(ext.ip, ext.port);
 		byte[] buf   = new byte[40];
-		IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
-		udp.Connect(endPoint);
+		// IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
+		// udp.Connect(endPoint);
 		try {
-			
-			await udp.SendAsync(Encoding.ASCII.GetBytes(flags));
+			udp.PutPacket(Encoding.ASCII.GetBytes(ourShake.ToString()));
 		} catch (Exception e) {
 			GD.Print(e.Message);
 			await Task.Delay(100);
-			await udp.SendAsync(Encoding.ASCII.GetBytes(flags));
+			udp.PutPacket(Encoding.ASCII.GetBytes(ourShake.ToString()));
 		}
-		
-		buf = udp.Receive(ref endPoint);
-		string recFlags = Encoding.ASCII.GetString(buf);
-		flags = prepend + "rwx";
-		await udp.SendAsync(Encoding.ASCII.GetBytes(flags));
-		buf = udp.Receive(ref endPoint);
-		return Encoding.ASCII.GetString(buf);
+		string prefix = "";
+		while (time >= 0) {
+			GD.Print($"enterd loop");
+			while (udp.GetAvailablePacketCount() > 0) {
+				GD.Print($"curr packet count is: {udp.GetAvailablePacketCount()}");
+				var p = udp.GetPacket();
+				string recf = Encoding.ASCII.GetString(p);
+				string[] parts = recf.Split(":");
+				prefix = parts[0];
+				Shake incShake = Shake.ofString(parts[1]);
+				if (incShake.wrote) {
+					ourShake.read = true;
+				}
+				if (incShake.read) {
+					ourShake.both = true;
+				}
+				if (ourShake.both && incShake.both) {
+					time = 0;
+				}
+				
+			}
+			await Task.Delay((int)(wait * 1000f));
+			udp.PutPacket(Encoding.ASCII.GetBytes(prepend + ":" + ourShake.ToString()));
+			time -= wait;
+		}
+		return prefix;
 	}
 
-	public async Task sendHostHSAsync (ENetConnection conn, ipPort ext, string prepend = "") {
-		string flags = prepend + "rwx";
-		
+	public async Task sendHostHSAsync (ENetConnection host, ipPort ext, string prepend = "", float time = 10f, float wait = 0.2f) {
+		string flags = prepend + ":" + "rwx";
+		// var peer = new ENetMultiplayerPeer();
+		// peer.CreateServer(port);
+		// Multiplayer.MultiplayerPeer = peer;
 		// IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
-		conn.SocketSend(ext.ip, ext.port, Encoding.ASCII.GetBytes(flags));
-		await Task.Delay(100);
-		conn.SocketSend(ext.ip, ext.port, Encoding.ASCII.GetBytes(flags));
+		while (time >= 0) {
+			host.SocketSend(ext.ip, ext.port, Encoding.ASCII.GetBytes(flags));
+			await Task.Delay((int)(wait * 1000f));
+			time -= wait;
+		}
+		
+		
 		
 	}
 
