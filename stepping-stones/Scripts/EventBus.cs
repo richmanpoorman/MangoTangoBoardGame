@@ -78,7 +78,7 @@ public partial class EventBus : Node
 
 	// When a new player joins the game (be it from online, user, or AI), as well as the color
 	[Signal]
-	public delegate void onPlayerJoinEventHandler(PlayerColor player, CreatePlayerSelectors.PlayerType selectorType);
+	public delegate void onPlayerJoinEventHandler(PlayerColor player, PlayerType selectorType);
 
 	[Signal]
 	public delegate void onPlayerLeaveEventHandler(PlayerColor player);

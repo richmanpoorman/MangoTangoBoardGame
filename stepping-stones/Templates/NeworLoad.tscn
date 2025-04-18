@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cgelfsecvh8rq"]
+[gd_scene load_steps=7 format=3 uid="uid://cgelfsecvh8rq"]
 
 [ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
 [ext_resource type="PackedScene" uid="uid://3fbkkrcg4rvl" path="res://Templates/AssetCreator.tscn" id="2_u8ll1"]
 [ext_resource type="Script" path="res://Scripts/Customization/AssetPopupManager.cs" id="3_t0cuw"]
+[ext_resource type="Script" path="res://Scripts/PieceSelection/SetPlayersFromMenu.cs" id="4_ojguw"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8nm86"]
 
@@ -186,14 +187,21 @@ offset_bottom = 293.0
 placeholder_text = "Enter Room Code"
 alignment = 1
 
+[node name="PlayerTypeListener" type="Node2D" parent="."]
+script = ExtResource("4_ojguw")
+
 [connection signal="pressed" from="AssetCreator/UI Elements/Sprite Selector/Selectors/Submission Button" to="Primary/Settings Bar/Create Assets/Asset Popup Manager" method="_onSubmission"]
 [connection signal="pressed" from="Secondary/StartGame" to="." method="OnStartGameButtonPressed"]
 [connection signal="pressed" from="Secondary/BackButton" to="." method="OnBackButtonPressed"]
 [connection signal="pressed" from="Primary/Primary/NewGameButton" to="." method="OnNewGameButtonPressed"]
+[connection signal="pressed" from="Primary/Primary/NewGameButton" to="PlayerTypeListener" method="onCreateLocalGame"]
 [connection signal="pressed" from="Primary/Primary/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
+[connection signal="pressed" from="Primary/Primary/LoadGameButton" to="PlayerTypeListener" method="onLoadLocalGame"]
 [connection signal="file_selected" from="Primary/Primary/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]
 [connection signal="pressed" from="Primary/Primary/MakeRoomButton" to="." method="onMakeRoomPressed"]
+[connection signal="pressed" from="Primary/Primary/MakeRoomButton" to="PlayerTypeListener" method="onMakeOnlineGame"]
 [connection signal="pressed" from="Primary/Primary/JoinRoomButton" to="." method="onJoinRoomPressed"]
+[connection signal="pressed" from="Primary/Primary/JoinRoomButton" to="PlayerTypeListener" method="onJoinOnlineGame"]
 [connection signal="pressed" from="Primary/Settings Bar/Create Assets" to="Primary/Settings Bar/Create Assets/Asset Popup Manager" method="_onCustomizationButtonClick"]
 [connection signal="value_changed" from="Tabs/GameSettings/WidthBox" to="." method="OnWidthBoxValueChanged"]
 [connection signal="value_changed" from="Tabs/GameSettings/LengthBox" to="." method="OnLengthBoxValueChanged"]
