@@ -50,17 +50,19 @@ public partial class MessageSender
 		ArraySegment<byte> ipbytes = new ArraySegment<byte>(buf, start, 4);
 		ArraySegment<byte> portbytes = new ArraySegment<byte>(buf, start + 4, 4);
 		byte[] finportbytes = portbytes.ToArray();
+		GD.Print($"port pre flip is: {BitConverter.ToInt32(finportbytes)}");
 		if (BitConverter.IsLittleEndian) {
 			finportbytes = portbytes.Reverse().ToArray();
 		}
 		int port = BitConverter.ToInt32(finportbytes);
+		GD.Print($"port post flip is: {port}");
 		string ip = ipbytes[0] + "." + ipbytes[1] + "." + ipbytes[2] 
 								   + "." + ipbytes[3];
 		return new ipPort(ip, port);
 	}
 	public async Task<(Socket, ipPort)>  JoinRoomAsync(string roomID){
 		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
-		using Socket client = new(
+		Socket client = new(
     		endPoint.AddressFamily, 
     		SocketType.Stream, 
     		ProtocolType.Tcp);
@@ -111,7 +113,7 @@ public partial class MessageSender
 			return null;
 		}
 
-		return BufToIp(buffer, 9);
+		return BufToIp(buffer, 8);
 	}
 
 
@@ -171,13 +173,20 @@ public partial class MessageSender
 	}
 
 	public async Task<string> sendHandshakeAsync (Socket client, string prepend, ipPort ext) {
+		GD.Print($"port is {ext.port}");
 		string flags = "-w-";
 		byte[] buf   = new byte[40];
 		IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
-		await client.ConnectAsync(endPoint);
-		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
-		await Task.Delay(100);
-		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		try {
+			await client.ConnectAsync(endPoint);
+			await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		} catch (Exception e) {
+			GD.Print(e.Message);
+			await Task.Delay(100);
+			await client.ConnectAsync(endPoint);
+			await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		}
+		
 		await client.ReceiveAsync(buf, SocketFlags.None);
 		string recFlags = Encoding.ASCII.GetString(buf);
 		flags = prepend + "rwx";
@@ -187,6 +196,7 @@ public partial class MessageSender
 	}
 
 	public async Task sendHandshakeAsync (Socket client, ipPort ext) {
+		// GD.Print($"port is {ext}");
 		string flags = "-w-";
 		byte[] buf   = new byte[40];
 		IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
@@ -200,5 +210,40 @@ public partial class MessageSender
 		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
 		await client.ReceiveAsync(buf, SocketFlags.None);
 	}
+	public async Task<string> sendClientHSAsync (int localPort, ipPort ext, string prepend = "") {
+		string flags = "-w-";
+		UdpClient udp = new UdpClient(localPort);
+		byte[] buf   = new byte[40];
+		IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
+		udp.Connect(endPoint);
+		try {
+			
+			await udp.SendAsync(Encoding.ASCII.GetBytes(flags));
+		} catch (Exception e) {
+			GD.Print(e.Message);
+			await Task.Delay(100);
+			await udp.SendAsync(Encoding.ASCII.GetBytes(flags));
+		}
+		
+		buf = udp.Receive(ref endPoint);
+		string recFlags = Encoding.ASCII.GetString(buf);
+		flags = prepend + "rwx";
+		await udp.SendAsync(Encoding.ASCII.GetBytes(flags));
+		buf = udp.Receive(ref endPoint);
+		return Encoding.ASCII.GetString(buf);
+	}
+
+	public async Task sendHostHSAsync (ENetConnection conn, ipPort ext, string prepend = "") {
+		string flags = prepend + "rwx";
+		
+		// IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
+		conn.SocketSend(ext.ip, ext.port, Encoding.ASCII.GetBytes(flags));
+		await Task.Delay(100);
+		conn.SocketSend(ext.ip, ext.port, Encoding.ASCII.GetBytes(flags));
+		
+	}
+
+
 	#nullable disable
 }
+
