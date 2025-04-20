@@ -86,11 +86,11 @@ public class OnlineTests {
 			}
 			GD.Print("both disconnected, hc not null");
 
-			var peer = new ENetMultiplayerPeer();
-			peer.CreateServer(((IPEndPoint)hostSock.LocalEndPoint).Port);
-			var hTask = Task.Run(() => client.sendClientHSAsync(((IPEndPoint)hostSock.LocalEndPoint).Port, (MessageSender.ipPort)hc, "imhost"));
+			// var peer = new ENetMultiplayerPeer();
+			// peer.CreateServer(((IPEndPoint)hostSock.LocalEndPoint).Port);
+			var hTask = Task.Run(() => host.sendLocalHSAsync(((IPEndPoint)hostSock.LocalEndPoint).Port, ((IPEndPoint)clientSock.LocalEndPoint).Port, "imhost"));
 			await Task.Delay(10);
-			var cTask = Task.Run(() => client.sendClientHSAsync(((IPEndPoint)clientSock.LocalEndPoint).Port, cc, "imclient"));
+			var cTask = Task.Run(() => client.sendLocalHSAsync(((IPEndPoint)clientSock.LocalEndPoint).Port, ((IPEndPoint)hostSock.LocalEndPoint).Port, "imclient"));
 			await hTask;
 			string cString = await cTask;
 			AssertThat(cString).IsEqual("imhostrwx");
@@ -101,8 +101,8 @@ public class OnlineTests {
 			client.QueueFree();
 			AssertThat(true).IsEqual(false);
 		}
-
 	}
+
 	[After]
 	public void cleanUp (){
 		GD.Print("after ran");

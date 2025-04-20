@@ -20,9 +20,6 @@ config/icon="res://Sprites/TileSprites/icon.svg"
 SceneManager="*res://Scripts/UILogic/SceneManager.cs"
 EventBus="*res://Scripts/EventBus.cs"
 AudioManager="*res://Templates/AudioManager.tscn"
-Noray="*res://addons/netfox.noray/noray.gd"
-PacketHandshake="*res://addons/netfox.noray/packet-handshake.gd"
-NorayTests="*res://Scripts/Online/NorayTests.gd"
 
 [dotnet]
 
@@ -30,7 +27,7 @@ project/assembly_name="Stepping Stones"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/netfox.noray/plugin.cfg")
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
 
 [gdunit4]
 
