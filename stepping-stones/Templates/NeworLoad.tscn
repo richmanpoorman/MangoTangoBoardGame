@@ -1,22 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://cgelfsecvh8rq"]
+[gd_scene load_steps=9 format=3 uid="uid://cgelfsecvh8rq"]
 
 [ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
 [ext_resource type="PackedScene" uid="uid://3fbkkrcg4rvl" path="res://Templates/AssetCreator.tscn" id="2_u8ll1"]
+[ext_resource type="PackedScene" uid="uid://cminj7myxuncw" path="res://Templates/GameRuleSelector.tscn" id="3_0t1x1"]
 [ext_resource type="Script" path="res://Scripts/Customization/AssetPopupManager.cs" id="3_t0cuw"]
+[ext_resource type="Script" path="res://Scripts/PieceSelection/SetPlayersFromMenu.cs" id="4_ojguw"]
+[ext_resource type="Script" path="res://Scripts/Customization/RulesPopupManager.cs" id="5_qpxrt"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8nm86"]
 
 [sub_resource type="Theme" id="Theme_hkbsb"]
 
-[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs", "panel", "roomText")]
+[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -8.0
-offset_top = -11.0
-offset_right = -8.0
-offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -30,12 +29,14 @@ makeRoomButton = NodePath("Primary/Primary/MakeRoomButton")
 joinRoomButton = NodePath("Primary/Primary/JoinRoomButton")
 roomJoiner = NodePath("Room Code")
 tabs = NodePath("Tabs")
-panel = NodePath("Primary/Primary/MakeRoomButton/PanelContainer")
-roomText = NodePath("Primary/Primary/MakeRoomButton/PanelContainer/VBoxContainer/RoomCodeBox")
 
 [node name="AssetCreator" parent="." instance=ExtResource("2_u8ll1")]
 visible = false
 position = Vector2(117, 69)
+
+[node name="GameRuleSelector" parent="." instance=ExtResource("3_0t1x1")]
+visible = false
+position = Vector2(363, 109)
 
 [node name="Secondary" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -114,45 +115,6 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 48
 text = "Make Room"
 
-[node name="PanelContainer" type="PanelContainer" parent="Primary/Primary/MakeRoomButton"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.363
-anchor_top = -2.106
-anchor_right = -0.363
-anchor_bottom = -2.106
-offset_left = 1.729
-offset_top = 2.95001
-offset_right = 304.729
-offset_bottom = 104.95
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Primary/Primary/MakeRoomButton/PanelContainer"]
-custom_minimum_size = Vector2(0, 80)
-layout_mode = 2
-alignment = 1
-
-[node name="RoomLabelBox" type="RichTextLabel" parent="Primary/Primary/MakeRoomButton/PanelContainer/VBoxContainer"]
-clip_contents = false
-custom_minimum_size = Vector2(10, 26)
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 14
-text = "Room Code"
-
-[node name="RoomCodeBox" type="RichTextLabel" parent="Primary/Primary/MakeRoomButton/PanelContainer/VBoxContainer"]
-clip_contents = false
-custom_minimum_size = Vector2(0, 34)
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
-text = "Foo"
-
-[node name="Panel" type="ColorRect" parent="Primary/Primary/MakeRoomButton/PanelContainer"]
-show_behind_parent = true
-custom_minimum_size = Vector2(20, 40)
-layout_mode = 2
-
 [node name="JoinRoomButton" type="Button" parent="Primary/Primary"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
@@ -170,6 +132,15 @@ text = "Custom Tiles"
 [node name="Asset Popup Manager" type="Node2D" parent="Primary/Settings Bar/Create Assets" node_paths=PackedStringArray("assetCreator")]
 script = ExtResource("3_t0cuw")
 assetCreator = NodePath("../../../../AssetCreator")
+
+[node name="Set Custom Rules" type="Button" parent="Primary/Settings Bar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Custom Rules"
+
+[node name="Rules Popup" type="Node2D" parent="Primary/Settings Bar/Set Custom Rules" node_paths=PackedStringArray("rulesPopup")]
+script = ExtResource("5_qpxrt")
+rulesPopup = NodePath("../../../../GameRuleSelector")
 
 [node name="Tabs" type="TabContainer" parent="."]
 visible = false
@@ -231,19 +202,24 @@ offset_bottom = 293.0
 placeholder_text = "Enter Room Code"
 alignment = 1
 
-[connection signal="pressed" from="AssetCreator/UI Elements/Sprite Selector/Selectors/Submission Button" to="Primary/Settings Bar/Create Assets/Asset Popup Manager" method="_onSubmission"]
+[node name="PlayerTypeListener" type="Node2D" parent="."]
+script = ExtResource("4_ojguw")
+
 [connection signal="pressed" from="Secondary/StartGame" to="." method="OnStartGameButtonPressed"]
 [connection signal="pressed" from="Secondary/BackButton" to="." method="OnBackButtonPressed"]
 [connection signal="pressed" from="Primary/Primary/NewGameButton" to="." method="OnNewGameButtonPressed"]
+[connection signal="pressed" from="Primary/Primary/NewGameButton" to="PlayerTypeListener" method="onCreateLocalGame"]
 [connection signal="pressed" from="Primary/Primary/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
+[connection signal="pressed" from="Primary/Primary/LoadGameButton" to="PlayerTypeListener" method="onLoadLocalGame"]
 [connection signal="file_selected" from="Primary/Primary/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]
 [connection signal="pressed" from="Primary/Primary/MakeRoomButton" to="." method="onMakeRoomPressed"]
+[connection signal="pressed" from="Primary/Primary/MakeRoomButton" to="PlayerTypeListener" method="onMakeOnlineGame"]
 [connection signal="pressed" from="Primary/Primary/JoinRoomButton" to="." method="onJoinRoomPressed"]
+[connection signal="pressed" from="Primary/Primary/JoinRoomButton" to="PlayerTypeListener" method="onJoinOnlineGame"]
 [connection signal="pressed" from="Primary/Settings Bar/Create Assets" to="Primary/Settings Bar/Create Assets/Asset Popup Manager" method="_onCustomizationButtonClick"]
+[connection signal="pressed" from="Primary/Settings Bar/Set Custom Rules" to="Primary/Settings Bar/Set Custom Rules/Rules Popup" method="onPressed"]
 [connection signal="value_changed" from="Tabs/GameSettings/WidthBox" to="." method="OnWidthBoxValueChanged"]
 [connection signal="value_changed" from="Tabs/GameSettings/LengthBox" to="." method="OnLengthBoxValueChanged"]
 [connection signal="value_changed" from="Tabs/GameSettings/NumTilesBox" to="." method="OnNumTilesBoxValueChanged"]
 [connection signal="pressed" from="Tabs/GameSettings/CloseButton" to="." method="OnCloseButtonPressed"]
 [connection signal="text_submitted" from="Room Code" to="." method="onJoinCodeEntered"]
-
-[editable path="AssetCreator"]
