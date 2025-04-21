@@ -14,7 +14,7 @@ public partial class SetRules : Node2D
     [Export]
     private Node2D root; 
 
-    private void setRules(int scoutWeight, bool hasOffensivePush, bool hasScoutRequiredToDivide) {
+    public static void setRules(int scoutWeight, bool hasOffensivePush, bool hasScoutRequiredToDivide) {
         rules = new ComposableRules(scoutWeight, hasScoutRequiredToDivide, hasOffensivePush);
     }
 

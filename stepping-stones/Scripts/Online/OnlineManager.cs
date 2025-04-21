@@ -17,6 +17,7 @@ public partial class OnlineManager : Node
 	private int hostPort = 5000;
 	[Export]
 	private int clientPort = 5001;
+	private ENetMultiplayerPeer peer = new ENetMultiplayerPeer();
 	public override void _Ready()
 	{
 		_bus = EventBus.Bus;
@@ -39,10 +40,15 @@ public partial class OnlineManager : Node
 		if (!result.Contains("rwx")) {
 			throw new ApplicationException("can't establish handshake");
 		}
+		
+		peer.CreateServer(hostPort);
+		Multiplayer.MultiplayerPeer = peer;
+
 	}
 	private async void joinRoom(string roomCode) {
 		(Socket sock, MessageSender.ipPort ipp) = await sender.JoinRoomAsync(roomCode);
 		string result = await sender.sendLocalHSAsync(clientPort, hostPort);
+		peer.CreateClient(ipAddr, hostPort, 0, 0, 0, clientPort);
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
