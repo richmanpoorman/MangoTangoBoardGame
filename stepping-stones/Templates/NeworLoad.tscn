@@ -8,11 +8,15 @@
 
 [sub_resource type="Theme" id="Theme_hkbsb"]
 
-[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs")]
+[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs", "panel", "roomText")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -11.0
+offset_right = -8.0
+offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -26,6 +30,8 @@ makeRoomButton = NodePath("Primary/Primary/MakeRoomButton")
 joinRoomButton = NodePath("Primary/Primary/JoinRoomButton")
 roomJoiner = NodePath("Room Code")
 tabs = NodePath("Tabs")
+panel = NodePath("Primary/Primary/MakeRoomButton/PanelContainer")
+roomText = NodePath("Primary/Primary/MakeRoomButton/PanelContainer/VBoxContainer/RoomCodeBox")
 
 [node name="AssetCreator" parent="." instance=ExtResource("2_u8ll1")]
 visible = false
@@ -107,6 +113,45 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 48
 text = "Make Room"
+
+[node name="PanelContainer" type="PanelContainer" parent="Primary/Primary/MakeRoomButton"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.363
+anchor_top = -2.106
+anchor_right = -0.363
+anchor_bottom = -2.106
+offset_left = 1.729
+offset_top = 2.95001
+offset_right = 304.729
+offset_bottom = 104.95
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Primary/Primary/MakeRoomButton/PanelContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+alignment = 1
+
+[node name="RoomLabelBox" type="RichTextLabel" parent="Primary/Primary/MakeRoomButton/PanelContainer/VBoxContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(10, 26)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 14
+text = "Room Code"
+
+[node name="RoomCodeBox" type="RichTextLabel" parent="Primary/Primary/MakeRoomButton/PanelContainer/VBoxContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Foo"
+
+[node name="Panel" type="ColorRect" parent="Primary/Primary/MakeRoomButton/PanelContainer"]
+show_behind_parent = true
+custom_minimum_size = Vector2(20, 40)
+layout_mode = 2
 
 [node name="JoinRoomButton" type="Button" parent="Primary/Primary"]
 layout_mode = 2

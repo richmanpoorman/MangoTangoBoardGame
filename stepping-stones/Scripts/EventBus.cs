@@ -89,6 +89,10 @@ public partial class EventBus : Node
 	[Signal]
 	public delegate void onPlayerLeaveEventHandler(PlayerColor player);
 
+	// When the game receives the room code from the server
+	[Signal]	
+	public delegate void onRoomCodeReceivedEventHandler(string roomCode);
+
 
 	// Connects associated signals, which should also trigger if one is sent
 	private void connectSignals() {

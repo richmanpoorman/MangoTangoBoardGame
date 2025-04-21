@@ -25,6 +25,10 @@ public partial class NeworLoad : Control
 	private TabContainer tabs;
 	private SceneManager sceneManager;
 	private FileSaver saver = new GameSaver();
+	[Export]
+	private PanelContainer panel;
+	[Export]
+	private RichTextLabel roomText;
 
 	private EventBus _bus; 
 
@@ -32,6 +36,7 @@ public partial class NeworLoad : Control
 	private int length = 7;
 
 	private int numTiles = 4;
+	
 
 	private void OnNewGameButtonPressed() 
 	{
@@ -97,6 +102,12 @@ public partial class NeworLoad : Control
 	{
 		sceneManager = SceneManager.Instance;
 		_bus = EventBus.Bus; 
+		_bus.onRoomCodeReceived += popUpRoomCode;
+	}
+
+	private void popUpRoomCode(string code) {
+		panel.Visible = true;
+		roomText.Text = code;
 	}
 
 	
