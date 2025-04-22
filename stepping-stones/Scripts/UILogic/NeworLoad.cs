@@ -25,10 +25,10 @@ public partial class NeworLoad : Control
 	private TabContainer tabs;
 	private SceneManager sceneManager;
 	private FileSaver saver = new GameSaver();
+
 	[Export]
-	private PanelContainer panel;
-	[Export]
-	private RichTextLabel roomText;
+	private Node2D roomCodePopup;
+
 
 	private EventBus _bus; 
 
@@ -90,6 +90,7 @@ public partial class NeworLoad : Control
 
 	private void onMakeRoomPressed() {
 		_bus.EmitSignal(EventBus.SignalName.onMakeRoom); 
+		roomCodePopup.Visible = true; 
 	}
 
 	private void onJoinCodeEntered(string roomCode) {
@@ -102,12 +103,6 @@ public partial class NeworLoad : Control
 	{
 		sceneManager = SceneManager.Instance;
 		_bus = EventBus.Bus; 
-		_bus.onRoomCodeReceived += popUpRoomCode;
-	}
-
-	private void popUpRoomCode(string code) {
-		panel.Visible = true;
-		roomText.Text = code;
 	}
 
 	

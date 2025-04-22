@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://xergk7ixbvri"]
+
+[ext_resource type="Script" path="res://Scripts/Online/RoomCodePopup.cs" id="1_mq5fq"]
+
+[node name="RoomCodePopup" type="Node2D"]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Background" type="ColorRect" parent="UI"]
+offset_right = 650.0
+offset_bottom = 150.0
+color = Color(0.223103, 0.223103, 0.223103, 1)
+
+[node name="Alignment" type="VBoxContainer" parent="UI/Background"]
+layout_mode = 0
+offset_right = 650.0
+offset_bottom = 151.0
+alignment = 1
+
+[node name="Code" type="RichTextLabel" parent="UI/Background/Alignment"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
+text = "[center]Room Code: XXXXXXXXXX[/center]
+"
+fit_content = true
+
+[node name="Submit" type="Button" parent="UI/Background/Alignment"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 30
+text = "Ready!"
+
+[node name="Scripts" type="Node2D" parent="."]
+
+[node name="RoomCode" type="Node2D" parent="Scripts" node_paths=PackedStringArray("root", "roomCodeText")]
+script = ExtResource("1_mq5fq")
+root = NodePath("../..")
+roomCodeText = NodePath("../../UI/Background/Alignment/Code")
+
+[connection signal="pressed" from="UI/Background/Alignment/Submit" to="Scripts/RoomCode" method="onRoomCodeSubmit"]
