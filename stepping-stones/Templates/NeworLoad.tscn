@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://cgelfsecvh8rq"]
 
 [ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
-[ext_resource type="PackedScene" uid="uid://xergk7ixbvri" path="res://Templates/RoomCodePopup.tscn" id="2_2q1wa"]
+[ext_resource type="PackedScene" path="res://Templates/RoomCodePopup.tscn" id="2_2q1wa"]
 [ext_resource type="PackedScene" uid="uid://3fbkkrcg4rvl" path="res://Templates/AssetCreator.tscn" id="2_u8ll1"]
-[ext_resource type="PackedScene" path="res://Templates/GameRuleSelector.tscn" id="3_0t1x1"]
+[ext_resource type="PackedScene" uid="uid://cminj7myxuncw" path="res://Templates/GameRuleSelector.tscn" id="3_0t1x1"]
 [ext_resource type="Script" path="res://Scripts/Customization/AssetPopupManager.cs" id="3_t0cuw"]
 [ext_resource type="Script" path="res://Scripts/PieceSelection/SetPlayersFromMenu.cs" id="4_ojguw"]
 [ext_resource type="Script" path="res://Scripts/Customization/RulesPopupManager.cs" id="5_qpxrt"]
@@ -36,9 +36,6 @@ makeGameButton = NodePath("Secondary/MakeGame")
 [node name="RoomCodePopup" parent="." instance=ExtResource("2_2q1wa")]
 visible = false
 position = Vector2(243, 197)
-
-[node name="Background" parent="RoomCodePopup/UI" index="0"]
-layout_mode = 0
 
 [node name="AssetCreator" parent="." instance=ExtResource("2_u8ll1")]
 visible = false
