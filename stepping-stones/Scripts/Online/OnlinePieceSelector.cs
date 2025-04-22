@@ -1,7 +1,7 @@
 
 using Godot;
 
-public partial class OnlineSelector : Node, MoveSelector {
+public partial class OnlinePieceSelector : Node2D, MoveSelector {
     private PlayerColor _player;
     private Location _selection;
 
