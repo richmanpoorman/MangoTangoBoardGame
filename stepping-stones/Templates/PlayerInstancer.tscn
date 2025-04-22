@@ -1,8 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://cpjibiw1aw0b1"]
+[gd_scene load_steps=4 format=3 uid="uid://cpjibiw1aw0b1"]
 
 [ext_resource type="Script" path="res://Scripts/PieceSelection/CreatePlayerSelectors.cs" id="1_nj7gw"]
 [ext_resource type="PackedScene" uid="uid://dmr1nwcsr3f6t" path="res://Templates/LocalSelection.tscn" id="2_t60lw"]
+[ext_resource type="PackedScene" uid="uid://c7sqrjndrpyfb" path="res://Templates/OnlinePieceSelector.tscn" id="3_fyjja"]
 
 [node name="PlayerInstancer" type="Node2D"]
 script = ExtResource("1_nj7gw")
 localSelector = ExtResource("2_t60lw")
+onlineSelector = ExtResource("3_fyjja")

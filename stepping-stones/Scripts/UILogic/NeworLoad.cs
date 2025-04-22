@@ -28,6 +28,8 @@ public partial class NeworLoad : Control
 
 	[Export]
 	private Node2D roomCodePopup;
+	[Export]
+	private Button makeGameButton;
 
 
 	private EventBus _bus; 
@@ -88,15 +90,38 @@ public partial class NeworLoad : Control
 		roomJoiner.Visible = true; 
 	}
 
-	private void onMakeRoomPressed() {
+	private void onMakeGamePressed() {
 		_bus.EmitSignal(EventBus.SignalName.onMakeRoom); 
-		roomCodePopup.Visible = true; 
+		roomCodePopup.Visible = true;
+		tabs.Visible = false;
+		makeGameButton.Visible = false;
+		backButton.Visible = false;
+	}
+
+	private void onMakeRoomPressed() {
+		tabs.Visible = true;
+		makeGameButton.Visible = true;
+		backButton.Visible = true;
+		newButton.Visible = false;
+		loadButton.Visible = false;
+		makeRoomButton.Visible = false; 
+		joinRoomButton.Visible = false; 
+		roomJoiner.Visible = false; 
+	}
+
+	private void onMakeRoomCodeReadyPressed() {
+		sceneManager.newGame = true; 
+		// TODO:: Send board information to the server   
+		sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
 	}
 
 	private void onJoinCodeEntered(string roomCode) {
 		roomJoiner.Clear();
 		roomJoiner.Visible = false; 
-		_bus.EmitSignal(EventBus.SignalName.onJoinRoom, roomCode);
+		_bus.EmitSignal(EventBus.SignalName.onJoinRoom, roomCode.ToUpper());
+
+		// TODO:: Change to listen for the information from the online server 
+		sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
 	}
 
 	public override void _Ready()
@@ -111,6 +136,7 @@ public partial class NeworLoad : Control
 		tabs.Visible = false;
 		startButton.Visible = false;
 		backButton.Visible = false;
+		makeGameButton.Visible = false;
 		newButton.Visible = true;
 		loadButton.Visible = true;
 		makeRoomButton.Visible = true; 

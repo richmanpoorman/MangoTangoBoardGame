@@ -11,6 +11,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Background" type="ColorRect" parent="UI"]
+layout_mode = 0
 offset_right = 650.0
 offset_bottom = 150.0
 color = Color(0.223103, 0.223103, 0.223103, 1)
