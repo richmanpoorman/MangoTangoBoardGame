@@ -276,6 +276,61 @@ public partial class MessageSender : Node
 		}
 		return prefix;
 	}
+	public async Task<string> sendOnlineHSAsync (int localPort, ipPort ext, string prepend = "", float time = 10f, float wait = 0.2f) {
+		Shake ourShake = new Shake();
+		ourShake.wrote = true; 
+		PacketPeerUdp udp = new PacketPeerUdp();
+		udp.Bind(localPort);
+		udp.SetDestAddress(ext.ip, ext.port);
+		GD.Print($"local port is: {localPort}, bound port is {udp.GetLocalPort()}");
+		// udp.SetDestAddress(ext.ip, ext.port);
+		//udp.ConnectToHost("127.0.0.1", extPort);
+		byte[] buf   = new byte[40];
+		// IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
+		// udp.Connect(endPoint);
+		try {
+			udp.PutPacket(Encoding.ASCII.GetBytes(ourShake.ToString()));
+		} catch (Exception e) {
+			GD.Print("err sending packet #1");
+			GD.Print(e.Message);
+			await Task.Delay(100);
+			// udp.PutPacket(Encoding.ASCII.GetBytes(ourShake.ToString()));
+		}
+		string prefix = "";
+		while (time >= 0) {
+			// GD.Print($"entered loop");
+			while (udp.GetAvailablePacketCount() > 0) {
+				// GD.Print($"curr packet count is: {udp.GetAvailablePacketCount()}");
+				var p = udp.GetPacket();
+				string recf = Encoding.ASCII.GetString(p);
+				string[] parts = recf.Split(":");
+				foreach (var part in parts){
+					GD.Print($"part: {part}");
+				}
+				int index = 1;
+				if (parts.Length != 2) {
+					index = 0;
+					prefix = "";
+				} else {
+					prefix = parts[0];
+				}
+				
+				GD.Print("rec flags are: " + parts[index]);
+				Shake incShake = Shake.ofString(parts[index]);
+				ourShake.read = incShake.wrote ? true : ourShake.read;
+				ourShake.both = incShake.read  ? true : ourShake.both;
+				if (ourShake.both && incShake.both) {
+					time = 0;
+				}
+				// GD.Print("currflags are: " + ourShake.ToString());
+			}
+			await Task.Delay((int)(wait * 1000f));
+			GD.Print("currpacket is: " + prepend + ":" + ourShake.ToString());
+			udp.PutPacket(Encoding.ASCII.GetBytes(prepend + ":" + ourShake.ToString()));
+			time -= wait;
+		}
+		return prefix + ourShake.ToString();
+	}
 
 	public async Task<string> sendLocalHSAsync (int localPort, int extPort, string prepend = "", float time = 10f, float wait = 0.2f) {
 		Shake ourShake = new Shake();
@@ -285,7 +340,7 @@ public partial class MessageSender : Node
 		GD.Print($"local port is: {localPort}, bound port is {udp.GetLocalPort()}");
 		udp.SetDestAddress("127.0.0.1", extPort);
 		//udp.ConnectToHost("127.0.0.1", extPort);
-		byte[] buf   = new byte[40];
+		byte[] buf  = new byte[40];
 		// IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
 		// udp.Connect(endPoint);
 		try {

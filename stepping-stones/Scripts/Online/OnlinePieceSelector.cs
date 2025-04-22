@@ -29,7 +29,7 @@ public partial class OnlineSelector : Node, MoveSelector {
         Rpc(MethodName.synchronizeSelection, (int)player, row, column);
     }
 
-    [Rpc]
+    [Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     public void synchronizeSelection (PlayerColor player, int row, int column) {
         EventBus.Bus.EmitSignal(EventBus.SignalName.onSelection, (int)player, row, column);
     }
