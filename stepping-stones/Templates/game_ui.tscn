@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://blw73vqu1bt56"]
+[gd_scene load_steps=5 format=3 uid="uid://blw73vqu1bt56"]
 
 [ext_resource type="Script" path="res://Scripts/UILogic/GameUi.cs" id="1_n15e5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qpbsw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w150a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xbjsc"]
 
 [node name="GameUI" type="Control" node_paths=PackedStringArray("saveBox", "loadBox", "turnLabel", "phaseLabel", "redTiles", "blueTiles")]
 layout_mode = 3
@@ -20,44 +26,96 @@ metadata/_edit_use_anchors_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="SaveButton" type="Button" parent="CanvasLayer"]
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
+[node name="TutPopup" type="PopupPanel" parent="CanvasLayer"]
+initial_position = 1
+size = Vector2i(750, 500)
+
+[node name="Tutorial" type="MarginContainer" parent="CanvasLayer/TutPopup"]
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -29.0
-offset_bottom = 29.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/TutPopup/Tutorial"]
+layout_mode = 2
+color = Color(0.254902, 0.254902, 0.254902, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/TutPopup/Tutorial"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[font_size=24]Hello, and welcome to Stepping Stones! Let’s go over how to play.
+
+First of all, everything is controlled with your mouse– just click, any button will do! [color=yellow](You can click off of this pop up to close it!)[/color]
+
+When starting a game, you start with some tiles and a pre-placed scout on one side of the board. 
+
+Your goal is to move your scout to the opposite end of the board, or knock your opponent’s scout off the board.
+
+But first, we must go through the placing phase. You and your opponent take turns placing tiles into empty spaces. You can tell it’s the placing phase by the text at the bottom, and how many tiles you have left by the text at the top.
+
+You place tiles by clicking on empty board areas!
+
+You can tell that you’re in the movement phase by the text at the bottom. Now we really can begin.
+
+During the movement phase, you can move in three ways: by moving one of your tiles, moving your scout, or pushing your opponent’s tiles!
+Let’s go over the simplest case, moving a tile. You can move a tile one space up, down, left, or right into an empty space. You do this by clicking the tile you want to move, then the space you want to move to. Your legal tile movements will be shown with a yellow square.
+
+Next is moving a scout. Like a tile, you can move your scout one space up, down, left, or right, but only onto another tile of your color. Like with the tile, you can move the scout by clicking on the space with the scout, then the space you want to move to. Legal scout movements are shown with a yellow circle. You can also move the tile underneath the scout, which will take the scout along with it when it moves. As this is a tile movement, it is shown with a yellow square.
+
+Lastly, there is pushing. If your opponent has some X tiles in a row, and next to them you have X+1 tiles in a row, you can select the last tile and push all your tiles and the opponent’s tiles into an adjacent space– or off the board! If a tile or scout gets pushed off the board, it is removed from play. Your scout counts as an extra tile in your row, but not in an opponent’s row. Valid pushing moves are represented by a yellow arrow at the end of the row. [/font_size]
+"
+text_direction = 1
+
+[node name="SaveButton" type="Button" parent="CanvasLayer"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -58.0
+grow_horizontal = 0
+grow_vertical = 0
 scale = Vector2(0.918, 1)
 pivot_offset = Vector2(136, 0)
 theme_override_font_sizes/font_size = 36
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qpbsw")
 text = "Save Game"
 
 [node name="LoadButton" type="Button" parent="CanvasLayer"]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -29.0
-offset_right = 216.0
-offset_bottom = 29.0
-grow_vertical = 2
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -216.0
+offset_top = -118.0
+offset_bottom = -60.0
+grow_horizontal = 0
+grow_vertical = 0
 theme_override_font_sizes/font_size = 36
+theme_override_styles/focus = SubResource("StyleBoxEmpty_w150a")
 text = "Load Game
 "
 
 [node name="ResetButton" type="Button" parent="CanvasLayer"]
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 3.0
-offset_top = 64.0
-offset_right = 219.0
-offset_bottom = 122.0
-grow_vertical = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -58.0
+offset_right = 216.0
+grow_vertical = 0
 theme_override_font_sizes/font_size = 36
+theme_override_styles/focus = SubResource("StyleBoxEmpty_xbjsc")
 text = "Reset Game"
 
 [node name="PhaseLabel" type="RichTextLabel" parent="CanvasLayer"]
@@ -136,8 +194,26 @@ access = 1
 root_subfolder = "user://"
 filters = PackedStringArray("*.step")
 
+[node name="TutorialButton" type="Button" parent="CanvasLayer"]
+custom_minimum_size = Vector2(50, 50)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -4.0
+offset_bottom = 4.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "?
+"
+
 [connection signal="pressed" from="CanvasLayer/SaveButton" to="." method="OnSaveButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/LoadButton" to="." method="OnLoadButtonPressed"]
 [connection signal="pressed" from="CanvasLayer/ResetButton" to="." method="OnResetButtonPressed"]
 [connection signal="file_selected" from="CanvasLayer/SaveDialog" to="." method="OnSaveDialogFileSelected"]
 [connection signal="file_selected" from="CanvasLayer/LoadDialog" to="." method="OnLoadDialogFileSelected"]
+[connection signal="pressed" from="CanvasLayer/TutorialButton" to="." method="OnTutorialButtonPressed"]
