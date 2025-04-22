@@ -4,6 +4,9 @@ using Godot.Collections;
 public partial class EventBus : Node
 {
     public static EventBus Bus { get; private set; }
+	public static EventBus gdscriptBus() {
+		return Bus;
+	}
 
     public override void _EnterTree()
     {
@@ -81,10 +84,14 @@ public partial class EventBus : Node
 
 	// When a new player joins the game (be it from online, user, or AI), as well as the color
 	[Signal]
-	public delegate void onPlayerJoinEventHandler(PlayerColor player, CreatePlayerSelectors.PlayerType selectorType);
+	public delegate void onPlayerJoinEventHandler(PlayerColor player, PlayerType selectorType);
 
 	[Signal]
 	public delegate void onPlayerLeaveEventHandler(PlayerColor player);
+
+	// When the game receives the room code from the server
+	[Signal]	
+	public delegate void onRoomCodeReceivedEventHandler(string roomCode);
 
 
 	// Connects associated signals, which should also trigger if one is sent

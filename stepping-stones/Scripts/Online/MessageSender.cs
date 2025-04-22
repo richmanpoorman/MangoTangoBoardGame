@@ -7,7 +7,7 @@ using System.Text;
 using Microsoft.VisualBasic;
 using System.Linq;
 
-public partial class MessageSender
+public partial class MessageSender : Node
 {
 	// Called when the node enters the scene tree for the first time.
 	[Export]
@@ -24,6 +24,29 @@ public partial class MessageSender
 		}
 		public string ip;
 		public int port;
+	}
+
+	public class Shake {
+		
+		public bool wrote = false;
+		public bool read = false;
+		public bool both = false;
+
+        public override string ToString() {
+			string val = "";
+			val += read  ? "r" : "-";
+			val += wrote ? "w" : "-"; 
+			val += both  ? "x" : "-";
+			return val;
+        }
+		public static Shake ofString(string s) {
+			Shake val = new Shake();
+			val.read = s.Contains("r");
+			val.wrote = s.Contains("w");
+			val.both = s.Contains("x");
+			return val;
+		}
+
 	}
 	#nullable enable
 	Socket? client = null;
@@ -50,17 +73,19 @@ public partial class MessageSender
 		ArraySegment<byte> ipbytes = new ArraySegment<byte>(buf, start, 4);
 		ArraySegment<byte> portbytes = new ArraySegment<byte>(buf, start + 4, 4);
 		byte[] finportbytes = portbytes.ToArray();
+		GD.Print($"port pre flip is: {BitConverter.ToInt32(finportbytes)}");
 		if (BitConverter.IsLittleEndian) {
 			finportbytes = portbytes.Reverse().ToArray();
 		}
 		int port = BitConverter.ToInt32(finportbytes);
+		GD.Print($"port post flip is: {port}");
 		string ip = ipbytes[0] + "." + ipbytes[1] + "." + ipbytes[2] 
 								   + "." + ipbytes[3];
 		return new ipPort(ip, port);
 	}
 	public async Task<(Socket, ipPort)>  JoinRoomAsync(string roomID){
 		IPEndPoint endPoint = new (IPAddress.Parse(ipAddr), port);
-		using Socket client = new(
+		Socket client = new(
     		endPoint.AddressFamily, 
     		SocketType.Stream, 
     		ProtocolType.Tcp);
@@ -111,7 +136,7 @@ public partial class MessageSender
 			return null;
 		}
 
-		return BufToIp(buffer, 9);
+		return BufToIp(buffer, 8);
 	}
 
 
@@ -171,13 +196,20 @@ public partial class MessageSender
 	}
 
 	public async Task<string> sendHandshakeAsync (Socket client, string prepend, ipPort ext) {
+		GD.Print($"port is {ext.port}");
 		string flags = "-w-";
 		byte[] buf   = new byte[40];
 		IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
-		await client.ConnectAsync(endPoint);
-		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
-		await Task.Delay(100);
-		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		try {
+			await client.ConnectAsync(endPoint);
+			await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		} catch (Exception e) {
+			GD.Print(e.Message);
+			await Task.Delay(100);
+			await client.ConnectAsync(endPoint);
+			await client.SendAsync(Encoding.ASCII.GetBytes(flags));
+		}
+		
 		await client.ReceiveAsync(buf, SocketFlags.None);
 		string recFlags = Encoding.ASCII.GetString(buf);
 		flags = prepend + "rwx";
@@ -187,6 +219,7 @@ public partial class MessageSender
 	}
 
 	public async Task sendHandshakeAsync (Socket client, ipPort ext) {
+		// GD.Print($"port is {ext}");
 		string flags = "-w-";
 		byte[] buf   = new byte[40];
 		IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
@@ -200,5 +233,165 @@ public partial class MessageSender
 		await client.SendAsync(Encoding.ASCII.GetBytes(flags));
 		await client.ReceiveAsync(buf, SocketFlags.None);
 	}
+	public async Task<string> sendClientHSAsync (int localPort, ipPort ext, string prepend = "", float time = 10f, float wait = 0.2f) {
+		Shake ourShake = new Shake();
+		ourShake.wrote = true; 
+		PacketPeerUdp udp = new PacketPeerUdp();
+		udp.Bind(localPort);
+		udp.SetDestAddress(ext.ip, ext.port);
+		byte[] buf   = new byte[40];
+		// IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
+		// udp.Connect(endPoint);
+		try {
+			udp.PutPacket(Encoding.ASCII.GetBytes(ourShake.ToString()));
+		} catch (Exception e) {
+			GD.Print(e.Message);
+			await Task.Delay(100);
+			udp.PutPacket(Encoding.ASCII.GetBytes(ourShake.ToString()));
+		}
+		string prefix = "";
+		while (time >= 0) {
+			GD.Print($"enterd loop");
+			while (udp.GetAvailablePacketCount() > 0) {
+				GD.Print($"curr packet count is: {udp.GetAvailablePacketCount()}");
+				var p = udp.GetPacket();
+				string recf = Encoding.ASCII.GetString(p);
+				string[] parts = recf.Split(":");
+				prefix = parts[0];
+				Shake incShake = Shake.ofString(parts[1]);
+				if (incShake.wrote) {
+					ourShake.read = true;
+				}
+				if (incShake.read) {
+					ourShake.both = true;
+				}
+				if (ourShake.both && incShake.both) {
+					time = 0;
+				}
+				
+			}
+			await Task.Delay((int)(wait * 1000f));
+			udp.PutPacket(Encoding.ASCII.GetBytes(prepend + ":" + ourShake.ToString()));
+			time -= wait;
+		}
+		return prefix;
+	}
+
+	public async Task<string> sendLocalHSAsync (int localPort, int extPort, string prepend = "", float time = 10f, float wait = 0.2f) {
+		Shake ourShake = new Shake();
+		ourShake.wrote = true; 
+		PacketPeerUdp udp = new PacketPeerUdp();
+		udp.Bind(localPort);
+		GD.Print($"local port is: {localPort}, bound port is {udp.GetLocalPort()}");
+		udp.SetDestAddress("127.0.0.1", extPort);
+		//udp.ConnectToHost("127.0.0.1", extPort);
+		byte[] buf   = new byte[40];
+		// IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
+		// udp.Connect(endPoint);
+		try {
+			udp.PutPacket(Encoding.ASCII.GetBytes(ourShake.ToString()));
+		} catch (Exception e) {
+			GD.Print("err sending packet #1");
+			GD.Print(e.Message);
+			await Task.Delay(100);
+			// udp.PutPacket(Encoding.ASCII.GetBytes(ourShake.ToString()));
+		}
+		string prefix = "";
+		while (time >= 0) {
+			// GD.Print($"entered loop");
+			while (udp.GetAvailablePacketCount() > 0) {
+				// GD.Print($"curr packet count is: {udp.GetAvailablePacketCount()}");
+				var p = udp.GetPacket();
+				string recf = Encoding.ASCII.GetString(p);
+				string[] parts = recf.Split(":");
+				foreach (var part in parts){
+					GD.Print($"part: {part}");
+				}
+				int index = 1;
+				if (parts.Length != 2) {
+					index = 0;
+					prefix = "";
+				} else {
+					prefix = parts[0];
+				}
+				
+				GD.Print("rec flags are: " + parts[index]);
+				Shake incShake = Shake.ofString(parts[index]);
+				ourShake.read = incShake.wrote ? true : ourShake.read;
+				ourShake.both = incShake.read  ? true : ourShake.both;
+				if (ourShake.both && incShake.both) {
+					time = 0;
+				}
+				// GD.Print("currflags are: " + ourShake.ToString());
+			}
+			await Task.Delay((int)(wait * 1000f));
+			GD.Print("currpacket is: " + prepend + ":" + ourShake.ToString());
+			udp.PutPacket(Encoding.ASCII.GetBytes(prepend + ":" + ourShake.ToString()));
+			time -= wait;
+		}
+		return prefix + ourShake.ToString();
+	}
+	public async Task<string> sendLocalNoPrintHSAsync (int localPort, int extPort, string prepend = "", float time = 10f, float wait = 0.2f) {
+		Shake ourShake = new Shake();
+		ourShake.wrote = true; 
+		PacketPeerUdp udp = new PacketPeerUdp();
+		udp.Bind(localPort);
+		GD.Print($"local port is: {localPort}, bound port is {udp.GetLocalPort()}");
+		udp.SetDestAddress("127.0.0.1", extPort);
+		//udp.ConnectToHost("127.0.0.1", extPort);
+		byte[] buf   = new byte[40];
+		// IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
+		// udp.Connect(endPoint);
+		try {
+			udp.PutPacket(Encoding.ASCII.GetBytes(ourShake.ToString()));
+		} catch (Exception e) {
+			GD.Print("err sending packet #1");
+			GD.Print(e.Message);
+			await Task.Delay(100);
+			udp.PutPacket(Encoding.ASCII.GetBytes(ourShake.ToString()));
+		}
+		string prefix = "";
+		while (time >= 0) {
+			// GD.Print($"entered loop");
+			while (udp.GetAvailablePacketCount() > 0) {
+				// GD.Print($"curr packet count is: {udp.GetAvailablePacketCount()}");
+				var p = udp.GetPacket();
+				string recf = Encoding.ASCII.GetString(p);
+				string[] parts = recf.Split(":");
+				prefix = parts[0];
+				// GD.Print("rec flags are: " + parts[1]);
+				Shake incShake = Shake.ofString(parts[1]);
+				ourShake.read = incShake.wrote ? true : ourShake.read;
+				ourShake.both = incShake.read  ? true : ourShake.both;
+				if (ourShake.both && incShake.both) {
+					time = 0;
+				}
+				// GD.Print("currflags are: " + ourShake.ToString());
+			}
+			await Task.Delay((int)(wait * 1000f));
+			// GD.Print("currflags are: " + ourShake.ToString());
+			udp.PutPacket(Encoding.ASCII.GetBytes(prepend + ":" + ourShake.ToString()));
+			time -= wait;
+		}
+		return prefix + ourShake.ToString();
+	}
+	public async Task sendHostHSAsync (ENetConnection host, ipPort ext, string prepend = "", float time = 10f, float wait = 0.2f) {
+		string flags = prepend + ":" + "rwx";
+		// var peer = new ENetMultiplayerPeer();
+		// peer.CreateServer(port);
+		// Multiplayer.MultiplayerPeer = peer;
+		// IPEndPoint endPoint = new (IPAddress.Parse(ext.ip), ext.port);
+		while (time >= 0) {
+			host.SocketSend(ext.ip, ext.port, Encoding.ASCII.GetBytes(flags));
+			await Task.Delay((int)(wait * 1000f));
+			time -= wait;
+		}
+		
+		
+		
+	}
+
+
 	#nullable disable
 }
+

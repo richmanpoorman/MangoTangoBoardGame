@@ -44,6 +44,9 @@ public partial class AssetSelection : Node2D
     [Export]
     private SpinBox[] offsetSelections; 
 
+    [Export]
+    private Node2D root; 
+
     public override void _Ready() {
         _bus = EventBus.Bus; 
 
@@ -74,6 +77,8 @@ public partial class AssetSelection : Node2D
 
         // Clears the buttons 
         foreach (var (assetType, assetSelector) in assetSelections) setPath(assetType, "", assetSelector.popupButton);
+
+        root.Visible = false; 
     }
 
     private TileSetSource getTileFromSource(string path, AssetSelector asset){

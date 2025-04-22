@@ -15,3 +15,7 @@ public enum PieceType {
     BLANK,
     MISSING
 };
+
+public enum PlayerType {
+    LOCAL, ONLINE, AI
+};

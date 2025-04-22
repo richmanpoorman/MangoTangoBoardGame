@@ -65,30 +65,49 @@ public class OnlineTests {
 	#nullable enable
 	[TestCase]
 	public async Task handshakeTest() {
-		GD.Print("starting hs test");
-		(Socket hostSock, string? roomID) = await host.MkSocketandCodeAsync();
-		GD.Print("room made");
-		if (roomID == null) {
+		try {
+			GD.Print("starting hs test");
+			(Socket hostSock, string? roomID) = await host.MkSocketandCodeAsync();
+			GD.Print("room made");
+			if (roomID == null) {
+				AssertThat(true).IsEqual(false);
+				return;
+			}
+			(Socket clientSock, MessageSender.ipPort cc) = await client.JoinRoomAsync(roomID);
+			GD.Print("room joined");
+			MessageSender.ipPort? hc = await host.GetClientIpAsync(hostSock);
+			GD.Print("got client ip");
+
+			await hostSock.DisconnectAsync(true);
+			await clientSock.DisconnectAsync(true);
+			if (hc == null) {
+				AssertThat(true).IsEqual(false);
+				return;
+			}
+			GD.Print("both disconnected, hc not null");
+
+			// var peer = new ENetMultiplayerPeer();
+			// peer.CreateServer(((IPEndPoint)hostSock.LocalEndPoint).Port);
+			var hTask = Task.Run(() => host.sendLocalHSAsync(((IPEndPoint)hostSock.LocalEndPoint).Port, ((IPEndPoint)clientSock.LocalEndPoint).Port, "imhost"));
+			await Task.Delay(10);
+			var cTask = Task.Run(() => client.sendLocalHSAsync(((IPEndPoint)clientSock.LocalEndPoint).Port, ((IPEndPoint)hostSock.LocalEndPoint).Port, "imclient"));
+			await hTask;
+			string cString = await cTask;
+			AssertThat(cString).IsEqual("imhostrwx");
+		} catch (Exception e) {
+			GD.Print(e.Message);
+			GD.Print(e.StackTrace);
+			host.QueueFree();
+			client.QueueFree();
 			AssertThat(true).IsEqual(false);
-			return;
 		}
-		(Socket clientSock, MessageSender.ipPort cc) = await client.JoinRoomAsync(roomID);
-		GD.Print("room joined");
-		MessageSender.ipPort? hc = await host.GetClientIpAsync(hostSock);
-		GD.Print("got client ip");
-		await hostSock.DisconnectAsync(true);
-		await clientSock.DisconnectAsync(true);
-		if (hc == null) {
-			AssertThat(true).IsEqual(false);
-			return;
-		}
-		GD.Print("both disconnected, hc not null");
-		var hTask = Task.Run(() => host.sendHandshakeAsync(hostSock, "imhost", (MessageSender.ipPort)hc));
-		var cTask = Task.Run(() => client.sendHandshakeAsync(clientSock, "imclient", (MessageSender.ipPort)cc));
-		string hString = await hTask;
-		string cString = await cTask;
-		AssertThat(hString).IsEqual("imclientrwx");
-		AssertThat(cString).IsEqual("imhostrwx");
+	}
+
+	[After]
+	public void cleanUp (){
+		GD.Print("after ran");
+		host.QueueFree();
+		client.QueueFree();
 
 	}
 	#nullable disable

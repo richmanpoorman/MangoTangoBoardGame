@@ -34,9 +34,9 @@ public partial class MainGame : Node2D
 		CallDeferred(MethodName.DeferredSetupCleanup);
 
 		// Connect(EventBus.SignalName.onPlayerWin, Callable.From(handleWin));
-		_eventBus.onPlayerWin += handleWin;
+		_eventBus.onPlayerWin  += handleWin;
 		_eventBus.onPhaseStart += updatePhase;
-		_eventBus.onGameReset += OnResetGame;
+		_eventBus.onGameReset  += OnResetGame;
 		_p1Tiles = sceneManager.p1Tiles;
 		_p2Tiles = sceneManager.p2Tiles;
 		_newGame = sceneManager.newGame;
@@ -47,6 +47,7 @@ public partial class MainGame : Node2D
     {
         _eventBus.onPlayerWin  -= handleWin;
 		_eventBus.onPhaseStart -= updatePhase;
+		_eventBus.onGameReset  -= OnResetGame; 
     }
 
 	private void handleWin()

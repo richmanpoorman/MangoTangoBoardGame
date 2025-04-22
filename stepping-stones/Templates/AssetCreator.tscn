@@ -23,6 +23,14 @@ anchors_preset = 0
 offset_right = 684.0
 offset_bottom = 31.0
 
+[node name="Background" type="ColorRect" parent="UI Elements/Sprite Selector"]
+layout_mode = 0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 890.0
+offset_bottom = 240.0
+color = Color(0.255659, 0.255659, 0.255659, 1)
+
 [node name="Selectors" type="VBoxContainer" parent="UI Elements/Sprite Selector"]
 layout_mode = 0
 offset_right = 881.0
@@ -246,7 +254,7 @@ text = "Warning: Currently, there can only be Grid sprites of size 16 x 10 (shou
 
 [node name="Script Elements" type="Node2D" parent="."]
 
-[node name="File Submission" type="Node2D" parent="Script Elements" node_paths=PackedStringArray("popupButtons", "spriteChoosers", "offsetSelections")]
+[node name="File Submission" type="Node2D" parent="Script Elements" node_paths=PackedStringArray("popupButtons", "spriteChoosers", "offsetSelections", "root")]
 script = ExtResource("1_gd06v")
 maxStringLength = 50
 assetTypes = PackedStringArray("P1_SCOUT", "P1_TILE", "P2_SCOUT", "P2_TILE", "EMPTY_SQUARE")
@@ -254,5 +262,6 @@ popupButtons = [NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Scout S
 spriteChoosers = [NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Scout Selection/Sprite Selector/Image Filer"), NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Tile Selection/Sprite Selector/Image Filer"), NodePath("../../UI Elements/Sprite Selector/Selectors/P2 Scout Selection/Sprite Selector/Image Filer"), NodePath("../../UI Elements/Sprite Selector/Selectors/P2 Tile Selection/Sprite Selector/Image Filer"), NodePath("../../UI Elements/Sprite Selector/Selectors/Background Selection/Sprite Selector/Image Filer")]
 defaultSprites = Array[CompressedTexture2D]([ExtResource("2_s381t"), ExtResource("3_4toiu"), ExtResource("4_axac3"), ExtResource("5_3hcjc"), ExtResource("4_qbt0e")])
 offsetSelections = [NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Scout Selection/Offset"), NodePath("../../UI Elements/Sprite Selector/Selectors/P1 Tile Selection/Offset"), NodePath("../../UI Elements/Sprite Selector/Selectors/P2 Scout Selection/Offset"), NodePath("../../UI Elements/Sprite Selector/Selectors/P2 Tile Selection/Offset"), NodePath("../../UI Elements/Sprite Selector/Selectors/Background Selection/Offset")]
+root = NodePath("../..")
 
 [connection signal="pressed" from="UI Elements/Sprite Selector/Selectors/Submission Button" to="Script Elements/File Submission" method="onSubmission"]

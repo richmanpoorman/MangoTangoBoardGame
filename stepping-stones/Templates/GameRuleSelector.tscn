@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=3 uid="uid://cminj7myxuncw"]
+
+[ext_resource type="Script" path="res://Scripts/Customization/SetRules.cs" id="1_gb0ae"]
+
+[node name="GameRuleSelector" type="Node2D"]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Background" type="ColorRect" parent="UI"]
+layout_mode = 0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 444.0
+offset_bottom = 140.0
+color = Color(0.255659, 0.255659, 0.255659, 1)
+
+[node name="Rules" type="VBoxContainer" parent="UI"]
+layout_mode = 0
+offset_right = 434.0
+offset_bottom = 122.0
+
+[node name="Offensive Push" type="HBoxContainer" parent="UI/Rules"]
+layout_mode = 2
+
+[node name="Rule" type="CheckBox" parent="UI/Rules/Offensive Push"]
+layout_mode = 2
+
+[node name="Rule Name" type="RichTextLabel" parent="UI/Rules/Offensive Push"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Apply the Scout Weight only if the Player is Pushing
+"
+
+[node name="Scout Split" type="HBoxContainer" parent="UI/Rules"]
+layout_mode = 2
+
+[node name="Rule" type="CheckBox" parent="UI/Rules/Scout Split"]
+layout_mode = 2
+
+[node name="Rule Name" type="RichTextLabel" parent="UI/Rules/Scout Split"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Require the Scout to Divide Tiles when Pushing"
+
+[node name="Scout Weight" type="HBoxContainer" parent="UI/Rules"]
+layout_mode = 2
+
+[node name="SpinBox" type="SpinBox" parent="UI/Rules/Scout Weight"]
+layout_mode = 2
+max_value = 10.0
+value = 1.0
+
+[node name="Rule Name" type="RichTextLabel" parent="UI/Rules/Scout Weight"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Scout Weight"
+
+[node name="Submission" type="Button" parent="UI/Rules"]
+layout_mode = 2
+text = "Select"
+
+[node name="ApplyRules" type="Node2D" parent="." node_paths=PackedStringArray("offensivePushOption", "scoutDividerOption", "scoutWeightOption", "root")]
+script = ExtResource("1_gb0ae")
+offensivePushOption = NodePath("../UI/Rules/Offensive Push/Rule")
+scoutDividerOption = NodePath("../UI/Rules/Scout Split/Rule")
+scoutWeightOption = NodePath("../UI/Rules/Scout Weight/SpinBox")
+root = NodePath("..")
+
+[connection signal="pressed" from="UI/Rules/Submission" to="ApplyRules" method="onSetRules"]

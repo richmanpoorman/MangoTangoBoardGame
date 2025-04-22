@@ -1,8 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cgelfsecvh8rq"]
+[gd_scene load_steps=9 format=3 uid="uid://cgelfsecvh8rq"]
 
 [ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
 [ext_resource type="PackedScene" uid="uid://3fbkkrcg4rvl" path="res://Templates/AssetCreator.tscn" id="2_u8ll1"]
+[ext_resource type="PackedScene" uid="uid://cminj7myxuncw" path="res://Templates/GameRuleSelector.tscn" id="3_0t1x1"]
 [ext_resource type="Script" path="res://Scripts/Customization/AssetPopupManager.cs" id="3_t0cuw"]
+[ext_resource type="Script" path="res://Scripts/PieceSelection/SetPlayersFromMenu.cs" id="4_ojguw"]
+[ext_resource type="Script" path="res://Scripts/Customization/RulesPopupManager.cs" id="5_qpxrt"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8nm86"]
 
@@ -30,8 +33,10 @@ tabs = NodePath("Tabs")
 [node name="AssetCreator" parent="." instance=ExtResource("2_u8ll1")]
 position = Vector2(117, 69)
 
-[node name="Sprite Selector" parent="AssetCreator/UI Elements" index="0"]
+
+[node name="GameRuleSelector" parent="." instance=ExtResource("3_0t1x1")]
 visible = false
+position = Vector2(363, 109)
 
 [node name="Secondary" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -128,6 +133,15 @@ text = "Custom Tiles"
 script = ExtResource("3_t0cuw")
 assetCreator = NodePath("../../../../AssetCreator")
 
+[node name="Set Custom Rules" type="Button" parent="Primary/Settings Bar"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Custom Rules"
+
+[node name="Rules Popup" type="Node2D" parent="Primary/Settings Bar/Set Custom Rules" node_paths=PackedStringArray("rulesPopup")]
+script = ExtResource("5_qpxrt")
+rulesPopup = NodePath("../../../../GameRuleSelector")
+
 [node name="Tabs" type="TabContainer" parent="."]
 visible = false
 material = SubResource("CanvasItemMaterial_8nm86")
@@ -188,19 +202,24 @@ offset_bottom = 293.0
 placeholder_text = "Enter Room Code"
 alignment = 1
 
-[connection signal="pressed" from="AssetCreator/UI Elements/Sprite Selector/Selectors/Submission Button" to="Primary/Settings Bar/Create Assets/Asset Popup Manager" method="_onSubmission"]
+[node name="PlayerTypeListener" type="Node2D" parent="."]
+script = ExtResource("4_ojguw")
+
 [connection signal="pressed" from="Secondary/StartGame" to="." method="OnStartGameButtonPressed"]
 [connection signal="pressed" from="Secondary/BackButton" to="." method="OnBackButtonPressed"]
 [connection signal="pressed" from="Primary/Primary/NewGameButton" to="." method="OnNewGameButtonPressed"]
+[connection signal="pressed" from="Primary/Primary/NewGameButton" to="PlayerTypeListener" method="onCreateLocalGame"]
 [connection signal="pressed" from="Primary/Primary/LoadGameButton" to="." method="OnLoadGameButtonPressed"]
+[connection signal="pressed" from="Primary/Primary/LoadGameButton" to="PlayerTypeListener" method="onLoadLocalGame"]
 [connection signal="file_selected" from="Primary/Primary/LoadGameButton/MainLoad" to="." method="OnMainLoadFileSelected"]
 [connection signal="pressed" from="Primary/Primary/MakeRoomButton" to="." method="onMakeRoomPressed"]
+[connection signal="pressed" from="Primary/Primary/MakeRoomButton" to="PlayerTypeListener" method="onMakeOnlineGame"]
 [connection signal="pressed" from="Primary/Primary/JoinRoomButton" to="." method="onJoinRoomPressed"]
+[connection signal="pressed" from="Primary/Primary/JoinRoomButton" to="PlayerTypeListener" method="onJoinOnlineGame"]
 [connection signal="pressed" from="Primary/Settings Bar/Create Assets" to="Primary/Settings Bar/Create Assets/Asset Popup Manager" method="_onCustomizationButtonClick"]
+[connection signal="pressed" from="Primary/Settings Bar/Set Custom Rules" to="Primary/Settings Bar/Set Custom Rules/Rules Popup" method="onPressed"]
 [connection signal="value_changed" from="Tabs/GameSettings/WidthBox" to="." method="OnWidthBoxValueChanged"]
 [connection signal="value_changed" from="Tabs/GameSettings/LengthBox" to="." method="OnLengthBoxValueChanged"]
 [connection signal="value_changed" from="Tabs/GameSettings/NumTilesBox" to="." method="OnNumTilesBoxValueChanged"]
 [connection signal="pressed" from="Tabs/GameSettings/CloseButton" to="." method="OnCloseButtonPressed"]
 [connection signal="text_submitted" from="Room Code" to="." method="onJoinCodeEntered"]
-
-[editable path="AssetCreator"]
