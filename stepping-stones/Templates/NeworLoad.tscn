@@ -30,6 +30,9 @@ tabs = NodePath("Tabs")
 [node name="AssetCreator" parent="." instance=ExtResource("2_u8ll1")]
 position = Vector2(117, 69)
 
+[node name="Sprite Selector" parent="AssetCreator/UI Elements" index="0"]
+visible = false
+
 [node name="Secondary" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 7
