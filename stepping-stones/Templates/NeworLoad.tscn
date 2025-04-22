@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cgelfsecvh8rq"]
+[gd_scene load_steps=10 format=3 uid="uid://cgelfsecvh8rq"]
 
 [ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
+[ext_resource type="PackedScene" uid="uid://xergk7ixbvri" path="res://Templates/RoomCodePopup.tscn" id="2_2q1wa"]
 [ext_resource type="PackedScene" uid="uid://3fbkkrcg4rvl" path="res://Templates/AssetCreator.tscn" id="2_u8ll1"]
-[ext_resource type="PackedScene" uid="uid://cminj7myxuncw" path="res://Templates/GameRuleSelector.tscn" id="3_0t1x1"]
+[ext_resource type="PackedScene" path="res://Templates/GameRuleSelector.tscn" id="3_0t1x1"]
 [ext_resource type="Script" path="res://Scripts/Customization/AssetPopupManager.cs" id="3_t0cuw"]
 [ext_resource type="Script" path="res://Scripts/PieceSelection/SetPlayersFromMenu.cs" id="4_ojguw"]
 [ext_resource type="Script" path="res://Scripts/Customization/RulesPopupManager.cs" id="5_qpxrt"]
@@ -11,7 +12,7 @@
 
 [sub_resource type="Theme" id="Theme_hkbsb"]
 
-[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs")]
+[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs", "roomCodePopup", "makeGameButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,6 +30,15 @@ makeRoomButton = NodePath("Primary/Primary/MakeRoomButton")
 joinRoomButton = NodePath("Primary/Primary/JoinRoomButton")
 roomJoiner = NodePath("Room Code")
 tabs = NodePath("Tabs")
+roomCodePopup = NodePath("RoomCodePopup")
+makeGameButton = NodePath("Secondary/MakeGame")
+
+[node name="RoomCodePopup" parent="." instance=ExtResource("2_2q1wa")]
+visible = false
+position = Vector2(243, 197)
+
+[node name="Background" parent="RoomCodePopup/UI" index="0"]
+layout_mode = 0
 
 [node name="AssetCreator" parent="." instance=ExtResource("2_u8ll1")]
 visible = false
@@ -52,6 +62,12 @@ offset_bottom = -58.5895
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
+
+[node name="MakeGame" type="Button" parent="Secondary"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Make Game"
 
 [node name="StartGame" type="Button" parent="Secondary"]
 visible = false
@@ -205,6 +221,8 @@ alignment = 1
 [node name="PlayerTypeListener" type="Node2D" parent="."]
 script = ExtResource("4_ojguw")
 
+[connection signal="pressed" from="RoomCodePopup/UI/Background/Alignment/Submit" to="." method="onMakeRoomCodeReadyPressed"]
+[connection signal="pressed" from="Secondary/MakeGame" to="." method="onMakeGamePressed"]
 [connection signal="pressed" from="Secondary/StartGame" to="." method="OnStartGameButtonPressed"]
 [connection signal="pressed" from="Secondary/BackButton" to="." method="OnBackButtonPressed"]
 [connection signal="pressed" from="Primary/Primary/NewGameButton" to="." method="OnNewGameButtonPressed"]
@@ -223,3 +241,5 @@ script = ExtResource("4_ojguw")
 [connection signal="value_changed" from="Tabs/GameSettings/NumTilesBox" to="." method="OnNumTilesBoxValueChanged"]
 [connection signal="pressed" from="Tabs/GameSettings/CloseButton" to="." method="OnCloseButtonPressed"]
 [connection signal="text_submitted" from="Room Code" to="." method="onJoinCodeEntered"]
+
+[editable path="RoomCodePopup"]

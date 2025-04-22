@@ -68,6 +68,11 @@ public partial class GameUi : Control
 	{
 		loadBox.Popup();
 	}
+
+	private void OnTutorialButtonPressed(){
+		GetNode<PopupPanel>("CanvasLayer/TutPopup").Popup();
+	}
+	
 	private void OnSaveDialogFileSelected(String path) 
 	{
 		EmitSignal(SignalName.SaveGame, path);
