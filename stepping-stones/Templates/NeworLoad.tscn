@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/UILogic/NeworLoad.cs" id="1_14iu0"]
 [ext_resource type="PackedScene" uid="uid://3fbkkrcg4rvl" path="res://Templates/AssetCreator.tscn" id="2_u8ll1"]
-[ext_resource type="PackedScene" uid="uid://cminj7myxuncw" path="res://Templates/GameRuleSelector.tscn" id="3_0t1x1"]
+[ext_resource type="PackedScene" path="res://Templates/GameRuleSelector.tscn" id="3_0t1x1"]
 [ext_resource type="Script" path="res://Scripts/Customization/AssetPopupManager.cs" id="3_t0cuw"]
 [ext_resource type="Script" path="res://Scripts/PieceSelection/SetPlayersFromMenu.cs" id="4_ojguw"]
 [ext_resource type="Script" path="res://Scripts/Customization/RulesPopupManager.cs" id="5_qpxrt"]
@@ -31,8 +31,8 @@ roomJoiner = NodePath("Room Code")
 tabs = NodePath("Tabs")
 
 [node name="AssetCreator" parent="." instance=ExtResource("2_u8ll1")]
+visible = false
 position = Vector2(117, 69)
-
 
 [node name="GameRuleSelector" parent="." instance=ExtResource("3_0t1x1")]
 visible = false
