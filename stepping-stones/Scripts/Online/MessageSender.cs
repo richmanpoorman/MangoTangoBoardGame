@@ -329,6 +329,7 @@ public partial class MessageSender : Node
 			udp.PutPacket(Encoding.ASCII.GetBytes(prepend + ":" + ourShake.ToString()));
 			time -= wait;
 		}
+		udp.Close();
 		return prefix + ourShake.ToString();
 	}
 

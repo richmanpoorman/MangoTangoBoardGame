@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/PieceSelection/CreatePlayerSelectors.cs" id="1_nj7gw"]
 [ext_resource type="PackedScene" uid="uid://dmr1nwcsr3f6t" path="res://Templates/LocalSelection.tscn" id="2_t60lw"]
-[ext_resource type="PackedScene" path="res://Templates/OnlinePieceSelector.tscn" id="3_fyjja"]
+[ext_resource type="PackedScene" uid="uid://c7sqrjndrpyfb" path="res://Templates/OnlinePieceSelector.tscn" id="3_fyjja"]
 
 [node name="PlayerInstancer" type="Node2D"]
 script = ExtResource("1_nj7gw")
