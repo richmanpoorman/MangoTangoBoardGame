@@ -64,6 +64,7 @@ public partial class OnlineManager : Node
 		
 		peer.CreateServer(hostPort);
 		Multiplayer.MultiplayerPeer = peer;
+		await Task.Delay(10);
 	}
 	private async void joinRoom(string roomCode) {
 		(Socket sock, MessageSender.ipPort ipp) = await sender.JoinRoomAsync(roomCode);
@@ -71,6 +72,8 @@ public partial class OnlineManager : Node
 		string result = await sender.sendLocalHSAsync(clientPort, hostPort);
 		await Task.Delay(10);
 		peer.CreateClient(ipAddr, hostPort, 0, 0, 0, clientPort);
+		Multiplayer.MultiplayerPeer = peer;
+		await Task.Delay(10);
 	}
 
 	// don't manually call this unless you know what you're doing, only public for rpc functionality
@@ -83,7 +86,8 @@ public partial class OnlineManager : Node
 
 
 	#nullable enable
-	private void createBoardSync () {
+	private async void createBoardSync () {
+		GD.Print("peer connected");
 		SceneManager sm = SceneManager.Instance;
 		Board board = sm.board;
 		int[] size = board.size();
@@ -112,9 +116,10 @@ public partial class OnlineManager : Node
 	
 	#nullable disable
 	
-	[Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void synchronizeBoard (Godot.Collections.Array<string> arr, int numRows, int numCols, int p1Tiles, int p2Tiles, PlayerColor turn, bool newGame) {
 		//TODO: make work with rule components
+		GD.Print("synchronizing board");
 		SceneManager.Instance.p1Tiles = p1Tiles;
 		SceneManager.Instance.p2Tiles = p2Tiles;
 		SceneManager.Instance.turn    = turn;

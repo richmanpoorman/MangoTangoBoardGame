@@ -381,7 +381,7 @@ public partial class MessageSender : Node
 				// GD.Print("currflags are: " + ourShake.ToString());
 			}
 			await Task.Delay((int)(wait * 1000f));
-			GD.Print("currpacket is: " + prepend + ":" + ourShake.ToString());
+			// GD.Print("currpacket is: " + prepend + ":" + ourShake.ToString());
 			udp.PutPacket(Encoding.ASCII.GetBytes(prepend + ":" + ourShake.ToString()));
 			time -= wait;
 		}

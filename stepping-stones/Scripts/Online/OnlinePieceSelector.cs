@@ -31,7 +31,7 @@ public partial class OnlinePieceSelector : Node2D, MoveSelector {
         Rpc(MethodName.synchronizeSelection, (int)player, row, column);
     }
 
-    [Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     public void synchronizeSelection (PlayerColor player, int row, int column) {
         GD.Print($" << {_player} received {_player} moves {row}, {column}");
         EventBus.Bus.EmitSignal(EventBus.SignalName.onSelection, (int)player, row, column);
