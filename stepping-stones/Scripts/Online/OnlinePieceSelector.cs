@@ -26,11 +26,14 @@ public partial class OnlinePieceSelector : Node2D, MoveSelector {
     }
 
     private void selectionWrapper(PlayerColor player, int row, int column) {
+        if (player != _player) return; 
+        GD.Print($" << {_player} received {player} moves {row}, {column}");
         Rpc(MethodName.synchronizeSelection, (int)player, row, column);
     }
 
     [Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     public void synchronizeSelection (PlayerColor player, int row, int column) {
+        GD.Print($" >> {player} sent {_player} moves {row}, {column}");
         EventBus.Bus.EmitSignal(EventBus.SignalName.onSelection, (int)player, row, column);
     }
 }
