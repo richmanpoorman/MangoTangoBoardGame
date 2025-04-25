@@ -14,7 +14,7 @@ public partial class SetRules : Node2D
 
     [Export]
     private Node2D root;
-        public static int scoutWeight {private set; get;} = 1;
+    public static int scoutWeight {private set; get;} = 1;
     public static bool hasOffensivePush {private set; get;} = false;
     public static bool hasScoutRequiredToDivide {private set; get;} = false; 
 

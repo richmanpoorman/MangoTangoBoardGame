@@ -107,6 +107,7 @@ public partial class OnlineManager : Node
 			}
 		}
 		Rpc(MethodName.synchronizeBoard, arr, numRows, numCols, sm.p1Tiles, sm.p2Tiles, (int)sm.turn, sm.newGame);
+		Rpc(MethodName.synchronizeRules, SetRules.scoutWeight, SetRules.hasOffensivePush, SetRules.hasScoutRequiredToDivide);
 	}
 	
 	#nullable disable
