@@ -385,6 +385,7 @@ public partial class MessageSender : Node
 			udp.PutPacket(Encoding.ASCII.GetBytes(prepend + ":" + ourShake.ToString()));
 			time -= wait;
 		}
+		udp.Close();
 		return prefix + ourShake.ToString();
 	}
 	public async Task<string> sendLocalNoPrintHSAsync (int localPort, int extPort, string prepend = "", float time = 10f, float wait = 0.2f) {

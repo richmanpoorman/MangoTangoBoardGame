@@ -15,13 +15,13 @@ public partial class OnlineManager : Node
     private string ipAddr = "127.0.0.1";
     private int remotePort = 4567;
 	[Export]
-	private int hostPort = 5000;
+	private int hostPort = 6666;
 	[Export]
-	private int clientPort = 5001;
+	private int clientPort = 5696;
 
 	[Export]
 	private bool LAN = true; 
-	private ENetMultiplayerPeer peer = new ENetMultiplayerPeer();
+	private ENetMultiplayerPeer peer;
 	public override void _Ready() {
 		_bus = EventBus.Bus;
 		sender = new MessageSender();
@@ -31,6 +31,7 @@ public partial class OnlineManager : Node
 		_bus.onMakeRoom += makeRoom;
 		_bus.onJoinRoom += joinRoom;
 		Multiplayer.PeerConnected += wrapBoardSync;
+		peer = new ENetMultiplayerPeer();
 	}
 	private void wrapBoardSync(long id) {
 		if (Multiplayer.IsServer()) {
@@ -44,7 +45,7 @@ public partial class OnlineManager : Node
 		if (client == null) {
 			throw new ApplicationException("received null client");
 		}
-		await sock.DisconnectAsync(true);
+		sock.Close();
 		string result = "";
 
 		if (LAN) {
@@ -59,13 +60,16 @@ public partial class OnlineManager : Node
 		if (!result.Contains("rwx")) {
 			throw new ApplicationException("can't establish handshake");
 		}
+		GD.Print($"{hostPort}");
 		
 		peer.CreateServer(hostPort);
 		Multiplayer.MultiplayerPeer = peer;
 	}
 	private async void joinRoom(string roomCode) {
 		(Socket sock, MessageSender.ipPort ipp) = await sender.JoinRoomAsync(roomCode);
+		sock.Close();
 		string result = await sender.sendLocalHSAsync(clientPort, hostPort);
+		await Task.Delay(10);
 		peer.CreateClient(ipAddr, hostPort, 0, 0, 0, clientPort);
 	}
 
