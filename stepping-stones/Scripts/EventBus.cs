@@ -93,6 +93,12 @@ public partial class EventBus : Node
 	[Signal]	
 	public delegate void onRoomCodeReceivedEventHandler(string roomCode);
 
+	[Signal]
+	public delegate void onSetGameToSceneManagerRequestEventHandler();
+
+	[Signal]
+	public delegate void onRoomReadyEventHandler(int width, int length, int numTiles);
+
 
 	// Connects associated signals, which should also trigger if one is sent
 	private void connectSignals() {

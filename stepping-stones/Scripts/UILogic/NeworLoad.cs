@@ -112,7 +112,7 @@ public partial class NeworLoad : Control
 	private void onMakeRoomCodeReadyPressed() {
 		sceneManager.newGame = true; 
 		// TODO:: Send board information to the server   
-		sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
+		// sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
 	}
 
 	private void onJoinCodeEntered(string roomCode) {

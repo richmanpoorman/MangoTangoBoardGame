@@ -110,6 +110,7 @@ public partial class OnlineManager : Node
 				arr.Add(rep);
 			}
 		}
+		await Task.Delay(10);
 		Rpc(MethodName.synchronizeBoard, arr, numRows, numCols, sm.p1Tiles, sm.p2Tiles, (int)sm.turn, sm.newGame);
 		Rpc(MethodName.synchronizeRules, SetRules.scoutWeight, SetRules.hasOffensivePush, SetRules.hasScoutRequiredToDivide);
 	}
@@ -124,6 +125,7 @@ public partial class OnlineManager : Node
 		SceneManager.Instance.p2Tiles = p2Tiles;
 		SceneManager.Instance.turn    = turn;
 		SceneManager.Instance.newGame = newGame;
+		GD.Print($"received: rows: {numRows}, cols: {numCols}");
 		SteppingStonesBoard board = new GridSteppingStonesBoard(numRows, numCols);
 		foreach (string square in arr) {
 			string[] elts = square.Split(":");
@@ -140,6 +142,9 @@ public partial class OnlineManager : Node
 			}
 		}
 		SceneManager.Instance.board = board;
+		GD.Print($"Scene manager board has: {SceneManager.Instance.board.size()[0]} rows, {SceneManager.Instance.board.size()[1]} cols");
+		SceneManager.Instance.goToMainBoard(board);
+		// EventBus.Bus.EmitSignal(EventBus.SignalName.onSetGameToSceneManagerRequest);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

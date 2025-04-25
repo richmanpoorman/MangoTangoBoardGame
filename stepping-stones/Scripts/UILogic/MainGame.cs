@@ -31,12 +31,13 @@ public partial class MainGame : Node2D
 		sceneManager = SceneManager.Instance;
 		GD.Print($"SceneManager p1_tiles: {sceneManager.p1Tiles}");
 		manager = GetNode<BoardManager>("Main/BoardManager");
-		CallDeferred(MethodName.DeferredSetupCleanup);
+		CallDeferred(MethodName.SetGameToSceneManager);
 
 		// Connect(EventBus.SignalName.onPlayerWin, Callable.From(handleWin));
 		_eventBus.onPlayerWin  += handleWin;
 		_eventBus.onPhaseStart += updatePhase;
 		_eventBus.onGameReset  += OnResetGame;
+		_eventBus.onSetGameToSceneManagerRequest += SetGameToSceneManager;
 		_p1Tiles = sceneManager.p1Tiles;
 		_p2Tiles = sceneManager.p2Tiles;
 		_newGame = sceneManager.newGame;
@@ -57,19 +58,20 @@ public partial class MainGame : Node2D
 		//GetNode<Node2D>("Main").Visible = false;
 		GetNode<Control>("WinScreen").Visible = true;
 	}
-	private void DeferredSetupCleanup () {
-		configureBoard(sceneManager.board);
+	private void SetGameToSceneManager() {
+		GD.Print("setting game to manager game");
+		configureBoard(SceneManager.Instance.board);
 	}
 	private void configureBoard(SteppingStonesBoard board) {
 		// GD.Print("I was deffered :)");
 		// GD.Print("1: " + sceneManager.p1Tiles + "tiles, 2: " + sceneManager.p2Tiles);
-		GD.Print("configuring board");
+		// GD.Print("configuring board");
 		manager.setBoard(_board);
-		manager.setTileCount(PlayerColor.PLAYER_1, _p1Tiles);
-		manager.setTileCount(PlayerColor.PLAYER_2, _p2Tiles);
+		manager.setTileCount(PlayerColor.PLAYER_1, sceneManager.p1Tiles);
+		manager.setTileCount(PlayerColor.PLAYER_2, sceneManager.p2Tiles);
 		manager.setTurn(sceneManager.turn);
 		phase = sceneManager.phase;
-		GD.Print($"config phase: {phase}");
+		// GD.Print($"config phase: {phase}");
 		manager.setPhase(phase);
 	}
 
@@ -122,7 +124,8 @@ public partial class MainGame : Node2D
 		manager.setTileCount(PlayerColor.PLAYER_1, _p1Tiles);
 		manager.setTileCount(PlayerColor.PLAYER_2, _p2Tiles);
 		manager.setTurn(turn);
+	}
 
-		}
+	
 		
 }
