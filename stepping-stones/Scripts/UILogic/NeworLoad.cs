@@ -118,7 +118,7 @@ public partial class NeworLoad : Control
 	private void onJoinCodeEntered(string roomCode) {
 		roomJoiner.Clear();
 		roomJoiner.Visible = false; 
-		_bus.EmitSignal(EventBus.SignalName.onJoinRoom, roomCode.ToUpper());
+		_bus.EmitSignal(EventBus.SignalName.onJoinRoom, roomCode.Trim().ToUpper());
 
 		// TODO:: Change to listen for the information from the online server 
 		sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
