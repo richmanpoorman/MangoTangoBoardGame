@@ -30,6 +30,7 @@ public partial class OnlineManager : Node
 		sender.messVersion = version;
 		_bus.onMakeRoom += makeRoom;
 		_bus.onJoinRoom += joinRoom;
+		// _bus.onRoomReady += syncGotoMain;
 		Multiplayer.PeerConnected += wrapBoardSync;
 		peer = new ENetMultiplayerPeer();
 	}

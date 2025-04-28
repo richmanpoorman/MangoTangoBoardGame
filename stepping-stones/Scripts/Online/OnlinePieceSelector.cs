@@ -22,7 +22,7 @@ public partial class OnlinePieceSelector : Node2D, MoveSelector {
     }
 
     public override void _ExitTree() {
-        _eventBus.onSelection -= synchronizeSelection; 
+        _eventBus.onSelection -= selectionWrapper; 
     }
 
     private void selectionWrapper(PlayerColor player, int row, int column) {
