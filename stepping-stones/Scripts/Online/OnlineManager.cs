@@ -125,7 +125,12 @@ public partial class OnlineManager : Node
 	}
 	
 	#nullable disable
-	
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void onClientSetUpConfirmation () {
+		SceneManager.Instance.goToMainBoard(SceneManager.Instance.board);
+	}
+
+
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void synchronizeBoard (Godot.Collections.Array<string> arr, int numRows, int numCols, int p1Tiles, int p2Tiles, PlayerColor turn, bool newGame) {
 		//TODO: make work with rule components
@@ -153,6 +158,7 @@ public partial class OnlineManager : Node
 		SceneManager.Instance.board = board;
 		GD.Print($"Scene manager board has: {SceneManager.Instance.board.size()[0]} rows, {SceneManager.Instance.board.size()[1]} cols");
 		SceneManager.Instance.goToMainBoard(board);
+		Rpc(MethodName.onClientSetUpConfirmation);
 		// EventBus.Bus.EmitSignal(EventBus.SignalName.onSetGameToSceneManagerRequest);
 	}
 
