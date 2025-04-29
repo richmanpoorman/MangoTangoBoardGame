@@ -58,10 +58,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -239.193
-offset_top = -154.589
-offset_right = 203.807
-offset_bottom = -58.5895
+offset_left = -384.0
+offset_top = -155.0
+offset_right = 383.0
+offset_bottom = -59.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
@@ -69,18 +69,21 @@ mouse_filter = 2
 [node name="MakeGame" type="Button" parent="Secondary"]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 48
 text = "Make Game"
 
 [node name="StartGame" type="Button" parent="Secondary"]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 48
 text = "Start Game"
 
 [node name="BackButton" type="Button" parent="Secondary"]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 48
 text = "Return
 "
