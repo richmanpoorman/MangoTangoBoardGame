@@ -12,7 +12,7 @@
 
 [sub_resource type="Theme" id="Theme_hkbsb"]
 
-[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs", "roomCodePopup", "makeGameButton")]
+[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs", "roomCodePopup", "makeGameButton", "settingsBar", "primaryBar")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,10 +32,12 @@ roomJoiner = NodePath("Room Code")
 tabs = NodePath("Tabs")
 roomCodePopup = NodePath("RoomCodePopup")
 makeGameButton = NodePath("Secondary/MakeGame")
+settingsBar = NodePath("Primary/Settings Bar")
+primaryBar = NodePath("Primary/Primary")
 
 [node name="RoomCodePopup" parent="." instance=ExtResource("2_2q1wa")]
 visible = false
-position = Vector2(243, 197)
+position = Vector2(251, 197)
 
 [node name="Code" parent="RoomCodePopup/UI/Background/Alignment" index="0"]
 focus_mode = 2
@@ -146,18 +148,20 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Custom Tiles"
 
-[node name="Asset Popup Manager" type="Node2D" parent="Primary/Settings Bar/Create Assets" node_paths=PackedStringArray("assetCreator")]
+[node name="Asset Popup Manager" type="Node2D" parent="Primary/Settings Bar/Create Assets" node_paths=PackedStringArray("assetCreator", "rulesCreator")]
 script = ExtResource("3_t0cuw")
 assetCreator = NodePath("../../../../AssetCreator")
+rulesCreator = NodePath("../../../../GameRuleSelector")
 
 [node name="Set Custom Rules" type="Button" parent="Primary/Settings Bar"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Custom Rules"
 
-[node name="Rules Popup" type="Node2D" parent="Primary/Settings Bar/Set Custom Rules" node_paths=PackedStringArray("rulesPopup")]
+[node name="Rules Popup" type="Node2D" parent="Primary/Settings Bar/Set Custom Rules" node_paths=PackedStringArray("rulesPopup", "assetPopup")]
 script = ExtResource("5_qpxrt")
 rulesPopup = NodePath("../../../../GameRuleSelector")
+assetPopup = NodePath("../../../../AssetCreator")
 
 [node name="Tabs" type="TabContainer" parent="."]
 visible = false
@@ -212,9 +216,9 @@ text = "Close Menu"
 [node name="Room Code" type="LineEdit" parent="."]
 visible = false
 layout_mode = 0
-offset_left = 256.0
+offset_left = 183.0
 offset_top = 176.0
-offset_right = 1035.0
+offset_right = 962.0
 offset_bottom = 293.0
 placeholder_text = "Enter Room Code"
 alignment = 1

@@ -30,6 +30,8 @@ public partial class NeworLoad : Control
 	private Node2D roomCodePopup;
 	[Export]
 	private Button makeGameButton;
+	[Export]
+	Container settingsBar, primaryBar; 
 
 
 	private EventBus _bus; 
@@ -50,6 +52,7 @@ public partial class NeworLoad : Control
 		makeRoomButton.Visible = false; 
 		joinRoomButton.Visible = false; 
 		roomJoiner.Visible = false; 
+		settingsBar.Visible = false;
 	}
 	private void OnStartGameButtonPressed() 
 	{
@@ -88,6 +91,9 @@ public partial class NeworLoad : Control
 	
 	private void onJoinRoomPressed() {
 		roomJoiner.Visible = true; 
+		settingsBar.Visible = false; 
+		primaryBar.Visible = false;
+		backButton.Visible = true; 
 	}
 
 	private void onMakeGamePressed() {
@@ -96,6 +102,7 @@ public partial class NeworLoad : Control
 		tabs.Visible = false;
 		makeGameButton.Visible = false;
 		backButton.Visible = false;
+		settingsBar.Visible = false; 
 	}
 
 	private void onMakeRoomPressed() {
@@ -107,6 +114,7 @@ public partial class NeworLoad : Control
 		makeRoomButton.Visible = false; 
 		joinRoomButton.Visible = false; 
 		roomJoiner.Visible = false; 
+		settingsBar.Visible = false; 
 	}
 
 	private void onMakeRoomCodeReadyPressed() {
@@ -144,10 +152,13 @@ public partial class NeworLoad : Control
 		startButton.Visible = false;
 		backButton.Visible = false;
 		makeGameButton.Visible = false;
+		roomJoiner.Visible = false; 
 		newButton.Visible = true;
 		loadButton.Visible = true;
 		makeRoomButton.Visible = true; 
 		joinRoomButton.Visible = true; 
+		settingsBar.Visible = true; 
+		primaryBar.Visible = true; 
 	}
 
 	
