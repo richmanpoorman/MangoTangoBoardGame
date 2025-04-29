@@ -32,14 +32,23 @@ public partial class SceneManager : Node
 		board = new GridSteppingStonesBoard(5, 7);
 		_bus  = EventBus.Bus; 
 		_bus.onChangePieceTileset += _onTilesetChange; 
+		// _bus.onSetGameToSceneManagerRequest += syncMainWrapper;
 		playerTiles = GD.Load<TileSet>(_defaultPieceTileset);
 	}
     public override void _ExitTree()
     {
         _bus.onChangePieceTileset -= _onTilesetChange; 
+		// _bus.onSetGameToSceneManagerRequest -= syncMainWrapper;
     }
+	//only call this if params have already been set
+	// public void syncMainWrapper () {
+	// 	Rpc(MethodName.syncMoveMain);
+	// }
 
-
+	// [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	// private void syncMoveMain () {
+	// 	GetTree().ChangeSceneToFile(_mainSceneFile);
+	// }
 	public void goToMainBoard (Tuple<SteppingStonesBoard, PlayerColor, int, 
 									int, GamePhase> tuple) {
 		(board, turn, p1Tiles, p2Tiles, phase) = tuple;

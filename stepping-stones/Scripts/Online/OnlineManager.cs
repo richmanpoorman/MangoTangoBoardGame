@@ -12,7 +12,8 @@ public partial class OnlineManager : Node
 	private MessageSender sender;
 	[Export]
 	private int version = 1;
-    private string ipAddr = "127.0.0.1";
+    private string localServerIpAddr = "127.0.0.1";
+    private string remoteServerIpAddr = "150.136.58.219";
     private int remotePort = 4567;
 	[Export]
 	private int hostPort = 6666;
@@ -22,22 +23,28 @@ public partial class OnlineManager : Node
 	[Export]
 	private bool LAN = true; 
 	private ENetMultiplayerPeer peer;
+	public static bool onlineReady {get; private set;} = false;
 	public override void _Ready() {
 		_bus = EventBus.Bus;
 		sender = new MessageSender();
-		sender.ipAddr = ipAddr;
+		sender.ipAddr = LAN ? localServerIpAddr : remoteServerIpAddr;
 		sender.port = remotePort;
 		sender.messVersion = version;
 		_bus.onMakeRoom += makeRoom;
 		_bus.onJoinRoom += joinRoom;
 		// _bus.onRoomReady += syncGotoMain;
-		Multiplayer.PeerConnected += wrapBoardSync;
+		// Multiplayer.PeerConnected += wrapBoardSync;
+		_bus.onSetGameToSceneManagerRequest += syncChangeMain;
 		peer = new ENetMultiplayerPeer();
 	}
 	private void wrapBoardSync(long id) {
 		if (Multiplayer.IsServer()) {
 			createBoardSync();
 		}
+	}
+	private async void syncChangeMain() {
+		var id = await ToSignal(Multiplayer, MultiplayerApi.SignalName.PeerConnected);
+		wrapBoardSync((long)id[0]);
 	}
 	private async void makeRoom() {
 		(Socket sock, string roomCode) = await sender.MkSocketandCodeAsync();
@@ -72,7 +79,8 @@ public partial class OnlineManager : Node
 		sock.Close();
 		string result = await sender.sendLocalHSAsync(clientPort, hostPort);
 		await Task.Delay(10);
-		peer.CreateClient(ipAddr, hostPort, 0, 0, 0, clientPort);
+		string tarIp = LAN ? localServerIpAddr : ipp.ip;
+		peer.CreateClient(localServerIpAddr, hostPort, 0, 0, 0, clientPort);
 		Multiplayer.MultiplayerPeer = peer;
 		await Task.Delay(10);
 	}
@@ -117,7 +125,12 @@ public partial class OnlineManager : Node
 	}
 	
 	#nullable disable
-	
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+	private void onClientSetUpConfirmation () {
+		SceneManager.Instance.goToMainBoard(SceneManager.Instance.board);
+	}
+
+
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
 	public void synchronizeBoard (Godot.Collections.Array<string> arr, int numRows, int numCols, int p1Tiles, int p2Tiles, PlayerColor turn, bool newGame) {
 		//TODO: make work with rule components
@@ -145,11 +158,12 @@ public partial class OnlineManager : Node
 		SceneManager.Instance.board = board;
 		GD.Print($"Scene manager board has: {SceneManager.Instance.board.size()[0]} rows, {SceneManager.Instance.board.size()[1]} cols");
 		SceneManager.Instance.goToMainBoard(board);
+		Rpc(MethodName.onClientSetUpConfirmation);
 		// EventBus.Bus.EmitSignal(EventBus.SignalName.onSetGameToSceneManagerRequest);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
+	public override void _Process(double delta) {
+	
 	}
 }
