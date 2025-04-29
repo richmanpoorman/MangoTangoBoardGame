@@ -23,6 +23,7 @@ public partial class OnlineManager : Node
 	[Export]
 	private bool LAN = true; 
 	private ENetMultiplayerPeer peer;
+	public static bool onlineReady {get; private set;} = false;
 	public override void _Ready() {
 		_bus = EventBus.Bus;
 		sender = new MessageSender();
@@ -32,13 +33,18 @@ public partial class OnlineManager : Node
 		_bus.onMakeRoom += makeRoom;
 		_bus.onJoinRoom += joinRoom;
 		// _bus.onRoomReady += syncGotoMain;
-		Multiplayer.PeerConnected += wrapBoardSync;
+		// Multiplayer.PeerConnected += wrapBoardSync;
+		_bus.onSetGameToSceneManagerRequest += syncChangeMain;
 		peer = new ENetMultiplayerPeer();
 	}
 	private void wrapBoardSync(long id) {
 		if (Multiplayer.IsServer()) {
 			createBoardSync();
 		}
+	}
+	private async void syncChangeMain() {
+		var id = await ToSignal(Multiplayer, MultiplayerApi.SignalName.PeerConnected);
+		wrapBoardSync((long)id[0]);
 	}
 	private async void makeRoom() {
 		(Socket sock, string roomCode) = await sender.MkSocketandCodeAsync();

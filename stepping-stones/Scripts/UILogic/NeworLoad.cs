@@ -112,7 +112,13 @@ public partial class NeworLoad : Control
 	private void onMakeRoomCodeReadyPressed() {
 		sceneManager.newGame = true; 
 		// TODO:: Send board information to the server   
-		sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
+		// sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
+		sceneManager.p1Tiles = numTiles;
+		sceneManager.p2Tiles = numTiles;
+		sceneManager.board = new GridSteppingStonesBoard(width, length);
+		sceneManager.turn = PlayerColor.PLAYER_1;
+		_bus.EmitSignal(EventBus.SignalName.onSetGameToSceneManagerRequest);
+		
 	}
 
 	private void onJoinCodeEntered(string roomCode) {
@@ -121,7 +127,8 @@ public partial class NeworLoad : Control
 		_bus.EmitSignal(EventBus.SignalName.onJoinRoom, roomCode.ToUpper());
 
 		// TODO:: Change to listen for the information from the online server 
-		sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
+		// sceneManager.goToMainBoard(new GridSteppingStonesBoard(width, length), numTiles);
+		// _bus.EmitSignal(EventBus.SignalName.onSetGameToSceneManagerRequest);
 	}
 
 	public override void _Ready()
