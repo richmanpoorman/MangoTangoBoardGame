@@ -29,6 +29,9 @@ public partial class GameUi : Control
 	[Export]
 	public RichTextLabel blueTiles;
 
+	[Export]
+	private Button saveButton, loadButton, resetButton, mainMenuButton; 
+
 	private PlayerColor currentPlayer;
 
 	private BoardManager manager;
@@ -41,9 +44,10 @@ public partial class GameUi : Control
 		blueTiles.Hide();
 		turnLabel.Hide();
 		phaseLabel.Hide();
-		GetNode<Button>("CanvasLayer/SaveButton").Visible = false;
-		GetNode<Button>("CanvasLayer/LoadButton").Visible = false;
-		GetNode<Button>("CanvasLayer/ResetButton").Visible = false;
+		saveButton.Visible = false;
+		loadButton.Visible = false;
+		resetButton.Visible = false;
+		mainMenuButton.Visible = false;
 	}
 	
 	public void showAll () {
@@ -51,13 +55,17 @@ public partial class GameUi : Control
 		blueTiles.Show();
 		turnLabel.Show();
 		phaseLabel.Show();
-		GetNode<Button>("CanvasLayer/SaveButton").Visible = true;
-		GetNode<Button>("CanvasLayer/LoadButton").Visible = true;
-		GetNode<Button>("CanvasLayer/ResetButton").Visible = true;
+		saveButton.Visible = true;
+		loadButton.Visible = true;
+		resetButton.Visible = true;
+		mainMenuButton.Visible = true;
 	}
 	private void OnResetButtonPressed() 
 	{
 		EventBus.Bus.EmitSignal(EventBus.SignalName.onGameReset);
+	}
+	private void onReturnToMenuButtonPressed() {
+		SceneManager.Instance.goToTitleScreen();
 	}
 	private void OnSaveButtonPressed() 
 	{
@@ -189,9 +197,6 @@ public partial class GameUi : Control
 			default:
 				break;
 		}
-	}
-	public override void _Process(double delta)
-	{
 	}
 	private void switchColorText () {
 		switch(currentPlayer) {

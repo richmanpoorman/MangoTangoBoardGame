@@ -8,7 +8,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xbjsc"]
 
-[node name="GameUI" type="Control" node_paths=PackedStringArray("saveBox", "loadBox", "turnLabel", "phaseLabel", "redTiles", "blueTiles")]
+[node name="GameUI" type="Control" node_paths=PackedStringArray("saveBox", "loadBox", "turnLabel", "phaseLabel", "redTiles", "blueTiles", "saveButton", "loadButton", "resetButton", "mainMenuButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,6 +22,10 @@ turnLabel = NodePath("CanvasLayer/TurnLabel")
 phaseLabel = NodePath("CanvasLayer/PhaseLabel")
 redTiles = NodePath("CanvasLayer/RedLabel")
 blueTiles = NodePath("CanvasLayer/BlueLabel")
+saveButton = NodePath("CanvasLayer/FileButtons/SaveButton")
+loadButton = NodePath("CanvasLayer/FileButtons/LoadButton")
+resetButton = NodePath("CanvasLayer/BoardLeaveButtons/ResetButton")
+mainMenuButton = NodePath("CanvasLayer/BoardLeaveButtons/ReturnToMenuButton")
 metadata/_edit_use_anchors_ = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -75,48 +79,49 @@ Lastly, there is pushing. If your opponent has some X tiles in a row, and next t
 "
 text_direction = 1
 
-[node name="SaveButton" type="Button" parent="CanvasLayer"]
+[node name="FileButtons" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -200.0
-offset_top = -58.0
+offset_left = -204.0
+offset_top = -120.0
 grow_horizontal = 0
 grow_vertical = 0
-scale = Vector2(0.918, 1)
-pivot_offset = Vector2(136, 0)
+
+[node name="SaveButton" type="Button" parent="CanvasLayer/FileButtons"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 36
 theme_override_styles/focus = SubResource("StyleBoxEmpty_qpbsw")
 text = "Save Game"
 
-[node name="LoadButton" type="Button" parent="CanvasLayer"]
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -216.0
-offset_top = -118.0
-offset_bottom = -60.0
-grow_horizontal = 0
-grow_vertical = 0
+[node name="LoadButton" type="Button" parent="CanvasLayer/FileButtons"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 36
 theme_override_styles/focus = SubResource("StyleBoxEmpty_w150a")
 text = "Load Game
 "
 
-[node name="ResetButton" type="Button" parent="CanvasLayer"]
+[node name="BoardLeaveButtons" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -58.0
+offset_top = -120.0
 offset_right = 216.0
 grow_vertical = 0
+
+[node name="ResetButton" type="Button" parent="CanvasLayer/BoardLeaveButtons"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 36
 theme_override_styles/focus = SubResource("StyleBoxEmpty_xbjsc")
 text = "Reset Game"
+
+[node name="ReturnToMenuButton" type="Button" parent="CanvasLayer/BoardLeaveButtons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+theme_override_styles/focus = SubResource("StyleBoxEmpty_xbjsc")
+text = "Main Menu"
 
 [node name="PhaseLabel" type="RichTextLabel" parent="CanvasLayer"]
 anchors_preset = 7
@@ -211,9 +216,10 @@ size_flags_vertical = 4
 text = "?
 "
 
-[connection signal="pressed" from="CanvasLayer/SaveButton" to="." method="OnSaveButtonPressed"]
-[connection signal="pressed" from="CanvasLayer/LoadButton" to="." method="OnLoadButtonPressed"]
-[connection signal="pressed" from="CanvasLayer/ResetButton" to="." method="OnResetButtonPressed"]
+[connection signal="pressed" from="CanvasLayer/FileButtons/SaveButton" to="." method="OnSaveButtonPressed"]
+[connection signal="pressed" from="CanvasLayer/FileButtons/LoadButton" to="." method="OnLoadButtonPressed"]
+[connection signal="pressed" from="CanvasLayer/BoardLeaveButtons/ResetButton" to="." method="OnResetButtonPressed"]
+[connection signal="pressed" from="CanvasLayer/BoardLeaveButtons/ReturnToMenuButton" to="." method="onReturnToMenuButtonPressed"]
 [connection signal="file_selected" from="CanvasLayer/SaveDialog" to="." method="OnSaveDialogFileSelected"]
 [connection signal="file_selected" from="CanvasLayer/LoadDialog" to="." method="OnLoadDialogFileSelected"]
 [connection signal="pressed" from="CanvasLayer/TutorialButton" to="." method="OnTutorialButtonPressed"]

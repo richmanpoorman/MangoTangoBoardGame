@@ -159,6 +159,7 @@ theme_override_font_sizes/font_size = 20
 text = "Custom Rules"
 
 [node name="Rules Popup" type="Node2D" parent="Primary/Settings Bar/Set Custom Rules" node_paths=PackedStringArray("rulesPopup", "assetPopup")]
+position = Vector2(0, 1)
 script = ExtResource("5_qpxrt")
 rulesPopup = NodePath("../../../../GameRuleSelector")
 assetPopup = NodePath("../../../../AssetCreator")
