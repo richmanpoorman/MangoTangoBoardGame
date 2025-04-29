@@ -37,6 +37,10 @@ makeGameButton = NodePath("Secondary/MakeGame")
 visible = false
 position = Vector2(243, 197)
 
+[node name="Code" parent="RoomCodePopup/UI/Background/Alignment" index="0"]
+focus_mode = 2
+selection_enabled = true
+
 [node name="AssetCreator" parent="." instance=ExtResource("2_u8ll1")]
 visible = false
 position = Vector2(117, 69)
