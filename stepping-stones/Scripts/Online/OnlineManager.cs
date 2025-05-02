@@ -13,7 +13,7 @@ public partial class OnlineManager : Node
 	[Export]
 	private int version = 1;
     private string localServerIpAddr = "127.0.0.1";
-    private string remoteServerIpAddr = "150.136.58.219";
+    private string remoteServerIpAddr = "129.158.244.122";
     private int remotePort = 4567;
 	[Export]
 	private int hostPort = 6666;
@@ -21,7 +21,7 @@ public partial class OnlineManager : Node
 	private int clientPort = 5696;
 
 	[Export]
-	private bool LAN = true; 
+	private bool LAN = false; 
 	private ENetMultiplayerPeer peer;
 	public static bool onlineReady {get; private set;} = false;
 	public override void _Ready() {
