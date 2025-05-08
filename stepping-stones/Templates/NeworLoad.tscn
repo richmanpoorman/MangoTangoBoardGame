@@ -12,7 +12,7 @@
 
 [sub_resource type="Theme" id="Theme_hkbsb"]
 
-[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs", "roomCodePopup", "makeGameButton")]
+[node name="NeworLoad" type="Control" node_paths=PackedStringArray("loadBox", "startButton", "backButton", "newButton", "loadButton", "makeRoomButton", "joinRoomButton", "roomJoiner", "tabs", "roomCodePopup", "makeGameButton", "settingsBar", "primaryBar")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,6 +32,8 @@ roomJoiner = NodePath("Room Code")
 tabs = NodePath("Tabs")
 roomCodePopup = NodePath("RoomCodePopup")
 makeGameButton = NodePath("Secondary/MakeGame")
+settingsBar = NodePath("Primary/Settings Bar")
+primaryBar = NodePath("Primary/Primary")
 
 [node name="RoomCodePopup" parent="." instance=ExtResource("2_2q1wa")]
 visible = false
@@ -151,9 +153,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Custom Rules"
 
-[node name="Rules Popup" type="Node2D" parent="Primary/Settings Bar/Set Custom Rules" node_paths=PackedStringArray("rulesPopup")]
+[node name="Rules Popup" type="Node2D" parent="Primary/Settings Bar/Set Custom Rules" node_paths=PackedStringArray("rulesPopup", "assetPopup")]
 script = ExtResource("5_qpxrt")
 rulesPopup = NodePath("../../../../GameRuleSelector")
+assetPopup = NodePath("../../../../AssetCreator")
 
 [node name="Tabs" type="TabContainer" parent="."]
 visible = false
