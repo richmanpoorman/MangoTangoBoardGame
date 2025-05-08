@@ -53,6 +53,7 @@ public partial class OnlineManager : Node
 		if (client == null) {
 			throw new ApplicationException("received null client");
 		}
+		int currHport = LAN ? hostPort : ((IPEndPoint)sock.LocalEndPoint).Port;
 		sock.Close();
 		string result = "";
 
@@ -60,7 +61,7 @@ public partial class OnlineManager : Node
 			result = await sender.sendLocalHSAsync(hostPort, clientPort);
 		} else {
 			if (client != null) {
-				result = await sender.sendOnlineHSAsync(hostPort, (MessageSender.ipPort)client);
+				result = await sender.sendOnlineHSAsync(currHport, (MessageSender.ipPort)client);
 			} else {
 				throw new ApplicationException("null client");
 			}
@@ -70,17 +71,20 @@ public partial class OnlineManager : Node
 		}
 		GD.Print($"{hostPort}");
 		
-		peer.CreateServer(hostPort);
+		peer.CreateServer(currHport);
 		Multiplayer.MultiplayerPeer = peer;
 		await Task.Delay(10);
 	}
 	private async void joinRoom(string roomCode) {
 		(Socket sock, MessageSender.ipPort ipp) = await sender.JoinRoomAsync(roomCode);
+		
+		int currCliPort = LAN ? clientPort : ((IPEndPoint)sock.LocalEndPoint).Port;
 		sock.Close();
-		string result = await sender.sendLocalHSAsync(clientPort, hostPort);
+		string result = LAN ? await sender.sendLocalHSAsync(clientPort, hostPort) : await sender.sendOnlineHSAsync(currCliPort, ipp);
 		await Task.Delay(10);
 		string tarIp = LAN ? localServerIpAddr : ipp.ip;
-		peer.CreateClient(localServerIpAddr, hostPort, 0, 0, 0, clientPort);
+		int tarPort = LAN ? hostPort : ipp.port;
+		peer.CreateClient(tarIp, tarPort, 0, 0, 0, currCliPort);
 		Multiplayer.MultiplayerPeer = peer;
 		await Task.Delay(10);
 	}
